@@ -295,6 +295,31 @@ Recurring techniques:
   — [0xMovez](https://x.com/0xMovez/status/2104216919033192746)
 - Donald's brief grants budget and autonomy: "I have a Claude Max plan with 100% available usage. I want you to spend all of the usage… pushing tokens aggressively, but also economically". It ends with "make no mistakes." — [@donaldjewkes](https://x.com/donaldjewkes/status/2102801469976248500)
 
+**Techniques specific to websites, brand marks, kinetic type and graphic assets (scope update)**
+- Brief, not wish, for web pages. Muzli's structure is: audience, mood, one memorable moment, sections, motion specifics, and a quality floor (phone layout, reduced-motion respect, keyboard focus). The control method: "Name unwanted patterns explicitly in brief; update list after each attempt." — [Muzli **[promo]**](https://muz.li/blog/claude-opus-5-5-for-designers/)
+- Landing-page motion stack chosen by Opus 5.5 in Muzli's Lenn demo: "one orchestrated page load, then scroll-linked scenes with GSAP ScrollTrigger and Lenis", over a real-time WebGL water hero. The Offset kinetic-type demo was "Build it on one GSAP timeline", and the model invented named bezier curves with stated intent ("rail: arrivals. Leaves at full speed, brakes hard into the cell"). The Hummock prototype used Motion.dev springs. — [Muzli **[promo]**](https://muz.li/blog/claude-opus-5-5-for-designers/)
+- Kinetic-type recipe from techhalla's identity bumper:
+  - "Kinetic type: per-glyph spring (y, opacity, blur). Stagger = 1/16 note at 120 BPM (125ms)."
+  - "Mask reveal: destination text revealed by animating a path mask derived from the outgoing word's outlines."
+  - "Print misregistration: on accent frames only, duplicate text layer offset (±2–4px)."
+  - A strict three-font TYPE SYSTEM (Archivo Black / Syne ExtraBold / IBM Plex Mono) "never one font for everything", with tracking values.
+  - A strict 4-hex palette.
+  
+  — prompt text via local corpus (Skillry) of [@techhalla's post, ~270 likes / 33K views / 334 bookmarks](https://x.com/techhalla/status/2103411244468498547). The prompt was posted in a reply, which I could not fetch directly.
+- Type as architecture: Gdgtify's 20 s kinetic spoken-word film assigns "architectural roles" to words ("WAIT is a lintel… VOICE is a support… FLOOR is a platform"). Rules: "These roles must emerge from the actual letterforms… Use actual glyph paths for structural words. Preserve counters and legibility during deformation… do not interpolate arbitrary path points… Allow at least one 400ms moment of absolute stillness." — [@Gdgtify](https://x.com/Gdgtify/status/2103458245213929495)
+- Variable-font wordmark animation: "Wordmark squeeze: every letter moves toward the dot by the same factor and its drawn width follows (narrow the wdth axis, scale the rest), so the letters stay touching", using "Archivo (wdth 125, weight 800) for the wordmark, Geist for UI". — [@twoclipping, 26 Sep 2026, ~2.1K likes / 133K views / 3.7K bookmarks](https://x.com/twoclipping/status/2103835273813496100)
+- Logo handling for brand animation:
+  - "read my landing page and codebase to pull the real story, copy, colors, font and logo file (trace the logo to SVG so it stays sharp and can be animated)… end on a memorable animated logo reveal with the tagline and URL" ([@aschapmann](https://x.com/aschapmann/status/2104230888812724497)).
+  - "Use the actual Taxtello wordmark… Do not redraw or approximate the logo… No generic logo fade. Think machined precision." ([@daniel_haida](https://x.com/daniel_haida/status/2104139720829636937))
+  - techhalla asks for a brand mark built from type and rules: "A thick magenta bar and a thin acid green rule form an L-bracket mark (custom, not a logo download)" (corpus text of [@techhalla](https://x.com/techhalla/status/2103411244468498547)).
+- Decompose screenshots into animatable assets: "avoid using screenshots as raw; instead, break them down into components/icons so we can animate those too. Make the motions more juicy." — [@HO_BA, effort "high", ~160 likes / 47K views](https://x.com/HO_BA/status/2103845264649761062)
+- Generating graphic assets in-code within the same run:
+  - per_simmons_'s drink-brand website: "It generated all the svgs - Built the can in 3D - Painted its own labels and then rendered those to make product photo variations… in a single (albeit, beefy) prompt" ([@per_simmons_](https://x.com/per_simmons_/status/2103208157308944727)).
+  - Muzli's demos had the model produce a type specimen sheet with 8 pairings, the wordmark, salt-crystal illustrations and "risograph-style album covers (2-color SVG with registration misalignment and paper grain texture)" ([Muzli **[promo]**](https://muz.li/blog/claude-opus-5-5-for-designers/)).
+  - brainextends's prompt has an `<artwork>` block asking for original album art and "designed playlist sleeves… finished graphic-design covers, with bold typography and simple geometric motifs" ([@brainextends](https://x.com/brainextends/status/2103801834930606193)).
+- SVG logo prompt with hard constraints, verbatim: "Design a simple logo mark for Kettle & Crumb, a neighbourhood bakery. Draw it as one SVG file: a kettle whose steam curls up into an ear of wheat. Use exactly two flat colours, charcoal #2B2A28 and amber #C47A1C, on a transparent background. No gradients, no filters, no text." They then tested it at 32 px. — [Ciyo, 23 Sep 2026 **[promo]**](https://ciyo.ai/blog/claude-opus-5-5-svg-logo)
+- SVG illustration set (claude.ai), verbatim casual prompt: "Make three SVG illustrations of characters with three different sort of, um, faces or emotions on them." The recommended follow-up step is to review the set for consistent style before using it in a website or design system. — [ChatPRD "How I AI", Claire Vo **[promo]**](https://www.chatprd.ai/how-i-ai/workflows/claude-opus-5-5-svg-illustrations)
+
 ### Inferences
 - Engagement shows both poles can go viral. The one-liner reached 17K likes and 2.25M views. The XML spec got 12K likes, roughly 1M views and about 19K bookmarks. Bookmark-heavy engagement on the spec suggests creators see it as reusable craft.
 - The techniques that recur in independent sources are:
@@ -405,6 +430,13 @@ The fixes are:
 - An r/buildinpublic "visualOS" film was "one prompt and roughly 20 minutes of waiting", with access to a repository and a press folder, at Max effort, "zero adjustments". — [mubbits.com **[aggregator]**](https://mubbits.com/blog/claude-opus-5-5-motion-graphics)
 - Mubbits also notes that "one-shot" can include many autonomous tool calls, renders and corrections inside the agent's run. — [mubbits.com **[aggregator]**](https://mubbits.com/blog/claude-opus-5-5-motion-graphics)
 
+**Website, logo and asset failure modes (scope update)**
+- SVG logo at small sizes: in Ciyo's test the first output had "The spout floated apart from the kettle body", and at 32 px "seven overlapping grain ellipses merged into one orange blob". One feedback round fixed both: 13 shapes and 1,294 bytes became 11 shapes and 1,107 bytes, with five separated grains. — [Ciyo **[promo]**](https://ciyo.ai/blog/claude-opus-5-5-svg-logo)
+- Brand accuracy: Muzli cites Every's test, where the model was "Better at looking right than at being right about your brand", with a wrong logo, swapped brand colors and added art nobody asked for. Muzli also says the model "Can't judge 'how the scroll feels on a real phone' or performance on older hardware" and "Falls back to defaults without taste direction". In its own demos the model self-caught "beach logo" kitsch and broken scroll entrapment, and adjusted smooth-scroll handling. — [Muzli **[promo]**; Every test not fetched directly](https://muz.li/blog/claude-opus-5-5-for-designers/)
+- Cost and effort trade-offs Muzli reports secondhand: a Simon Willison max-effort attempt ran "20 minutes, $2.56/attempt, returned nothing", and a complex 3D build took "1 hour 26 minutes, $25.66 API cost". — [Muzli **[promo]**](https://muz.li/blog/claude-opus-5-5-for-designers/), not verified at the original sources.
+- Browser-specific gotchas for glass and SVG-filter effects, verbatim: "backdrop-filter: url() misreads displacement maps in Chromium, so clone the scene instead. A flood must overscale past the corners and take about 0.3s, or half the screen changes in one frame. A child with visibility: visible shows through a hidden parent, so use inherit. Text that swaps inside a morphing shape needs its own mask. python http.server can't range-seek video, so use the blob URL." Also "scan for single-frame pops (frame-difference spikes 3x their neighbours)". — [@twoclipping](https://x.com/twoclipping/status/2103835273813496100)
+- Kinetic-type legibility: Gdgtify's quality gate is "Check that structural transformations never destroy a line before the audience can read it." brainextends adds "Outgoing titles must disappear before incoming titles occupy the same space… Keep stationary text and artwork sharp." — [@Gdgtify](https://x.com/Gdgtify/status/2103458245213929495); [@brainextends](https://x.com/brainextends/status/2103801834930606193)
+
 ### Inferences
 - Most "fixes" are preventive. They live in CLAUDE.md, skills or the spec, and are not reactive follow-up prompts. The single biggest quality lever creators report is letting the agent see its own frames through contact sheets and strips. This is why Claude Code or agent setups outperform chat-only use.
 - "One prompt" usually means one human message plus a long autonomous agent run, frequently with prior scaffolding: skills, repos, reference folders and API keys.
@@ -486,11 +518,73 @@ Source: [@kloss_xyz](https://x.com/kloss_xyz/status/2103664956482941143)
 - Pleometric's TikTok-feed animation: about 3.8K likes ([@pleometric](https://x.com/pleometric/status/2102572941699354900)). His re-run of Donald's workflow: about 5K likes ([@pleometric](https://x.com/pleometric/status/2103082510607610023)).
 - NFT_Chen: Opus "wrote a cartoon video editing software and then edited inside it", about 1.5K likes ([@NFT_Chen](https://x.com/NFT_Chen/status/2102681172367323300)).
 
+### Priority set for a digital-agency website: landing-page motion, brand/logo animation, kinetic type, graphic assets
+
+**A. Landing-page and website motion (Muzli, three verbatim prompts, built in Claude Code with frontend-design; [Muzli, 28 Sep 2026 **[promo]**](https://muz.li/blog/claude-opus-5-5-for-designers/))**
+- Scroll-driven site ([live demo](https://files.muzli.cloud/blog/claude-opus-5-5-for-designers/demos/site/index.html)). It took about 80 minutes with 4 self-critique rounds, and the model chose GSAP ScrollTrigger + Lenis + WebGL and Spectral type:
+  > "Build a one-page website for Lenn, a two-person sea salt harvest on the salt marshes of Guérande, in Brittany. Visitors are chefs and food lovers who might order a tin or come and visit. Mood: quiet, tidal, tactile. Grey Atlantic light, not beach kitsch. Pick distinctive type, one or two families. The one memorable thing: the hero is water. A real-time WebGL water surface fills the screen and ripples where the cursor moves, with the Lenn wordmark under the surface, refracting. As you scroll, the tide drains away and salt crystals appear on the clay."
+- Kinetic-type title loop ([live demo](https://files.muzli.cloud/blog/claude-opus-5-5-for-designers/demos/motion/index.html)), using the Anybody variable font:
+  > "Make a 12-second looping title sequence for a fictional design festival called Offset, as a web page. Think opening titles, not a website: kinetic type on a strict grid. Letters slide in along the grid, the grid itself rotates and stretches, colours swap in hard cuts on the beat, and it resolves into the Offset lockup with the dates (14-16 May, Vilnius) before looping cleanly. Build it on one GSAP timeline."
+- Interaction prototype ([live demo](https://files.muzli.cloud/blog/claude-opus-5-5-for-designers/demos/interaction/index.html)):
+  > "Prototype the mini player to full player transition of a music app, in a phone frame, as a web page I can use with a mouse or a finger… Drag it up and the album art grows out of it into the full player, following my finger 1:1, then settles with a spring… Everything must be interruptible: grab it mid-animation and it stops where it is. Add a 'slow motion' switch that runs all motion at 10% speed so I can review the curves."
+- Hero-section rebuild spec: iamtanzil_'s "A premium hero section" post (~16 likes). The prompt is an ~11K-character build spec, posted in a reply and captured in the local corpus. It describes a React header with a cursor-following CSS `mask-image` "x-ray" reveal, "React only… No framer-motion, no GSAP… All animation is hand-written CSS keyframes", a single Google font (Almarai), a 12-column bottom grid, and a word-stagger headline set at `clamp(36px, 7vw, 116px)`. — [@iamtanzil_](https://x.com/iamtanzil_/status/2103459843831120030)
+- Hero video asset for a landing page: "make a dynamic 15-second motion graphics video that shows what an incredible motion designer you are, and can be the hero asset for the course landing page." Opus chose Remotion, with HyperFrames also installed. — [@TheViableEdge](https://x.com/TheViableEdge/status/2104207707980869918)
+- Website-from-reference: "Told it to create a website for forest conservation agency with pinterest post as reference for 3D animation. It one shotted into a single html file." The exact prompt is not shared. — [@Souradip3000](https://x.com/Souradip3000/status/2103876499262800291)
+- Website with self-generated assets: "Opus 5.5 building a website for a drink brand… It generated all the svgs… Built the can in 3D… Painted its own labels". The prompt is not shared. — [@per_simmons_](https://x.com/per_simmons_/status/2103208157308944727)
+
+**B. Brand and logo animation, launch films built from a site**
+- One-liner pointed at a site: "make a dynamic 15-second motion graphics video that shows what an incredible motion designer you are for <website url>". The post claims it took "less than 10 minutes" for Lumail.io (~85 likes / 29K views / 164 bookmarks). — [@melvynx](https://x.com/melvynx/status/2103714680577638493)
+- HO_BA's version (effort high, ~160 likes / 47K views / 325 bookmarks), verbatim:
+  > "Make a dynamic 30-second motion graphics video that shows what an incredible motion designer you are, like it's your showreel for a résumé. go all out. Make it a video to introduce https://mdfor.dev Use actual product screenshot/logo/assets Must have music and motion must match the music Do it like a real professional production video, not like a demo or prototype. Add more animation and motion design; avoid using screenshots as raw; instead, break them down into components/icons so we can animate those too. Make the motions more juicy. Use the best motion design techniques you can."
+  
+  — [@HO_BA](https://x.com/HO_BA/status/2103845264649761062)
+- aschapmann's reusable SaaS launch prompt (Remotion, "+1h"), verbatim:
+  > "Act as a senior motion designer and build a 30-second launch video for [product] in Remotion, entirely in code so I can edit and re-render it: first read my landing page and codebase to pull the real story, copy, colors, font and logo file (trace the logo to SVG so it stays sharp and can be animated), then write the video as one story (why the market matters, why it's painful today, how [product] fixes it, what you get) in 4 to 5 scenes with one short title each, animate everything like a premium product film (kinetic typography word by word, spring easing, smooth camera pushes and pans, depth and glow, elements that build in on the beat instead of just appearing), keep each scene on screen long enough to read, add one soft sound effect for every element that appears and silence otherwise, and end on a memorable animated logo reveal with the tagline and URL, then render it, check the frames yourself and fix anything that overlaps, clips or feels rushed before showing me the result."
+  
+  — [@aschapmann](https://x.com/aschapmann/status/2104230888812724497)
+- twoclipping's wordmark-led Apple-keynote launch film (~2.1K likes / 133K views / 3.7K bookmarks). Key lines:
+  - Inputs: "Ask me for: a one-word brand name for the wordmark (a verb works best), 9 to 12 high-res photos, a royalty-free song around 120 BPM…"
+  - "Open: the wordmark squeezes into its own period like an accordion, the dot grows into a black pill, a label rises inside it."
+  - Banned: "crossfades, blur-ins, brightness 'developing', 3D flips, particles, glows, holds longer than 1s".
+  - The film includes a scene where a wallpaper "becomes the hero of a landing page. Scroll: the hero morphs into a framed print on a product card".
+  - Start: "show me the beat map and 4 stills… before you write the full film."
+  
+  Its gotchas are in Q4. — [@twoclipping](https://x.com/twoclipping/status/2103835273813496100)
+- Daniel Haida's brand-film rules (full prompt above): "No generic logo fade", "No five-second logo intro", "The final frame must have enough stillness to register." — [@daniel_haida](https://x.com/daniel_haida/status/2104139720829636937)
+- Agency-branded showreels, from the corpus only (post text not fetched): "…like its your showreel for a resume. go all out, and brand it for Based Agency." ([@dansushik](https://x.com/dansushik/status/2103547478482289121), with the prompt in comments). "You are applying as a motion designer in my agency. Make 15s video to showcase your skills and capabilities. Send me a showreel" ([@hanifproduktif](https://x.com/hanifproduktif/status/2103404901451829311)). 0xMovez's "agency persona" variant is in Q3.
+
+**C. Kinetic typography**
+- techhalla's 20 s "kinetic identity bumper" (corpus text of a reply prompt; post ~270 likes / 33K views / 334 bookmarks). Opening lines, verbatim:
+  > "You are a world-class motion designer doing a 20.00s kinetic identity bumper for TechHalla… This piece must feel like the best designer in the room made a street-poster that moves. Showreel stakes: if this is weak, you don't get hired. DURATION: exactly 20.00 seconds. LOOPABLE: frame 0 == frame last… FORMAT: one HTML file, 1080×1080… PALETTE (strict): bg #0A0A0A, magenta #FF2BD6, acid green #B8FF00, white #F5F5F5… No other hues… TYPE SYSTEM (use all three; never one font for everything)… MESSAGE (locked — do not soften, do not add filler slogans)…"
+  
+  The prompt continues with a timestamped NARRATIVE ARC, CONCRETE TECHNIQUES (per-glyph springs, mask reveals from outgoing outlines, misregistration, 4-subframe blur, an 8-still pre-pass) and a BANNED list ("brains, robots, neural nets, sparkles, soft gradients, bouncy cartoon easing… purple/blue neon, glassmorphism"). — [@techhalla](https://x.com/techhalla/status/2103411244468498547)
+- Gdgtify's "BUILD THE FLOOR" kinetic spoken-word film. Verbatim spec lines:
+  > "Deliver one self-contained HTML file, 1080×1080, targeting 60fps, using SVG and/or Canvas. Embed all required assets. ART DIRECTION Background #102820. Paper #F4E9D5. Structural accent #F2B544. A literary editorial world with the scale and confidence of a public monument. Use a high-contrast serif for the speech, a heavy grotesque for load-bearing words, and a restrained monospace for small timing marks."
+  
+  It is followed by a timestamped STORYBOARD and the TYPE IMPLEMENTATION and QUALITY GATE sections quoted in Q3 and Q4. — [@Gdgtify](https://x.com/Gdgtify/status/2103458245213929495)
+- Muzli's Offset prompt (A above) is the clearest web-native, GSAP-timeline kinetic-type example.
+
+**D. Graphic asset generation (SVG marks, illustrations, icons, artwork)**
+- Ciyo's two-colour SVG logo prompt is in Q3, and its 32 px failure modes are in Q4. — [Ciyo **[promo]**](https://ciyo.ai/blog/claude-opus-5-5-svg-logo)
+- Claire Vo's character-illustration prompt is in Q3. — [ChatPRD **[promo]**](https://www.chatprd.ai/how-i-ai/workflows/claude-opus-5-5-svg-illustrations)
+- In-film artwork brief, verbatim: "Create original square album artwork… an abstract macro image of flowing pearlescent liquid silk and molten glass. Use pastel lavender, powder cyan, blush pink, champagne gold, and subtle mint… No text, logo, or border on this hero artwork. Use this same artwork consistently throughout the film." — [@brainextends](https://x.com/brainextends/status/2103801834930606193). Caveat: the rest of that prompt is a Spotify-branded pastiche. It is useful as a structure, but the real trademark makes it unsuitable to reuse as-is for client work.
+- Real UI rebuilt as vector components instead of screenshots: "If a screen needs to be motion-separated, recreate it faithfully in React from the real design system instead of simply scaling a giant screenshot" ([@daniel_haida](https://x.com/daniel_haida/status/2104139720829636937)). See also HO_BA's "break them down into components/icons" (B above).
+- I found no high-engagement verbatim prompt specifically for animated website backgrounds (shader or ambient loops as web backgrounds). The closest are Muzli's WebGL water hero and buildwithhanif's ambient-loop example ("a 30 s seamless loop in faceted low-poly poster style… Ambient score") ([buildwithhanif](https://github.com/buildwithhanif/claude-animation-skill)). The corpus has 0 entries matching "animated background / background loop".
+
 ### Inferences
 - The most-copied prompt is also the least specific. The most-bookmarked and most-discussed "how" content is all structured and harness-heavy: twoclipping, Rexan Wong, 0xMovez, Donald.
 - Remotion-based prompts tend to be brand or product films that reuse a codebase's tokens. HyperFrames posts lean to explainers and teasers. The zero-dependency HTML route dominates the showreel genre.
+- For an agency website, the evidence suggests splitting the work two ways:
+  - Live page motion (hero, scroll scenes, kinetic headline): Claude Code + frontend-design, with GSAP (ScrollTrigger/timeline) or Lenis/WebGL, briefed with "one memorable thing", named type and a ban-list (Muzli).
+  - Rendered video assets (showreel or hero loop, logo sting): deterministic `seek(t)`/Remotion/HyperFrames plus a contact-sheet critique loop.
+  
+  Logos should be supplied as or traced to SVG and never redrawn from memory. Small marks should be checked at 32 px.
+- techhalla's strict palette (near-black #0A0A0A + acid green #B8FF00 + magenta) matches cluster #2 of Anthropic's frontend-design "AI-generated design clusters" list ("a near-black background with a single bright acid-green or vermilion accent"). An agency that copies viral prompts verbatim risks the very "AI look" those prompts try to ban. This is my observation, not a creator claim.
 
 ### Gaps
 - Several viral posts (Drew, achxvi, Tony Dinh) put their prompts in replies or comments, which I could not retrieve. Their exact prompt text is unverified here.
 - I could not capture YouTube tutorial descriptions or verbatim Reddit thread prompts.
 - Engagement figures are a point-in-time snapshot (2026-10-05) from a third-party X mirror (fxtwitter), not from X directly.
+- Website-specific prompts (Muzli, iamtanzil_, Souradip3000, per_simmons_) have low or unknown X engagement compared with the video prompts. The website side of the trend is far less documented than the video side.
+- I found no sourced, high-engagement prompts for animated SVG icon sets or for ambient animated website backgrounds with Opus 5.5. The SVG asset evidence is mostly vendor blogs (Ciyo, ChatPRD).
+- "Claude Design", a canvas-based Anthropic environment, is mentioned only by Muzli. I did not verify its capabilities against Anthropic sources.

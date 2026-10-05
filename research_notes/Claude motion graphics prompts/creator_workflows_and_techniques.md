@@ -140,6 +140,18 @@ Anthropic's own `frontend-design` skill is a web-UI design skill, not a video sk
 - It flags a Claude-specific tell: "a warm cream background (near #F4F1EA) with a high-contrast serif display and a terracotta or warm-clay accent (often near #D97757 — Anthropic's own Claude-interaction accent…)". It asks the model to review its plan against the brief before coding, and to "Critique your own work as you build, taking screenshots".
 - Source: [anthropics/skills frontend-design SKILL.md](https://raw.githubusercontent.com/anthropics/skills/HEAD/skills/frontend-design/SKILL.md). The same file ships as a Claude Code plugin at [anthropics/claude-code plugins/frontend-design](https://raw.githubusercontent.com/anthropics/claude-code/HEAD/plugins/frontend-design/skills/frontend-design/SKILL.md).
 - I found no viral Opus 5.5 video post that credits `frontend-design`, and the corpus has 0 mentions.
+- The skill's full calibration list (verbatim, verified in the SKILL.md) is introduced by "AI-generated design right now clusters around some traits":
+  1. "a warm cream background (near #F4F1EA) with a high-contrast serif display and a terracotta or warm-clay accent";
+  2. "a near-black background with a single bright acid-green or vermilion accent";
+  3. "a broadsheet-style layout with hairline rules, zero border-radius, and dense newspaper-like columns";
+  4. "the SaaS-card kit: content chopped into identical rounded cards… the same soft grey shadow (rgba(0,0,0,.1))… gradient washes as decoration";
+  5. "template chrome… a tracked-out ALL-CAPS eyebrow label above every heading; meta strings joined with middle dots… a monospace face for small data labels; a '→' appended to link and button text."
+  
+  It then asks for "a compact token system… Color: describe the core base palette as 4–6 named hex values." — [frontend-design SKILL.md](https://raw.githubusercontent.com/anthropics/skills/HEAD/skills/frontend-design/SKILL.md)
+
+**Web and landing-page skills used by designers with Opus 5.5 (relevant to agency sites)**
+- Muzli's designer guide used Claude Code with `frontend-design@claude-plugins-official` ("house style bans, taste rules"), `playground@claude-plugins-official` (a slider-based tool builder) and `make-interfaces-feel-better` by Jakub Krehel (optical alignment, interruption). It lists three environments: Claude Design (canvas-based, no code visibility), the Claude Code desktop app with a live browser via `claude --chrome`, and browser Claude. — [Muzli blog, Petras Baukys, 28 Sep 2026 **[promo: Muzli]**](https://muz.li/blog/claude-opus-5-5-for-designers/)
+- Muzli's effort advice for web work: "Medium default; high for hero moments; max reserved for measured quality gains". This is more conservative than the video creators' xhigh/max advice. — [Muzli **[promo]**](https://muz.li/blog/claude-opus-5-5-for-designers/)
 
 **Creator-built skills and starter kits**
 - buildwithhanif/claude-animation-skill (MIT, Claude Code plugin): "What makes code look drawn isn't the model, it's a vocabulary of detail and a habit of looking." It provides:

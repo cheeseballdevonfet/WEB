@@ -403,3 +403,145 @@ Video prompts optimize for a deterministic, frame-rendered timeline on a fixed c
 ### Gaps
 - I found no published, sourced before/after pair that converts a video-style Claude prompt into a component prompt. The examples above are my synthesis and should be presented as such.
 - The detailed Charlie Hills workflow (Steps 3–4) is behind a subscription wall, and the Codrops mascot tutorial returned 403, so I couldn't mine either for component-adaptation specifics.
+
+---
+
+## 6. (Scope update) Section map of standout digital-agency sites in 2025–2026, and the motion patterns award-winning agency sites use in each
+
+### Takeaway
+Agency homepages still follow a recognizable map: hero/showreel → services → selected work/case studies → results/stats → client logos → process → testimonials → team/culture → big CTA/contact → footer. Award-winning studio sites (Awwwards/FWA/CSSDA) differ in execution, not structure. An Awwwards juror says juries reward singular art direction, "transitions that carry meaning", choreographed scroll pacing, atmospheric (not gratuitous) WebGL, GSAP-driven type, ~60fps on mid-range phones and a reduced-motion path. I found no primary dataset that maps motion patterns to sections, so the per-section mapping below is a synthesis.
+
+### Cited Findings
+**What juries reward and what recent winners look like**
+- Hon Tran (Awwwards jury member, June 27 2026) lists recent award winners, including UK studio By-Kin, which won Awwwards SOTD, the Developer Award, an FWA and CSSDA Web of the Day, and Australian studio Uncommon Studio, which won SOTD, the Developer Award and an FWA. Patterns he highlights:
+  - "transitions that carry meaning" and page-to-page movement treated as camera moves
+  - choreographed scroll reveals that pace the narrative
+  - WebGL used for "atmospheric lighting rather than spectacle" (Three.js scenes treating projects as spotlit installations)
+  - GSAP-driven letter animation (stretching, snapping)
+  - disciplined grids
+  - Source: [Hon Tran, "10 Best Award-Winning Websites of 2026"](https://www.hontran.dev/blog/best-award-winning-websites-2026) [secondary; juror's opinion]
+- The same juror lists jury criteria: singular art direction, meaningful motion choreography "not decorative effects", performance holding ~60fps on mid-range mobile, accessibility (a reduced-motion path) and technical execution under load. — [Hon Tran](https://www.hontran.dev/blog/best-award-winning-websites-2026) [secondary]
+- Recent Awwwards SOTD winners in the design-agency category include Meer Mohsin (SOTD + Developer Award, Sep 26 2026), L.I.S.A. by Locomotive (Sep 16 2026), Warm & Fuzzy by Neutral Studio (Sep 12 2026) and HOBRO DIGITAL (Aug 29 2026). — [Awwwards design-agencies](https://www.awwwards.com/websites/design-agencies/) [primary listing]; dates from [Awwwards Sites of the Day](https://www.awwwards.com/websites/sites_of_the_day/) via search summary [snippet]
+- Immersive Garden is cited as an SOTD agency site: black-and-white, minimalist layout, effects and interactive content. — [MyCodelessWebsite](https://mycodelesswebsite.com/agency-websites/) [snippet; the page itself returned a bot wall]
+
+**Section-level interaction patterns**
+- The hover-reveal list (a list of rows with a large image panel that changes per hovered row) is described as useful for "agency capabilities pages, portfolio indexes, and 'our work' sections". Cursor-following project previews (image or video that follows the cursor) are sold as off-the-shelf components (e.g. ProjectPeek). Studios such as Kind Heart Design use custom cursors that turn into "View Work" buttons over projects. — [Framer blog: hover effects](https://www.framer.com/blog/hover-effects/), [Framer Marketplace: ProjectPeek](https://www.framer.com/marketplace/components/projectpeek/) [snippets]
+
+**Generic homepage and content guidance (not agency-award specific)**
+- An agency homepage must quickly answer "What do you do? Why should I care? What should I do next?" Users "often spend less than 20 seconds" on a homepage at first glance. Core pages: Home, Services, Portfolio, About, Blog, Contact. — [OneNine](https://onenine.com/website-homepage-design-best-practices/), [Hive House Digital](https://hivehousedigital.com/blog/homepage-ux-best-practices/), [Taskip](https://taskip.net/how-to-create-website-for-digital-marketing-agency/) [snippets; generic marketing advice, the 20-second figure is unsourced in the snippet]
+- Older roundup (Nov 2023): hero image/video with a clear value proposition, services, client logos as social proof, CTAs above the fold, case studies, team bios. — [Unicorn Platform](https://unicornplatform.com/blog/best-agency-websites/) [secondary; dated]
+
+**Library parts that map to agency sections**
+- Marquee/logo walls and infinite moving cards (Aceternity, Magic UI), number tickers/counters (Magic UI), spotlight/3D cards, SplitText. — see Q1 sources: [PkgPulse](https://www.pkgpulse.com/guides/react-bits-vs-aceternity-magic-ui-2026)
+
+**Anthropic skill rules that apply**
+- Numbered markers are fine "only if the content actually is a sequence — like a stepped process or a timeline". That fits an agency "Process" section and not much else.
+- The "big number with a small label, supporting stats, and a gradient accent" hero is flagged as the default treatment.
+- Source: [SKILL.md](https://github.com/anthropics/claude-code/blob/main/plugins/frontend-design/skills/frontend-design/SKILL.md) [primary]
+
+### Inferences
+**Agency section map with motion per section** (synthesized; pick one hero-level "boldness" moment, keep the others restrained):
+
+| Section | Job | Motion patterns seen on award-level studio sites | Restraint / a11y note |
+|---|---|---|---|
+| Preloader / intro (optional) | Brand moment while assets load | Wordmark draw or counter → curtain wipe into hero | Keep ≤1–1.5s and never block content that is already ready; skip under reduced motion and on repeat visits |
+| Hero / showreel | Who you are + proof in 5s | Kinetic headline (SplitText line/word reveals); muted `playsinline` showreel loop or WebGL "atmosphere" (shader/mesh gradient, cursor-reactive); hover "Play reel" cursor that expands into a full player | Headline is server-rendered text (LCP). Reel has poster + pause; no autoplay under reduced motion |
+| Services / capabilities | What you sell | Hover-reveal list (row hover swaps an image or video panel); accordion expand with layout animation; subtle line-draw underlines | Hover equals focus; panel content also reachable on touch (tap to expand) |
+| Selected work / case studies | Proof | Cursor-follow preview or "View work" cursor; image/video scale-on-hover inside a mask; shared-element page transition from grid card to case-study hero (View Transitions / Motion `layoutId`); a Three.js gallery for flagship studios | Cursor tricks off on `(hover: none)`. Transitions ≤500ms, interruptible; MPA cross-document transitions are progressive enhancement |
+| Results / stats | ROI credibility (key for a *marketing* agency) | Count-up numbers on enter; animated chart or sparkline draw; before→after metric flips | Avoid the generic "big number + small label + gradient" hero cliché; tabular numbers to prevent layout shift; final values in HTML |
+| Client logos | Social proof | CSS marquee (duplicated track), grayscale→color on hover | Pause on hover/focus; static grid under reduced motion |
+| Process | How you work | Sticky scroll story (pinned visual, steps advance via `view()` timeline / ScrollTrigger); numbered steps are legitimate here | No scroll-jacking; content readable without scrubbing |
+| Testimonials | Voice of client | Slow crossfade or draggable cards; quote text reveal | No auto-advancing carousel without a pause control |
+| Team / culture | Human trust | Portrait hover (color/duotone swap, slight tilt); candid video loops | Alt text; avoid motion-heavy grids |
+| CTA / contact | Convert | Oversized kinetic "Let's talk" type, magnetic primary button, form micro-feedback (success state that names the action) | Real `<button>`/`<a>`; visible focus; form motion only on user action |
+| Footer | Wayfinding + brand sign-off | Giant wordmark that reveals or parallaxes on reach; local time/clock; marquee of contact | Parallax off under reduced motion |
+
+- **For a *digital marketing* agency** (rather than a pure design studio), the Results/stats and case-study sections carry more conversion weight. The "signature" motion moment might sit in the hero or on the case-study transition. Animating numbers or charts is the natural place to make data feel alive without becoming decorative.
+- **Global patterns that recur across sections:**
+  - smooth scroll (Lenis) + ScrollTrigger
+  - one custom cursor system
+  - a consistent page-transition style
+  - a single easing "signature" (e.g. one expo-out curve and one spring) reused everywhere, which the motion tokens in Q7 can encode
+
+### Gaps
+- I found no primary, quantitative study of which sections or motion patterns appear on award-winning agency sites (Awwwards tag data wasn't extractable from the listing page). The per-section mapping is a synthesis of a juror's observations, component marketplaces and general practice.
+- I couldn't fetch FWA or CSSDA listings. The Codrops agency-pattern tutorials (hover reveals, image trails, page transitions) weren't retrievable (403).
+- I found no 2026 data on agency-site conversion impact of motion (e.g. whether showreel heroes outperform static ones).
+
+---
+
+## 7. (Scope update) Prompting Claude for graphic ASSETS that stay consistent across a site (SVG illustrations, icon sets, brand shapes, animated backgrounds, OG images)
+
+### Takeaway
+Consistency comes from writing the brand down once and making every asset prompt reference it:
+- **A token file** (colors, type, radii, stroke, motion), ideally in the now-stable W3C-CG Design Tokens format (2025.10) and mirrored as CSS variables.
+- **A short visual-language/"design philosophy" doc** (named style, shape grammar, do/don't list).
+- **Per-asset-type technical rules** (e.g. 24px grid, 1.5px stroke, `currentColor`).
+
+Ask for assets in sets, edit one thing per message, and have Claude screenshot new assets beside a reference sheet. Anthropic's own skills follow this pattern: frontend-design's token plan, theme-factory's palette + font-pair themes, canvas-design's philosophy-first two-step.
+
+### Cited Findings
+**Token format and Anthropic's skill patterns**
+- The Design Tokens Community Group published the first stable Design Tokens Format Module (2025.10) on Oct 28 2025. It supports theming and multi-brand, modern color (Display P3, OKLCH, CSS Color 4), and aliases/component-level references. It is a Community Group report, "not a W3C Standard". — [W3C DTCG announcement](https://www.w3.org/community/design-tokens/2025/10/28/design-tokens-specification-reaches-first-stable-version/), [Format Module 2025.10](https://www.w3.org/community/reports/design-tokens/CG-FINAL-format-20251028/) [primary]
+- The frontend-design skill's first pass is a "compact token system": 4–6 named hex colors, typefaces and their roles, a layout concept with ASCII wireframes, and principles. This plan is then reviewed against generic defaults before any code is written. — [SKILL.md](https://github.com/anthropics/claude-code/blob/main/plugins/frontend-design/skills/frontend-design/SKILL.md) [primary]
+- Anthropic's theme-factory skill defines a theme as "a cohesive color palette with hex codes" + "complementary font pairings", to be applied "consistently throughout" all artifacts. For a custom theme it says: generate it, "show it for review and verification", then apply. — [anthropics/skills theme-factory](https://github.com/anthropics/skills/blob/main/skills/theme-factory/SKILL.md) [primary]
+- Anthropic's brand-guidelines skill is a worked example of a machine-usable brand spec: named colors with hex values and roles (main vs accent), heading/body fonts with fallbacks, and rules such as "Non-text shapes use accent colors… cycles through orange, blue, and green". **Note:** that skill encodes *Anthropic's* brand, so it should not be used for the agency site. The frontend-design skill also calls #D97757 terracotta a tell on user briefs. — [brand-guidelines SKILL.md](https://github.com/anthropics/skills/blob/main/skills/brand-guidelines/SKILL.md), [frontend-design SKILL.md](https://github.com/anthropics/claude-code/blob/main/plugins/frontend-design/skills/frontend-design/SKILL.md) [primary]
+- Anthropic's canvas-design skill works in two steps: first write a named "design philosophy" (an aesthetic movement, 4–6 paragraphs covering space/form, color/material, scale/rhythm, composition, hierarchy) as a .md file, then express it visually. This makes a reusable written art direction that later prompts can cite. — [canvas-design SKILL.md](https://github.com/anthropics/skills/blob/main/skills/canvas-design/SKILL.md) [primary]
+
+**SVG best practices and limits**
+- Name the style ("flat vector", "single-line art", "isometric", "editorial spot illustration"), set palette and mood together, request SVG output, change "one thing per message", and request sets together so pieces share weight and spacing. Example: "Give me a flat weather icon set: sun, cloud, rain, snow, lightning. Keep one consistent style." Claude can't reliably do photorealism, painterly or textured work, busy organic scenes, or natural lighting. — [Analytics Vidhya, Jun 22 2026](https://www.analyticsvidhya.com/blog/2026/06/claude-image-generation/) [secondary]
+- Community Claude "icon designer" skills encode stroke width (e.g. 1.5px/2px), corner radius, pixel-grid alignment, optical adjustments and color tokens so icons stay cohesive. — [Playbooks: icon-designer skill](https://playbooks.com/skills/eddiebe147/claude-settings/icon-designer), [icon-set-generator skill](https://playbooks.com/skills/jezweb/claude-skills/icon-set-generator) [snippets; third-party skills, unaudited]
+
+**Claude's self-review and OG images**
+- Opus 5.5 reads screenshots and diagrams more accurately than Opus 5, and the frontend-design skill tells Claude to "critique your own work… taking screenshots". Both support a render-and-compare loop for assets. — [Prompting Claude Opus 5.5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5), [SKILL.md](https://github.com/anthropics/claude-code/blob/main/plugins/frontend-design/skills/frontend-design/SKILL.md) [primary]
+- OG images in Next.js (v16.3 docs, Aug 2026):
+  - `opengraph-image.tsx` + `ImageResponse` from `next/og`, default 1200×630.
+  - "Only flexbox and a subset of CSS properties are supported… `display: grid` will not work".
+  - Maximum bundle 500KB including fonts and images.
+  - Fonts must be `ttf`, `otf` or `woff` (ttf/otf preferred).
+  - Generated at build time or per request. Uses Satori + Resvg.
+  - Source: [Next.js ImageResponse docs](https://nextjs.org/docs/app/api-reference/functions/image-response) [primary]
+
+### Inferences
+**1. Create a single source of truth before generating any asset.** For example, `/brand/tokens.json` (DTCG format) → generated `/styles/tokens.css` (CSS variables) + Tailwind theme, plus `/brand/BRAND.md`. Reference both in CLAUDE.md so every Claude Code session loads them. A suggested BRAND.md skeleton (synthesized):
+
+```text
+# Brand spec: {Agency name}
+Positioning: {one sentence}. Audience: {who}. Personality: {3 adjectives}.
+Color (OKLCH + hex): ink, paper, accent-1, accent-2, signal (data/positive), muted. Ratios: ~70% paper/ink, 20% muted, ≤10% accent.
+Type: Display {family, weights, tracking}, Text {family}. Scale: {e.g., 1.333}. Never: {banned fonts}.
+Shape grammar: {e.g., "quarter-circles + 8px-radius rectangles on a 12-col grid; no blobs, no glassmorphism"}.
+Line: icon stroke 1.5px @24px, round caps/joins; illustration stroke 2px; no gradients inside icons.
+Texture/background: {e.g., "fine 2% grain + one OKLCH mesh gradient using accent-1→paper"}.
+Motion tokens: ease-out = cubic-bezier(0.16,1,0.3,1); ease-in-out = cubic-bezier(0.65,0,0.35,1);
+  spring = {stiffness 300, damping 30}; durations: micro 150ms, ui 300ms, reveal 700ms; stagger 60ms.
+Imagery: {photo treatment, e.g., duotone ink/accent-1}. Illustration style name: {e.g., "editorial single-line with flat accent fills"}.
+Do / Don't: {lists, including the frontend-design skill's AI-default tells to avoid}.
+```
+
+**2. Per-asset prompt templates** (each one starts with "Follow /brand/BRAND.md and /brand/tokens.json exactly"):
+- **Icon set:**
+  > "Create all N icons in one pass: {list}. 24×24 viewBox, 2px safe padding, stroke 1.5, `stroke="currentColor"`, `fill="none"`, round caps/joins, no transforms, integer or .5 coordinates, consistent optical size. Output individual optimized SVG files plus a contact-sheet HTML page that renders them at 16/24/48px on light and dark. Screenshot the sheet and fix any icon whose weight or size differs."
+  - Requesting sets together follows Analytics Vidhya. The technical constraints are common icon-system practice, not sourced here.
+- **Spot illustrations:**
+  > "Style: {named style from BRAND.md}. Palette: only tokens ink/paper/accent-1/accent-2. Max 3 colors per illustration, flat fills, 2px stroke, no gradients/text/raster. viewBox 0 0 480 360. Make the full set of {k} together so they share line weight and density. Decorative SVGs get `aria-hidden="true"`; meaningful ones get `<title>`. Prefix all ids with `ill-{name}-` to avoid collisions when inlined."
+  - Avoid asking for photoreal, painterly or busy scenes (documented limits).
+- **Abstract brand shapes / pattern library:**
+  > "Derive 6–8 primitives from the shape grammar, then compose 3 hero arrangements and 1 seamless tile (SVG `<pattern>`). Export as React components taking `className` and color props mapped to CSS variables, so the same shapes can animate later (stroke-draw, morph, parallax)."
+- **Animated background:**
+  > "Use the same tokens as uniforms or CSS variables."
+  - Add the Q5 Example B constraints: DPR cap, off-screen pause, reduced-motion static frame, CSS fallback, ≤ N KB.
+  - Generate a static PNG/SVG poster from the same code for OG images and reduced motion, so the moving and static versions match.
+- **OG images:**
+  > "Build `app/opengraph-image.tsx` (and per-route `opengraph-image.tsx` for case studies) using ImageResponse, 1200×630, flexbox only, brand fonts as local .ttf, colors from tokens, the brand shape SVG inlined. Keep under 500KB. Template: title (≤60 chars), client/category, accent shape bottom-right."
+  - Vanilla/static-site alternative: a build-time Node script using Satori, or pre-exported PNGs.
+
+**3. Lock consistency with a reference sheet.** After the first approved asset batch, have Claude build `/brand/reference.html` (palette swatches, type scale, icon sheet, illustration thumbnails, shape primitives, motion-curve demos). Later prompts say "match reference.html; screenshot your new asset next to it and list deviations". This uses Opus 5.5's improved screenshot reading and the skill's screenshot-critique step.
+
+**4. Edit, don't regenerate.** Edit one attribute per message (Analytics Vidhya) and keep assets as code (SVG/React/shader) rather than raster, so tokens can be updated globally (e.g. an accent color change propagates via CSS variables).
+
+### Gaps
+- I found no official Anthropic guide specifically on generating consistent SVG icon or illustration systems. The guidance combines Anthropic's skills (token plan, themes, design philosophy) with secondary creator tips.
+- I didn't fetch the Satori CSS support list or `@vercel/og` limits beyond the Next.js docs summary. Check font subsetting and emoji handling when building.
+- I didn't evaluate Claude's raster/AI-image options (e.g. MCP image generators mentioned in creator stacks, or Figma's MCP `generate_image`) for photographic assets. For photography or painterly needs, an image model or stock or commissioned photography is likely required, since Claude's SVG output is documented as weak there.
+- I didn't verify the quality of third-party "icon designer" Claude skills. Audit any community skill before installing.

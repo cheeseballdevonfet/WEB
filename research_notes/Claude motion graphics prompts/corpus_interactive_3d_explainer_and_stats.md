@@ -337,166 +337,178 @@ Three.js is the de facto 3D stack, but prompts seldom name specific rendering te
 
 ---
 
-## Q5. Best 10–15 prompts in the slice as templates for WEBSITE COMPONENTS
+## Q5. Best 15 prompts in the slice as templates for WEBSITE COMPONENTS on a digital marketing agency site (each tagged with its website slot)
 
 ### Takeaway
-Fifteen entries stand out. Ten are full prompts and five are partial, flagged below. They cover:
-- click micro-interactions (@op7418)
-- a scroll-scrubbed hero (@iamtanzil_)
-- a cursor-tilt 3D badge (@BThreeAgency)
-- morphing UI states and liquid glass (@__morse, @twoclipping, @verbove)
-- a pixel canvas mascot (@zacxbt)
-- narrative and how-it-works structure (@alex_prompter, @AstroTheWizard, @ParkerRex)
-- 3D/shader scene quality (@Viggle_PINOC, @ishuagra02, @dreyk0o0)
-- explorable product/physics viewers (@0xSolty, @konstantinsaifo)
+No prompt in the corpus targets an agency website directly, and the data-animation patterns agencies need most (funnels, growth charts) are nearly absent. "Funnel" appears once in 475 prompts, and in a non-animation brief. So the picks below are adaptable templates. They were chosen for agency slots: hero and hero background, cursor effects and service cards, "how we work" process, funnel/service explainer, case-study showcase, results/stat data, UI micro-interactions, conversion moments, navigation/transitions, 3D brand object, and global reach.
 
-Several of the best (the @__morse, @twoclipping and @verbove lineage) were written for frame-by-frame video rendering. Their `seek(t)`/Playwright/ffmpeg build steps must be swapped for live `requestAnimationFrame` or scroll-progress drivers in a web component.
+Thirteen picks are full prompts. Two are partial outcome descriptions (@0xSolty, @konstantinsaifo), and these are flagged. Several of the best (the @__morse, @twoclipping and @verbove lineage) were written for frame-by-frame video rendering. Their `seek(t)`/Playwright/ffmpeg/BPM build steps must be replaced with live `requestAnimationFrame`, scroll-progress or pointer drivers in a web component.
 
 ### Cited Findings
 
-**1. `op7418-814408`: @op7418. Click-driven reward-reveal micro-interaction**
-- Post: https://x.com/op7418/status/2103724883301814408. tech_tags: threejs, shader, canvas, gsap. prompt_partial: **false**. The same prompt appears as `op7418-818226` with tags canvas, svg, gsap, css ([post](https://x.com/op7418/status/2104085484347818226)) — [videos.json]
-- Verbatim excerpt (Chinese original):
+**Agency-relevance scan of the whole corpus (regex, n=475)**
+- "funnel": 1 prompt. It is @redpersongpt's ad-strategy brief, which asks for copy and concepts, not an animation ([post](https://x.com/redpersongpt/status/2103807094554284430)) — [videos.json]
+- "chart/graph": 11 prompts. 10 belong to the @__morse UI-morph template family ("the tabs open into a chart that draws itself, with a tooltip on hover") — [videos.json]
+- growth / ROI / metrics / analytics / conversion: 3 prompts. Stats or count-up: 6. "case study / portfolio": 7, mostly showreel "portfolio piece" language. "agency": 3, none of them a marketing-agency site — [videos.json]
 
-  > 做成一个可以直接打开的单文件网页（HTML + CSS + JS），点一下就能完整播放，效果对标商业手游的结算 / 奖励演出。… 【演出节奏：五个阶段，缺一不可】 1. 预备：主体待机浮动，每隔几秒抖一下提示可以点击，底部显示「点击」提示。 2. 升级：每点一次，主体跳起、在空中转一圈、落地时压扁再回弹；同时切换到下一等级的颜色，闪一下光，冒一圈粒子，标题更新。 … - 手机宽度也要能用；遵守「减少动态效果」设置（关闭震屏，减少粒子）。 - 动画状态机要严谨：动画播放中忽略点击，不能出现点击被吞或状态错乱。 - 目标 60fps。第一次打开时就是完整的待机画面，不能是空白。
+---
 
-  My translation: "Make it a single-file web page (HTML + CSS + JS) that plays in full with one click, at the level of a commercial mobile game's reward sequence… [Rhythm: five phases, none optional] 1. Ready: the object idles and floats, shakes every few seconds to hint it's clickable, with a 'tap' hint at the bottom. 2. Upgrade: on every click the object jumps, spins once in the air, squashes on landing and rebounds; it switches to the next tier's colours, flashes, emits a ring of particles, and the title updates… Must work at phone width; respect the reduce-motion setting (no screen shake, fewer particles). The animation state machine must be rigorous: ignore clicks during playback, no swallowed clicks or corrupted state. Target 60fps. The first load must show the full idle scene, never blank."
-- Maps to: a reward, achievement or success micro-interaction component (click-to-celebrate button, unlock modal, checkout confirmation), including state-machine and reduced-motion hardening.
-
-**2. `iamtanzil-675031`: @iamtanzil_. Scroll-scrubbed cinematic 3D hero header**
-- Post: https://x.com/iamtanzil_/status/2103820321673675031. tech_tags: threejs, gsap (the actual prompt uses React + framer-motion + GSAP ScrollTrigger and a pre-rendered video). prompt_partial: **false**. 1,584 words — [videos.json]
+**1. `iamtanzil-675031`: @iamtanzil_. Slot: HOMEPAGE HERO (scroll-scrubbed brand film / showreel hero)**
+- Post: https://x.com/iamtanzil_/status/2103820321673675031. tech_tags: threejs, gsap (the prompt itself uses React + framer-motion + GSAP ScrollTrigger over a pre-rendered video). prompt_partial: **false**. 1,584 words — [videos.json]
 - Verbatim excerpt:
 
   > A cinematic, scroll-scrubbed 3D hero header for the luxury/fantasy brand "AUREN" where a full-screen background video plays frame-by-frame as the user scrolls through a 500vh section, with sequential timed overlays (title, description, feature cards, final title) revealing themselves at specific video timestamps. … Root: `.auren-header-section` — position: relative; width: 100%; height: 500vh … Inner sticky wrapper … position: sticky; top: 0 … height: 100vh … Content is choreographed to video timestamps, not scroll position directly. … Do NOT autoplay the video — keep it muted + playsInline and drive currentTime from ScrollTrigger. … Do NOT forget the 500vh root height + sticky inner wrapper; without both, there is no scroll runway and the video won't scrub. … Initialise the ScrollTrigger only after video metadata loads, and kill it on unmount to avoid leaks.
 
-- Note: an "Integration (build-safety — do not skip)" block tells the executing agent not to overwrite existing files or set global styles. This is agent-directed text, recorded as data. It is also a good pattern for component prompts.
-- Maps to: a scroll-scrubbed video or 3D hero section with timestamp-gated overlays. It is the most complete website-component spec in the slice (exact CSS, breakpoints, a "common mistakes" list).
+- Note: an "Integration (build-safety — do not skip)" block tells the executing agent not to overwrite existing files or set global styles. This is agent-directed text, recorded as data, and is also a good pattern to copy.
+- Mapping: the agency showreel plays as the user scrolls, with service headlines and two "featured work" cards gated to video timestamps. It is the most complete web-component spec in the slice (exact CSS, breakpoints, a "common mistakes" list).
 
-**3. `bthreeagency-827092`: @BThreeAgency. Cursor-tilt 3D badge unlock**
+**2. `ishuagra02-678129`: @ishuagra02. Slot: HERO BACKGROUND (ambient interactive particle scene)**
+- Post: https://x.com/ishuagra02/status/2102920408743678129. tech_tags: threejs, shader, particles. prompt_partial: **false**. The author notes "2-3 more prompts on top of this" and links a repo — [videos.json]
+- Verbatim excerpt:
+
+  > Create a stylistic 3D environment of a busy Santa Monica beach that adapts to the time of day. The art style must be a particle illustration, which uses thousands of tiny glowing specks rather than solid fills with flowing ribbon strokes behind figures to suggest motion.
+
+- Mapping: swap the beach for the agency's brand world (a city of clients, a "signal" field). A particle-illustration hero background that re-tints by the visitor's local time is a distinctive, low-asset alternative to stock video.
+
+**3. `bthreeagency-827092`: @BThreeAgency. Slot: CURSOR EFFECT on SERVICE CARDS / AWARDS & CERTIFICATION BADGES**
 - Post: https://x.com/BThreeAgency/status/2103739079745827092. tech_tags: canvas, svg, css. prompt_partial: **false** — [videos.json]
 - Verbatim (entire prompt):
 
   > Using the linked Figma frame build a badge unlock screen. Match the design exactly. Use the file's assets, lighting, type and layout and add only the motion. Animate the badge so it feels premium and celebratory. Build its scene and then celebrate with gold particles. Treat the badge as a solid 3D object that tilts toward the cursor following the rules of physics. Keep it fast and smooth, it should not be bouncy.
 
-- Maps to: a cursor-reactive tilt card or badge (pricing card, achievement, product tile) with a particle celebration. A design-locked "add only the motion" brief.
+- Mapping: physics-based cursor tilt for service cards, partner badges (e.g. ad-platform partner certifications) or award trophies. The "match the design exactly… add only the motion" framing suits an agency's design-locked handoff.
 
-**4. `morse-369333`: @__morse. One morphing shape through 12+ UI states**
-- Post: https://x.com/__morse/status/2103485566570369333. tech_tags: svg. prompt_partial: **false**. 474 words. Copied verbatim 7 times in the corpus — [videos.json]
-- Verbatim excerpt:
-
-  > Dribbble-level UI motion. One shape, never cut: every state is the same element morphing its size, radius and color while its content swaps with a short blur. A cursor drives every change with real clicks and drags. … Springs everywhere, a tiny overshoot at most. … Banned: bouncy easing, particle bursts, glows, gradients on UI chrome, mismatched icon strokes, dead time, anything that looks like a template. … Button → loader → check → dynamic island → music player with a play/pause morph → scrub the progress bar → it becomes a volume slider that stretches when dragged past max → a toggle flips on the beat → the knob becomes a liquid tab indicator … 3. The tab indicator's two edges ride different springs, so the leading edge stretches ahead of the trailing one. … 4. Drags are direct manipulation: while the cursor is held, the value is computed from its position. On release it springs back from wherever it was.
-
-- Maps to: a micro-interaction kit (button→loader→success, morphing toggle, stretchy tab indicator, rubber-band slider) and a "dynamic island"-style morphing container. Strip the video render pipeline (Playwright/ffmpeg/BPM).
-
-**5. `twoclipping-496100`: @twoclipping. Liquid glass, iris and goo transitions (Apple-keynote film)**
-- Post: https://x.com/twoclipping/status/2103835273813496100. tech_tags: canvas. prompt_partial: **false**. 912 words. Filed as "3d" but says "2D only" — [videos.json]
-- Verbatim excerpt:
-
-  > Every scene is made out of the previous one: nothing fades, blurs or cuts. Objects change shape instead … Banned: crossfades, blur-ins, brightness "developing", 3D flips, particles, glows, holds longer than 1s, anything that looks like a template. … 3. Liquid glass: each glass element holds its own clone of the scene behind it, filtered with an SVG feImage displacement map (a rounded-rect distance field) through three feDisplacementMaps at slightly different scales for chromatic edges, plus a rim light. … 4. Goo: blur + alpha threshold, then composite the source atop it so the glass stays sharp inside. 5. Iris: 6 blades around a hexagonal aperture. … backdrop-filter: url() misreads displacement maps in Chromium, so clone the scene instead. A flood must overscale past the corners and take about 0.3s, or half the screen changes in one frame.
-
-- Maps to: liquid-glass toolbars/cards, gooey merge effects, camera-iris page transitions and "flood" route transitions, with concrete Chromium workarounds.
-
-**6. `verbove-268381`: @verbove. Product story as a single morphing shape (canvas `draw(t)`)**
+**4. `verbove-268381`: @verbove. Slot: "HOW WE WORK" PROCESS SECTION (sticky, scroll-driven walkthrough)**
 - Post: https://x.com/verbove/status/2103483957266268381. tech_tags: canvas. prompt_partial: **false**. 279 words — [videos.json]
 - Verbatim excerpt:
 
-  > <inputs> Ask me for: • my product + URL • 8–12 UI states that tell its story • the real data shown in each state • brand colors + fonts + accent color … <rules> One HTML file. One canvas One draw(t) function No CSS transitions No timers No state carried between frames One shape, never cut … Real UI. Real data. No placeholders. … <motion> Closed-form springs everywhere with only a tiny overshoot. If a value changes target multiple times, sum one spring per change. Content enters after its container starts morphing and leaves before the next morph so text never overlaps. Use a short blur on transitions. Never fade black directly into the accent color. Move an accent element between states instead. Make tab indicators stretch by putting each edge on a different spring.
+  > <inputs> Ask me for: • my product + URL • 8–12 UI states that tell its story • the real data shown in each state • brand colors + fonts + accent color … <rules> One HTML file. One canvas One draw(t) function No CSS transitions No timers No state carried between frames One shape, never cut … Real UI. Real data. No placeholders. … <structure> 120 BPM grid … logo → button → handle field → "is this you?" → loader → pin → globe filling with users → matches → tabs → RSVP → search → logo … <motion> Closed-form springs everywhere with only a tiny overshoot. … Content enters after its container starts morphing and leaves before the next morph so text never overlaps.
 
-- Maps to: a sticky "how it works" product walkthrough driven by scroll progress (`t` = scroll). The pure-function architecture makes it scrubbable and reversible.
+- Mapping: replace the UI states with process stages (Discover → Strategy → Build → Launch → Optimise) on one continuously morphing shape. Drive `draw(t)` with scroll progress. The "globe filling with users" beat is a ready-made audience-growth moment.
 
-**7. `zacxbt-944604`: @zacxbt. Crisp pixel-art canvas animation with a state machine**
-- Post: https://x.com/zacxbt/status/2103808699466944604. tech_tags: canvas, pixel, playable. prompt_partial: **false**. 347 words. Also duplicated once in the corpus — [videos.json]
+**5. `charlesmendez-476517`: @charlesmendez. Slot: FUNNEL / PERFORMANCE-MARKETING SERVICE EXPLAINER**
+- Post: https://x.com/charlesmendez/status/2102847039415476517. tech_tags: canvas, svg, gsap. prompt_partial: **false**. 54 words — [videos.json]
+- Verbatim (entire prompt):
+
+  > I Want you to make a modern slick and punchy video for http:// datagran.io with an example of a user creating a chatgpt ads campaign, then connecting their metrics, understanding attribution, then connecting a voice agent to it, the agent responding, then doing follow up, adding humans in the loop and then providing analytics.
+
+- Mapping: this is the only full prompt in the corpus whose narrative is a marketing pipeline (campaign → metrics → attribution → automated follow-up → human review → analytics). Rebuild it as a scroll-stepped funnel or service-flow section. The prompt gives no visual spec, so pair it with the motion rules from #4 or #8.
+
+**6. `twoclipping-000267`: @twoclipping. Slot: CASE-STUDY SHOWCASE / WORK REEL + RESULTS STATS**
+- Post: https://x.com/twoclipping/status/2102554209166000267. tech_tags: svg, css. prompt_partial: **false**. 444 words. Verbatim duplicate: `raphaelaubryy-687877` ([post](https://x.com/RaphaelAubryy/status/2103413596822687877)) — [videos.json]
 - Verbatim excerpt:
 
-  > Create a single self-contained HTML file that renders an animated pixel art wizard casting a spell, using vanilla JavaScript and Canvas 2D. No external assets, libraries, or network requests. RENDERING - Draw everything to an offscreen canvas at a fixed logical resolution of 128x96, then blit to a fullscreen display canvas scaled by the largest integer factor that fits the window, centered, with imageSmoothingEnabled = false and CSS image-rendering: pixelated. … - Fixed palette of ~24 hex colors … - Looping state machine: IDLE (2-frame bob, beard sway) -> CHARGE … -> CAST … -> RECOVER … - Pooled allocation-free particle system … - Fixed 60hz timestep update with rAF rendering. Zero object allocation inside the loop. QUALITY BAR - Crisp pixels at any window size, seamless loop, stable 60fps …
+  > High-end minimal. One idea per shot, lots of empty space, one accent color, one clean sans (Geist or Inter) with tight tracking. Masked type reveals, match cuts, one smooth camera language. Real footage only, never placeholder cards. No full stops in on-screen text. Banned: shockwave rings, particle bursts, RGB split, camera shake, lens flares, neon glows, grid floors, flashing backgrounds, bouncy easing. … a wall of real clips with a scan line and 3 winners, the key output as big type, a 3D carousel of real videos with floor reflections and a motion-blurred whip onto one hero clip, the hero in a phone next to a panel that flips into results, big stats on push cuts, a 3-word ticker, a logo reveal … Never set opacity or filter on a preserve-3d element, because it flattens and both faces show. Fade its wrapper instead.
 
-- Maps to: a pixel-art mascot, loader or 404/hero illustration on canvas. It is a strong performance template: integer scaling, pooled particles, fixed timestep.
+- Mapping: a portfolio wall with a scan-line "selection" effect. The 3D carousel of client videos becomes a case-study selector, and the "panel that flips into results" plus "big stats on push cuts" become campaign-results cards. The Banned list is a ready-made anti-cliché style guide.
 
-**8. `alex-prompter-997524`: @alex_prompter. 5-scene business explainer**
+**7. `astrothewizard-618782`: @AstroTheWizard. Slot: RESULTS / DATA-STAT SECTION (growth charts, count-ups, credible numbers)**
+- Post: https://x.com/AstroTheWizard/status/2103629247751618782. tech_tags: canvas. prompt_partial: **false**. 396 words — [videos.json]
+- Verbatim excerpt:
+
+  > data-driven explainers like The Pudding or 3Blue1Brown … what makes them great is that they're code-rendered: crisp, precise, with a coherent design system and one strong formal idea per scene. Aim for that bar or above. Make it genuinely educational and accurate. Where you can, simulate the real thing: the random walk should be an actual random walk, not a drawing of one. Include real numbers (core temperature, distance, travel time, years inside the Sun) and be honest about uncertainty in the estimates. … Build verification loops: render stills of every scene and review them critically, check transitions frame by frame…
+
+- Mapping: the brief for data sections. Animate real client metrics (CTR lift, ROAS, lead growth) with "one formal idea per section". Plot actual time series rather than illustrative curves, and show ranges or caveats. That is a credibility asset for an agency.
+
+**8. `morse-369333`: @__morse. Slot: UI MICRO-INTERACTIONS (nav, tabs, toggles, CTA button→loader→success, mini analytics chart)**
+- Post: https://x.com/__morse/status/2103485566570369333. tech_tags: svg. prompt_partial: **false**. 474 words. Copied verbatim 7 times in the corpus — [videos.json]
+- Verbatim excerpt:
+
+  > Dribbble-level UI motion. One shape, never cut: every state is the same element morphing its size, radius and color while its content swaps with a short blur. A cursor drives every change with real clicks and drags. … Springs everywhere, a tiny overshoot at most. … Banned: bouncy easing, particle bursts, glows, gradients on UI chrome, mismatched icon strokes, dead time, anything that looks like a template. … the knob becomes a liquid tab indicator → the tabs open into a chart that draws itself, with a tooltip on hover → it collapses into ⌘K … 3. The tab indicator's two edges ride different springs, so the leading edge stretches ahead of the trailing one. … 4. Drags are direct manipulation: while the cursor is held, the value is computed from its position. On release it springs back from wherever it was.
+
+- Mapping: a site-wide interaction language. Use the stretchy two-spring tab indicator for a services tab switcher, a button→loader→check flow for the contact CTA, and a "chart that draws itself, with a tooltip on hover" as the corpus's only growth-chart exemplar. Strip the video render pipeline.
+
+**9. `op7418-814408`: @op7418. Slot: CONVERSION MOMENT (contact-form success, "free audit" score reveal, lead-magnet unlock)**
+- Post: https://x.com/op7418/status/2103724883301814408. tech_tags: threejs, shader, canvas, gsap. prompt_partial: **false**. Same prompt as `op7418-818226` (canvas, svg, gsap, css; [post](https://x.com/op7418/status/2104085484347818226)) — [videos.json]
+- Verbatim excerpt (Chinese original):
+
+  > 做成一个可以直接打开的单文件网页（HTML + CSS + JS），点一下就能完整播放，效果对标商业手游的结算 / 奖励演出。… 【演出节奏：五个阶段，缺一不可】 1. 预备：主体待机浮动，每隔几秒抖一下提示可以点击，底部显示「点击」提示。 2. 升级：每点一次，主体跳起、在空中转一圈、落地时压扁再回弹；同时切换到下一等级的颜色，闪一下光，冒一圈粒子，标题更新。 … - 手机宽度也要能用；遵守「减少动态效果」设置（关闭震屏，减少粒子）。 - 动画状态机要严谨：动画播放中忽略点击，不能出现点击被吞或状态错乱。 - 目标 60fps。第一次打开时就是完整的待机画面，不能是空白。
+
+  My translation: "Make it a single-file web page (HTML + CSS + JS) that plays in full with one click, at the level of a commercial mobile game's reward sequence… [Rhythm: five phases, none optional] 1. Ready: idle float, a shake every few seconds hinting it's clickable, a 'tap' hint at the bottom. 2. Upgrade: on every click the object jumps, spins in the air, squashes on landing and rebounds; switches to the next tier's colours, flashes, emits a particle ring, title updates… Must work at phone width; respect the reduce-motion setting (no screen shake, fewer particles). The animation state machine must be rigorous: ignore clicks during playback, no swallowed clicks or corrupted state. Target 60fps. First load must show the full idle scene, never blank."
+- Mapping: restyle the cartoon game look for the brand. Keep the anticipation → charge → burst → reveal rhythm, the count-up "▲+value" numbers, input locking, first-click audio unlock and reduced-motion rules. Use it for the moment a lead submits a form or an interactive audit reveals its score.
+
+**10. `twoclipping-496100`: @twoclipping. Slot: GLOBAL NAV + PAGE/CASE-STUDY TRANSITIONS (liquid glass, iris, flood)**
+- Post: https://x.com/twoclipping/status/2103835273813496100. tech_tags: canvas. prompt_partial: **false**. 912 words. Filed as "3d" but says "2D only" — [videos.json]
+- Verbatim excerpt:
+
+  > Every scene is made out of the previous one: nothing fades, blurs or cuts. Objects change shape instead … 3. Liquid glass: each glass element holds its own clone of the scene behind it, filtered with an SVG feImage displacement map (a rounded-rect distance field) through three feDisplacementMaps at slightly different scales for chromatic edges, plus a rim light. … 4. Goo: blur + alpha threshold, then composite the source atop it so the glass stays sharp inside. 5. Iris: 6 blades around a hexagonal aperture. … backdrop-filter: url() misreads displacement maps in Chromium, so clone the scene instead. A flood must overscale past the corners and take about 0.3s, or half the screen changes in one frame.
+
+- Mapping: a liquid-glass sticky nav or toolbar. A camera-iris or black-flood transition takes a visitor from the work grid into a case study (a "grid unfolds… reflows into a bento… click zooms into one tile" sequence is also in the prompt). It includes concrete Chromium workarounds.
+
+**11. `alex-prompter-997524`: @alex_prompter. Slot: HOMEPAGE STORY ARC / ABOUT-US EXPLAINER**
 - Post: https://x.com/alex_prompter/status/2103499977632997524. tech_tags: svg, gsap. prompt_partial: **false**. 63 words — [videos.json]
 - Verbatim (entire prompt):
 
   > Adopt the role of an expert motion designer. Build a 30-second animated explainer for my business as a single HTML page. 5 scenes. The customer's problem, what I do, how it works in 3 steps, one proof point, and my name at the end. Bold text, smooth transitions, my brand colours. My business [DESCRIBE WHAT YOU SELL, WHO IT'S FOR AND YOUR COLOURS]
 
-- Maps to: a landing-page narrative scaffold (problem → solution → 3-step how-it-works → proof/stat → CTA) as scroll-triggered animated sections.
+- Mapping: the scaffold for a scroll-triggered homepage (client pain → agency promise → 3-step process → proof stat or logo → CTA). It is fill-in-the-blanks by design.
 
-**9. `astrothewizard-618782`: @AstroTheWizard. Data-true educational explainer**
-- Post: https://x.com/AstroTheWizard/status/2103629247751618782. tech_tags: canvas. prompt_partial: **false**. 396 words — [videos.json]
-- Verbatim excerpt:
-
-  > The whole thing should be a pure JavaScript animation, rendered from code frame by frame. … data-driven explainers like The Pudding or 3Blue1Brown … what makes them great is that they're code-rendered: crisp, precise, with a coherent design system and one strong formal idea per scene. Aim for that bar or above. Make it genuinely educational and accurate. Where you can, simulate the real thing: the random walk should be an actual random walk, not a drawing of one. Include real numbers (core temperature, distance, travel time, years inside the Sun) and be honest about uncertainty in the estimates. … Build verification loops: render stills of every scene and review them critically, check transitions frame by frame…
-
-- Maps to: scrollytelling and data/stat sections (live simulation, comparative timeline, figures with uncertainty ranges) and a "one formal idea per section" design rule.
-
-**10. `parkerrex-701462`: @ParkerRex. Deterministic animated technical diagram**
+**12. `parkerrex-701462`: @ParkerRex. Slot: METHODOLOGY / "HOW OUR MODEL WORKS" ANIMATED DIAGRAM**
 - Post: https://x.com/ParkerRex/status/2103206747846701462. tech_tags: canvas, physics. prompt_partial: **false**. 23 words — [videos.json]
 - Verbatim (entire prompt):
 
   > explain a token bucket rate limiter, canvas only, no libraries, every frame a pure function of time so my renderer can screenshot it.
 
-- Maps to: animated architecture or algorithm diagrams for docs and "how it works" sections. The pure-function-of-time constraint lets the same code be scroll-scrubbed or statically screenshotted.
+- Mapping: swap the topic for an attribution model, bidding logic or a content flywheel. "Every frame a pure function of time" makes the diagram scroll-scrubbable, reversible and screenshot-able for social posts.
 
-**11. `viggle-pinoc-434495`: @Viggle_PINOC. 3D scene quality vocabulary**
+**13. `0xsolty-735200`: @0xSolty. Slot: GLOBAL REACH / CLIENT-MAP SECTION (interactive procedural globe) (PARTIAL)**
+- Post: https://x.com/0xSolty/status/2102888414219735200. tech_tags: shader, webgl. prompt_partial: **true**. Outcome description; the only prompt text quoted is "build me a planet" — [videos.json]
+- Verbatim excerpt:
+
+  > i asked opus 5.5 to build me a planet. not a picture of a planet. a whole planet. it wrote a single html file. no libraries, no images, no 3d models. every ocean, every mountain and every city light is math, generated live in your browser. then i started playing with it. drag it and it spins. raise the sea level and watch continents drown. move the sun and watch the cities switch on at night.
+
+- Mapping: a drag-to-spin shader globe where client cities "switch on" as lights. It works for a "markets we serve" or "campaigns running worldwide" section. Treat it as an outcome pattern, not a proven prompt.
+
+**14. `konstantinsaifo-501736`: @konstantinsaifo. Slot: 3D BRAND OBJECT / INTERACTIVE SERVICE DEEP-DIVE ("take apart our growth engine") (PARTIAL)**
+- Post: https://x.com/konstantinsaifo/status/2104094723887501736. tech_tags: threejs, shader. prompt_partial: **true**. Sibling: `konstantinsaifo-587629` (fusion reactor; [post](https://x.com/konstantinsaifo/status/2104216976801587629)) — [videos.json]
+- Verbatim excerpt:
+
+  > I asked Claude Opus 5.5 to explain how a rocket engine works by building an interactive Raptor 3 you can take apart in your browser. Cut it open, follow the oxygen and the methane through both turbopumps, then throttle it and watch the shock diamonds move.
+
+- Mapping: a metaphorical 3D "growth engine" brand object. Visitors cut it open to see the service stack (SEO, paid, content, CRO), follow the data flow through it, and "throttle" a budget slider to watch outputs change. The prompt pattern is "explain X by building a Y you can take apart".
+
+**15. `viggle-pinoc-434495`: @Viggle_PINOC. Slot: 3D BRAND SCENE QUALITY SPEC (rendering vocabulary for any WebGL hero or brand object)**
 - Post: https://x.com/Viggle_PINOC/status/2102861939072434495. tech_tags: threejs, shader, canvas. prompt_partial: **false**. 349 words — [videos.json]
 - Verbatim excerpt:
 
   > World: vanilla ES modules + three.js (importmap from jsdelivr, no build step). Procedural voxel terrain with trees, beaches and water. Make it look as real and beautiful as possible: physically based sky, clouds, soft shadows, water reflections and caustics, god rays, bloom, PBR block textures. First/third-person player (V toggles), mining and placing blocks, torches, stairs, a hotbar and an inventory (E), a day/night cycle with nights that are still readable.
 
-- Note: the rest of the prompt instructs use of a third-party "PINOC MCP" and credit-cost confirmation. That is agent-directed, recorded as data.
-- Maps to: an immersive 3D hero or environment background. The rendering feature list plus the no-build importmap setup is reusable as a quality spec.
+- Note: the rest of the prompt directs a third-party "PINOC MCP" and credit-cost confirmation. That is agent-directed, recorded as data.
+- Mapping: the subject (a Minecraft clone) is irrelevant to an agency. The reusable part is the quality clause (named lighting and material phenomena) and the no-build importmap setup, transplanted into any 3D hero or brand-object prompt.
 
-**12. `ishuagra02-678129`: @ishuagra02. Particle-illustration 3D environment**
-- Post: https://x.com/ishuagra02/status/2102920408743678129. tech_tags: threejs, shader, particles. prompt_partial: **false**. The author notes "2–3 more prompts on top of this" and links a repo — [videos.json]
-- Verbatim excerpt:
+---
 
-  > Create a stylistic 3D environment of a busy Santa Monica beach that adapts to the time of day. The art style must be a particle illustration, which uses thousands of tiny glowing specks rather than solid fills with flowing ribbon strokes behind figures to suggest motion.
-
-- Maps to: an ambient particle hero background that changes with local time of day; a stylistic alternative to photoreal 3D.
-
-**13. `dreyk0o0-165270`: @dreyk0o0. Single-file Three.js scene with an iterate-to-realism loop (PARTIAL)**
-- Post: https://x.com/dreyk0o0/status/2103822946800165270. tech_tags: threejs, shader, playable. prompt_partial: **true**. The post offers its own suggested prompt, said to recreate Noah Wachnick's run. It is not the original prompt — [videos.json]
-- Verbatim excerpt:
-
-  > "Build a Minecraft-style voxel game in a single HTML file that runs in the browser. - First-person controls: WASD, mouse look, jump - Procedural terrain with hills, water and trees - Place and break blocks with the mouse, 5 block types - Advanced shaders: moving sun, soft shadows, ambient occlusion, fog, water reflections - Smooth 60 fps on a laptop Use Three.js from a CDN. Test it, fix every bug, then keep improving the visuals until it looks as realistic as possible." Tips: 1. Set effort to max 2. Give it time, the original run took ~1.5 hours 3. When it's done, ask: "What looks least realistic? Fix it."
-
-- Maps to: an interactive 3D scene component plus a reusable refinement follow-up prompt ("What looks least realistic? Fix it.").
-
-**14. `0xsolty-735200`: @0xSolty. Procedural shader planet with direct manipulation (PARTIAL)**
-- Post: https://x.com/0xSolty/status/2102888414219735200. tech_tags: shader, webgl. prompt_partial: **true**. Outcome description; the only prompt quoted is "build me a planet" — [videos.json]
-- Verbatim excerpt:
-
-  > i asked opus 5.5 to build me a planet. not a picture of a planet. a whole planet. it wrote a single html file. no libraries, no images, no 3d models. every ocean, every mountain and every city light is math, generated live in your browser. then i started playing with it. drag it and it spins. raise the sea level and watch continents drown. move the sun and watch the cities switch on at night. hit "new planet" and it invents a new world.
-
-- Maps to: an interactive shader globe or product-viewer pattern (drag-to-rotate, parameter sliders, "regenerate" button), e.g. a hero globe for global-reach stats.
-
-**15. `konstantinsaifo-501736`: @konstantinsaifo. "Take it apart in your browser" exploded-view explainer (PARTIAL)**
-- Post: https://x.com/konstantinsaifo/status/2104094723887501736. tech_tags: threejs, shader. prompt_partial: **true**. Sibling: `konstantinsaifo-587629` (fusion reactor, [post](https://x.com/konstantinsaifo/status/2104216976801587629)) — [videos.json]
-- Verbatim excerpt:
-
-  > I asked Claude Opus 5.5 to explain how a rocket engine works by building an interactive Raptor 3 you can take apart in your browser. Cut it open, follow the oxygen and the methane through both turbopumps, then throttle it and watch the shock diamonds move.
-
-- Maps to: a 3D product viewer or interactive how-it-works module with cut-away, flow-path highlighting and a parameter slider driving the visual. The prompt pattern is "explain X by building a Y you can take apart".
-
-**Honourable mentions (not in the top 15)**
-- [@Voxyz_ai](https://x.com/Voxyz_ai/status/2103117246860345550) (partial): drag-to-lens black-hole lab plus a multi-agent P0/P1/P2 review workflow.
-- [@DemitiyaGeekzen](https://x.com/DemitiyaGeekzen/status/2103517910274818523) (partial): full-frame WebGL2 shader landscape with free-view drag/zoom, timeline scrub and click-to-spawn interactions.
-- [@Acoramaa](https://x.com/Acoramaa/status/2104145227573248467) (partial): audio-reactive 3D object.
-- [@twoclipping](https://x.com/twoclipping/status/2102554209166000267) (full): minimal launch film with a "3D carousel of real videos with floor reflections" and `preserve-3d` gotchas.
-- [@emollick](https://x.com/emollick/status/2103688362960019567) (full): a style-switching recursion explainer.
+**Honourable mentions (agency-adaptable, ranked lower)**
+- `lukasersil-726495`, [@lukasersil](https://x.com/lukasersil/status/2103742861971726495) (3d, full; tags threejs, shader, canvas, svg). Slot: AGENCY SHOWREEL. Excerpt: "Showcase a wide range of advanced techniques: kinetic typography, smooth transitions, 2D and 3D animation, abstract geometry, fluid simulations, particles, distortion, creative masking, compositing, lighting, depth, and seamless camera movement… Make it feel meticulously art-directed rather than like a random collection of effects."
+- `bilimfili1-459762`, [@Bilimfili1](https://x.com/Bilimfili1/status/2103743617848459762) (interactive, full). Slot: SERVICE/PRODUCT FEATURE SECTIONS. Readability rules: "Nothing made up: every number and label on screen comes from the recordings… Let viewers follow: each feature stays on screen for at least 2.5 seconds."
+- `deifosv-786581`, [@deifosv](https://x.com/deifosv/status/2103197522382786581) (interactive, full). Slot: LIVE STATS STRIP. Excerpt: "showing live stats from the website".
+- `zacxbt-944604`, [@zacxbt](https://x.com/zacxbt/status/2103808699466944604) (interactive, full). Slot: LOADER / 404 / MASCOT. Integer-scaled pixel canvas, pooled particles, "Zero object allocation inside the loop".
+- `acoramaa-248467`, [@Acoramaa](https://x.com/Acoramaa/status/2104145227573248467) (3d, partial). Slot: SOUND-ON SHOWREEL OBJECT. "Every kick flips the plates open. The bass pushes the lens forward."
+- `voxyz-ai-345550`, [@Voxyz_ai](https://x.com/Voxyz_ai/status/2103117246860345550) (explainer, partial). Slot: INTERACTIVE LAB / TOOL PAGE. Drag interaction plus a multi-agent P0/P1/P2 polish workflow.
+- `dreyk0o0-165270`, [@dreyk0o0](https://x.com/dreyk0o0/status/2103822946800165270) (interactive, partial). Reusable refinement follow-up: "When it's done, ask: 'What looks least realistic? Fix it.'"
+- `redpersongpt-284430`, [@redpersongpt](https://x.com/redpersongpt/status/2103807094554284430) (interactive, full). Not an animation prompt. It is a marketing-strategy brief whose deliverables include "5 landing page hero/message ideas" and a tone spec ("sharp, natural, confident… not overhyped, not cringe, not corporate"). It could serve as a copy brief for the agency site.
+- Cross-category, covered by the motion researchers: [@iamtanzil_](https://x.com/iamtanzil_/status/2103459843831120030) cursor-following "x-ray" spotlight hero (Slot: CURSOR-EFFECT HERO) and [@ercankeskinx](https://x.com/ercankeskinx/status/2102995443818897906) "Build 5 completely different scroll-based sections" (Slot: SERVICE SECTIONS).
 
 ### Inferences
-- The best website-component prompts in this corpus share six traits:
+- The best agency-adaptable prompts share six traits:
   1. a one-sentence component definition up front (@iamtanzil_);
-  2. explicit input → response mapping (@BThreeAgency, @__morse "drags are direct manipulation");
+  2. an explicit input → response mapping (@BThreeAgency tilt; @__morse "drags are direct manipulation");
   3. a damping vocabulary ("tiny overshoot", "not bouncy");
-  4. a "Banned:" list of cliché effects;
-  5. a "gotchas / common mistakes" section capturing browser quirks;
+  4. a "Banned:" anti-cliché list (@twoclipping, @__morse);
+  5. a gotchas / common-mistakes section of browser quirks;
   6. a verification step (screenshots at key states, frame probes).
 
-  The prompt library writer should treat these as the skeleton.
-- Video-oriented prompts (`seek(t)`, BPM grid, Playwright, ffmpeg tmix) convert to web components by keeping the pure-function-of-progress architecture and the morph/spring rules, replacing `t` with scroll or interaction progress, and dropping the render/export steps. This is my inference; no prompt in the corpus does the conversion itself.
-- Five of the fifteen are partial. They are useful as outcome patterns (what to ask for), not as proven prompt text.
+  The prompt library writer should treat these as the skeleton, then add agency-specific content.
+- Agency credibility is best served by the corpus's "real data" rules: "Real UI. Real data. No placeholders." (@verbove), "Nothing made up" (@Bilimfili1), "be honest about uncertainty" (@AstroTheWizard). Results and case-study components should carry these clauses so the model does not invent metrics.
+- Video-oriented templates (`seek(t)`, BPM grid, Playwright, ffmpeg tmix) convert to web components by keeping the pure-function-of-progress architecture and the morph/spring rules, replacing `t` with scroll or pointer progress, and dropping the render/export steps. This is my inference; no prompt in the corpus does the conversion.
+- Funnel and growth-chart components must be composed from fragments:
+  - @charlesmendez's pipeline narrative;
+  - @__morse's "chart that draws itself, with a tooltip on hover";
+  - @verbove's "globe filling with users";
+  - @twoclipping's "big stats on push cuts";
+  - @op7418's count-up "▲+value".
 
 ### Gaps
-- No full prompt in the slice targets a pure cursor-trail, magnetic-button, hover-distortion image or shader-gradient background (e.g. mesh-gradient hero). Those common web components have no direct exemplar here. The closest are the motion-category @iamtanzil_ x-ray spotlight and @ercankeskinx scroll sections (cross-category, see Q2).
-- I could not verify the quality of the outputs (videos and remakes on Skillry), so "best template" is judged on prompt specificity and transferability, not on rendered results.
+- No prompt in the corpus specifies a marketing funnel visualisation, a growth/line chart as a standalone component, a logo marquee, a testimonial carousel, a magnetic button, a cursor trail, hover-distortion images or a mesh/shader-gradient background. These are common agency-site components with no direct exemplar here.
+- Two of the 15 picks (@0xSolty, @konstantinsaifo) and three honourable mentions (@Acoramaa, @Voxyz_ai, @dreyk0o0) are partial or outcome-only. Their actual prompts are not in the corpus.
+- I could not view the rendered outputs or remakes, so "best template" is judged on prompt specificity and transferability to agency slots, not on visual results.

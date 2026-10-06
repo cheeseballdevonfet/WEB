@@ -22,7 +22,8 @@ const MATERIAL = Object.freeze({
   memoryMin: 12,        //   clamped to 12..26 px
   memoryMax: 26,
   thickness: 1.2,       // h: px every wrap adds to a coil's radius (paper + paste); spiral r = R0 + h * turns
-  foldRadius: 6,        // Rmin: the tightest fold the stock takes while pulled taut (bending stiffness)
+  foldRadius: 7,        // Rmin: the tightest fold the stock takes while pulled taut (bending stiffness)
+  cup: 0.12,            // rad: memory also cups a free flap slightly across its width (shading only)
   widthK: 0.26,         // strip base width = 0.26 * min(W, H), clamped 96..220 px
   widthMin: 96,
   widthMax: 220,
@@ -42,7 +43,8 @@ const MATERIAL = Object.freeze({
 });
 const EDGE = Object.freeze({ step: 3, low: 3.4, lowScale: 24, mid: 1.5, midScale: 6.5, grain: 1.4 });
 // Light from the top left, a little in front. Shadows fall down-right by z * slope.
-const LIGHT = (() => { const x = -0.3, y = -0.5, z = 0.81, m = Math.hypot(x, y, z); return { x: x / m, y: y / m, z: z / m, ambient: 0.5, slopeX: 0.26, slopeY: 0.46 }; })();
+// White paper bounces light into its own curls, so the back face sees more ambient than the inked front.
+const LIGHT = (() => { const x = -0.3, y = -0.5, z = 0.81, m = Math.hypot(x, y, z); return { x: x / m, y: y / m, z: z / m, ambient: 0.5, ambientBack: 0.68, slopeX: 0.26, slopeY: 0.46 }; })();
 
 /* =========================================================================
    MOTION: every curve and spring, named, in one place.
@@ -50,7 +52,8 @@ const LIGHT = (() => { const x = -0.3, y = -0.5, z = 0.81, m = Math.hypot(x, y, 
    ========================================================================= */
 const MOTION = Object.freeze({
   hz: 240,              // fixed physics substeps per simulated second
-  roll: 560,            // roll: memory curl after release, critically damped, 99.5% in 560 ms
+  roll: 560,            // roll: memory curl after release, critically damped, lands at 560 ms
+  snap: 0.55,           // snap: on release the stored curl starts the roll at 0.55 of the spring's natural speed
   lift: 180,            // lift: a held flap rises off the wall toward the hand, critically damped
   peelRoll: 620,        // peelRoll: a corner peel let go before the middle rolls back into its resting curl
   peelAway: 900,        // peelAway: past the middle it rolls up from its free end, then rolls on off the sheet
@@ -95,8 +98,14 @@ function cdStep(s, w, h) {
   const e = Math.exp(-w * h), b = s.v + w * s.x;
   s.x = (s.x + b * h) * e; s.v = (s.v - w * b * h) * e;
 }
-const omega = ms => 7.43 / (ms / 1000);   // (1 + wT) e^-wT = 0.005
 const SETTLE = 0.005;
+// Natural frequency that brings a critically damped spring, started with normalised speed `snap`
+// toward its target, to within 0.5% at exactly ms: solve (1 + (1 - snap) u) e^-u = 0.005, u = w T.
+function omega(ms, snap) {
+  const a = 1 - (snap || 0); let u = 7.43;
+  for (let i = 0; i < 30; i++) { const f = (1 + a * u) * Math.exp(-u) - SETTLE, df = (a - 1 - a * u) * Math.exp(-u); u -= f / df; }
+  return u / (ms / 1000);
+}
 // Progress of a release, from rest: the critically damped curve, rescaled so it lands exactly at its
 // 99.5% time. Same shape as the spring, but every roll, long or short, ends on the same frame.
 const landed = rhoX => clamp((-rhoX - SETTLE) / (1 - SETTLE), 0, 1);   // remaining fraction 1 -> 0
@@ -173,6 +182,7 @@ Track.prototype.velocity = function () {
    The grip (finger) is the free end when taut, the coil's centre when slack.
    ========================================================================= */
 const KF = 16, KC = 20;   // fold and coil angular resolution (per half turn)
+const W_ROLL = omega(MOTION.roll, MOTION.snap), W_LIFT = omega(MOTION.lift), W_PEEK = omega(MOTION.peek);
 const liftCs = st => Math.sqrt(1 + (st.lift || 0) * (st.lift || 0));
 const xsLen = (Ro, h, th) => Ro * th - h * th * th / (4 * PI);         // material from the coil entry to angle th
 function coilTheta(Lc, R0, h) {                                       // total wrap angle for coiled length Lc
@@ -275,7 +285,7 @@ function flapGeo(F, G) {
         widthAt(th, MT);
         q.cx = ccx + rr * st * gx; q.cy = ccy + rr * st * gy; q.ex = ex; q.ey = ey;
         q.z = zc - rr * ct; q.k = 1 + q.z / P; q.l = MT.l; q.r = MT.r; q.tl = 1; q.tr = 1; q.m = L - sEntry - xsLen(Ro, h, th);
-        if (inner) { q.nu = -st; q.nz = ct; q.ao = 1 - 0.42 * (1 - ct); } else { q.nu = st; q.nz = -ct; q.ao = 1; }
+        if (inner) { q.nu = -st; q.nz = ct; q.ao = 1 - 0.2 * (1 - ct); } else { q.nu = st; q.nz = -ct; q.ao = 1; }
         if (q.z > zmax) zmax = q.z;
       };
       const tIn = Math.min(Th, HALF);
@@ -331,62 +341,79 @@ function rgbOf(c) {
   return v.some(isNaN) ? [255, 208, 0] : v;
 }
 const HV = (() => { const x = LIGHT.x, y = LIGHT.y, z = LIGHT.z + 1, m = Math.hypot(x, y, z); return { x: x / m, y: y / m, z: z / m }; })();
-const SPEC_P = 64, SPEC_FLAT = Math.pow(HV.z, SPEC_P);
+const SPEC_P = 36, SPEC_FLAT = Math.pow(HV.z, SPEC_P);
 // Lambert + a narrow Blinn highlight, normalised so paper lying flat is exactly its own colour.
-function shade(rgb, ux, uy, nu, nz, ao, spec) {
-  const nx = nu * ux, ny = nu * uy;
-  const dif = Math.max(0, nx * LIGHT.x + ny * LIGHT.y + nz * LIGHT.z);
-  const f = (LIGHT.ambient + (1 - LIGHT.ambient) * dif / LIGHT.z) * ao;
+function shade(rgb, ux, uy, nu, nz, ao, spec, amb) { return shadeN(rgb, nu * ux, nu * uy, nz, ao, spec, amb); }
+function shadeN(rgb, nx, ny, nz, ao, spec, amb) {
+  const A = amb || LIGHT.ambient, dif = Math.max(0, nx * LIGHT.x + ny * LIGHT.y + nz * LIGHT.z);
+  const f = (A + (1 - A) * dif / LIGHT.z) * ao;
   const sp = spec * Math.max(0, Math.pow(Math.max(0, nx * HV.x + ny * HV.y + nz * HV.z), SPEC_P) - SPEC_FLAT);
   const c = i => Math.min(255, Math.round(rgb[i] * f + 255 * sp));
   return 'rgb(' + c(0) + ',' + c(1) + ',' + c(2) + ')';
 }
 
-function Painter(ctx) { this.ctx = ctx; this.dpr = 1; }
+function Painter(ctx) { this.ctx = ctx; this.dpr = 1; this.box = [Infinity, Infinity, -Infinity, -Infinity]; this.track = true; }
+Painter.prototype.grow = function (x, y, m) { const b = this.box; if (x - m < b[0]) b[0] = x - m; if (y - m < b[1]) b[1] = y - m; if (x + m > b[2]) b[2] = x + m; if (y + m > b[3]) b[3] = y + m; };
 // polygon of a region: left edge forward, right edge back
-Painter.prototype.ribbon = function (R, dz) {
-  const c = this.ctx, d = this.dpr, S = R.s, n = R.n, ox = dz ? LIGHT.slopeX : 0, oy = dz ? LIGHT.slopeY : 0, off = dz || 0;
-  for (let i = 0; i < n; i++) { const q = S[i], kk = q.l * q.k; const x = (q.cx + q.ex * kk + q.z * ox) * d - off, y = (q.cy + q.ey * kk + q.z * oy) * d; i ? c.lineTo(x, y) : c.moveTo(x, y); }
-  for (let i = n - 1; i >= 0; i--) { const q = S[i], kk = q.r * q.k; c.lineTo((q.cx - q.ex * kk + q.z * ox) * d - off, (q.cy - q.ey * kk + q.z * oy) * d); }
+Painter.prototype.ribbon = function (R, dz, margin, into) {
+  const c = into || this.ctx, d = this.dpr, S = R.s, n = R.n, ox = dz ? LIGHT.slopeX : 0, oy = dz ? LIGHT.slopeY : 0, off = dz || 0, m = (margin || 2) + 2, tr = this.track && !into;
+  for (let i = 0; i < n; i++) { const q = S[i], kk = q.l * q.k; const x = (q.cx + q.ex * kk + q.z * ox) * d, y = (q.cy + q.ey * kk + q.z * oy) * d; i ? c.lineTo(x - off, y) : c.moveTo(x - off, y); if (tr) this.grow(x, y, m); }
+  for (let i = n - 1; i >= 0; i--) { const q = S[i], kk = q.r * q.k; const x = (q.cx - q.ex * kk + q.z * ox) * d, y = (q.cy - q.ey * kk + q.z * oy) * d; c.lineTo(x - off, y); if (tr) this.grow(x, y, m); }
   c.closePath();
 };
 Painter.prototype.fillRegion = function (R, front, back) {
   if (R.n < 2) return;
-  const c = this.ctx, d = this.dpr, S = R.s, rgb = R.face ? front : back, spec = R.face ? 0.55 : 0.1, ux = R.gx, uy = R.gy;   // printed ink has a sheen, the back is matte
+  const c = this.ctx, d = this.dpr, S = R.s, rgb = R.face ? front : back, spec = R.face ? 0.3 : 0.08, amb = R.face ? LIGHT.ambient : LIGHT.ambientBack, ux = R.gx, uy = R.gy;   // printed ink: a satin sheen; the back: matte
   c.beginPath(); this.ribbon(R, 0);
-  if (R.flat) { const q = S[0]; c.fillStyle = shade(rgb, ux, uy, q.nu, q.nz, q.ao, spec); c.fill(); return; }
+  if (R.flat) {
+    // a free flap cups a little across its width: one gradient from edge to edge, tilted normals
+    const q = S[R.n >> 1], cp = MATERIAL.cup, kk = q.k;
+    const gr = c.createLinearGradient((q.cx - q.ex * q.r * kk) * d, (q.cy - q.ey * q.r * kk) * d, (q.cx + q.ex * q.l * kk) * d, (q.cy + q.ey * q.l * kk) * d);
+    for (const t of [0, 0.5, 1]) {
+      const a = (t * 2 - 1) * cp, ca = Math.cos(a), sa = Math.sin(a);       // edges tip up, toward the middle
+      const nx = q.nu * ux * ca - q.ex * sa * q.nz, ny = q.nu * uy * ca - q.ey * sa * q.nz;
+      gr.addColorStop(t, shadeN(rgb, nx, ny, q.nz * ca, q.ao, spec, amb));
+    }
+    c.fillStyle = gr; c.fill(); return;
+  }
   // gradient across the cylinder: along the perpendicular of the region's lateral axis
   const gx = R.ey, gy = -R.ex;
   let lo = Infinity, hi = -Infinity;
   for (let i = 0; i < R.n; i++) { const p = S[i].cx * gx + S[i].cy * gy; if (p < lo) lo = p; if (p > hi) hi = p; }
-  if (hi - lo < 0.35) { const q = S[R.n >> 1]; c.fillStyle = shade(rgb, ux, uy, q.nu, q.nz, q.ao, spec); c.fill(); return; }
+  if (hi - lo < 0.35) { const q = S[R.n >> 1]; c.fillStyle = shade(rgb, ux, uy, q.nu, q.nz, q.ao, spec, amb); c.fill(); return; }
   const q0 = S[0]; const p0 = q0.cx * gx + q0.cy * gy;
   const bx = q0.cx + gx * (lo - p0), by = q0.cy + gy * (lo - p0);
   const gr = c.createLinearGradient(bx * d, by * d, (bx + gx * (hi - lo)) * d, (by + gy * (hi - lo)) * d);
   const span = hi - lo, stride = R.n > 28 ? 2 : 1;
   for (let i = 0; ; i = Math.min(i + stride, R.n - 1)) {
     const q = S[i];
-    gr.addColorStop(clamp((q.cx * gx + q.cy * gy - lo) / span, 0, 1), shade(rgb, ux, uy, q.nu, q.nz, q.ao, spec));
+    gr.addColorStop(clamp((q.cx * gx + q.cy * gy - lo) / span, 0, 1), shade(rgb, ux, uy, q.nu, q.nz, q.ao, spec, amb));
     if (i === R.n - 1) break;
   }
   c.fillStyle = gr; c.fill();
 };
+// Torn edge on lifted paper: a solid white core, then a broken haze of fibres just outside it.
+// The haze is dashed along the material (dash offset = material position), so it never crawls.
 Painter.prototype.edges = function (R, width, style) {
   if (R.n < 2) return;
   const c = this.ctx, d = this.dpr, S = R.s;
-  c.strokeStyle = style; c.lineWidth = width * d;
-  for (let side = 0; side < 2; side++) {
-    let open = false;
-    for (let i = 0; i < R.n; i++) {
-      const q = S[i], torn = side ? q.tr : q.tl, w = (side ? -q.r : q.l) * q.k;
-      if (!torn || (q.l + q.r) <= 0.2) { open = false; continue; }
-      const x = (q.cx + q.ex * w) * d, y = (q.cy + q.ey * w) * d;
-      if (!open) { c.beginPath(); c.moveTo(x, y); open = true; } else c.lineTo(x, y);
-      const nx = S[i + 1];
-      if (!nx || !(side ? nx.tr : nx.tl)) { c.stroke(); open = false; }
+  const pass = (lw, st, out, dashed) => {
+    c.strokeStyle = st; c.lineWidth = lw * d;
+    for (let side = 0; side < 2; side++) {
+      let open = false;
+      for (let i = 0; i < R.n; i++) {
+        const q = S[i], torn = side ? q.tr : q.tl, w = (side ? -(q.r + out) : q.l + out) * q.k;
+        if (!torn || (q.l + q.r) <= 0.2) { if (open) { c.stroke(); open = false; } continue; }
+        const x = (q.cx + q.ex * w) * d, y = (q.cy + q.ey * w) * d;
+        if (!open) { c.beginPath(); if (dashed) c.lineDashOffset = -q.m * d * (side ? 1.13 : 1); c.moveTo(x, y); open = true; } else c.lineTo(x, y);
+      }
+      if (open) c.stroke();
     }
-    if (open) c.stroke();
-  }
+  };
+  pass(width, style, 0, false);
+  c.setLineDash([1.6 * d, 2.4 * d, 3.2 * d, 1.7 * d, 0.9 * d, 2.8 * d]);
+  pass(width * 0.75, 'rgba(251,251,246,0.5)', 0.9, true);
+  c.setLineDash([]);
 };
 /*
   opt: { front:[r,g,b], back:[r,g,b], alpha, fibre:bool, crease:bool }
@@ -398,17 +425,36 @@ Painter.prototype.flap = function (G, opt) {
   if (a <= 0.003) return;
   const BIG = 30000;
   c.save(); c.globalAlpha = a;
-  // cast shadow: every part offset by its own height, one blur scaled by the highest point
-  c.shadowColor = 'rgba(' + MATERIAL.shade + ',' + (0.3).toFixed(3) + ')';
-  c.shadowBlur = (4 + 0.16 * G.zmax) * d; c.shadowOffsetX = BIG; c.shadowOffsetY = 0;
-  c.fillStyle = '#000'; c.beginPath();
-  for (const R of [G.foldHigh, G.flat, G.coilOut, G.ring]) if (R.n > 1) this.ribbon(R, BIG);
-  c.fill();
+  // Cast shadow: every part offset by its own height, one blur scaled by the highest point. The blur is
+  // done at quarter resolution in a small buffer and drawn back scaled up: the same soft edge, 1/16 the work.
+  const blur = (4 + 0.16 * G.zmax) * d, parts = [G.foldHigh, G.flat, G.coilOut, G.ring];
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const R of parts) for (let i = 0; i < R.n; i++) {
+    const q = R.s[i], w = Math.max(Math.abs(q.l), Math.abs(q.r)) * q.k, x = (q.cx + q.z * LIGHT.slopeX) * d, y = (q.cy + q.z * LIGHT.slopeY) * d, m = w * d;
+    if (x - m < x0) x0 = x - m; if (x + m > x1) x1 = x + m; if (y - m < y0) y0 = y - m; if (y + m > y1) y1 = y + m;
+  }
+  if (x1 > x0) {
+    const pad = blur * 2 + 4, S = 0.25; x0 -= pad; y0 -= pad; x1 += pad; y1 += pad;
+    const bw = Math.ceil((x1 - x0) * S) + 2, bh = Math.ceil((y1 - y0) * S) + 2;
+    const buf = this.shadowBuf || (this.shadowBuf = document.createElement('canvas')), sc = buf.getContext('2d');
+    if (buf.width < bw || buf.height < bh) { buf.width = Math.max(buf.width, bw + 32); buf.height = Math.max(buf.height, bh + 32); }
+    sc.setTransform(1, 0, 0, 1, 0, 0); sc.clearRect(0, 0, bw, bh);
+    sc.setTransform(S, 0, 0, S, -x0 * S, -y0 * S);
+    sc.shadowColor = 'rgb(' + MATERIAL.shade + ')'; sc.shadowBlur = blur * S; sc.shadowOffsetX = BIG * S; sc.shadowOffsetY = 0;
+    sc.fillStyle = '#000'; sc.beginPath();
+    for (const R of parts) if (R.n > 1) this.ribbon(R, BIG, 0, sc);
+    sc.fill();
+    c.globalAlpha = a * 0.3; c.imageSmoothingEnabled = true;
+    c.drawImage(buf, 0, 0, bw, bh, x0, y0, bw / S, bh / S);
+    c.globalAlpha = a;
+    if (this.track) { this.grow(x0, y0, 2); this.grow(x0 + bw / S, y0 + bh / S, 2); }
+  }
   // contact shadow: tight and dark where paper meets the wall (the crease at the head)
   if (opt.crease !== false && G.foldLow.n > 1) {
-    c.shadowBlur = 3.5 * d; c.shadowColor = 'rgba(' + MATERIAL.shade + ',0.5)';
-    c.lineWidth = 2.6 * d; c.strokeStyle = '#000'; c.lineCap = 'round';
+    c.shadowBlur = 4 * d; c.shadowColor = 'rgba(' + MATERIAL.shade + ',0.58)';
+    c.lineWidth = 2.8 * d; c.strokeStyle = '#000'; c.lineCap = 'round';
     c.beginPath(); c.moveTo(G.base[0] * d - BIG, G.base[1] * d); c.lineTo(G.base[2] * d - BIG, G.base[3] * d); c.stroke();
+    this.grow(G.base[0] * d, G.base[1] * d, 12 * d); this.grow(G.base[2] * d, G.base[3] * d, 12 * d);
   }
   c.shadowColor = 'transparent'; c.shadowBlur = 0; c.shadowOffsetX = 0;
   // back to front; each region's torn edge is drawn with it so nearer paper covers it
@@ -429,6 +475,7 @@ Painter.prototype.flap = function (G, opt) {
       c.moveTo((K.cx + K.ex * ol + sx) * d - BIG, (K.cy + K.ey * ol + sy) * d);
       c.lineTo((K.cx - K.ex * or + sx) * d - BIG, (K.cy - K.ey * or + sy) * d);
       c.stroke(); c.restore();
+      const mm = (K.Ro + 12) * d; this.grow((K.cx + K.ex * ol + sx) * d, (K.cy + K.ey * ol + sy) * d, mm); this.grow((K.cx - K.ex * or + sx) * d, (K.cy - K.ey * or + sy) * d, mm);
     }
   }
   this.fillRegion(G.coilIn, opt.front, opt.back, ux, uy); fib(G.coilIn, 1.2);
@@ -464,6 +511,7 @@ function pip(x, y, P) {   // P: { box, xs, ys }
      #tear-btn                       "Tear a strip" / "Paste it back"
    ========================================================================= */
 const SVGNS = 'http://www.w3.org/2000/svg';
+const MAX_DPR = 1.5;   // canvas pixel density cap: crisp enough for paper edges, half the pixels of 2x
 
 function motionAllowed() {
   const c = document.documentElement.classList;
@@ -483,15 +531,20 @@ function mountHero(root, opts) {
   if (!canvas || !clipEl || !canvas.getContext) return null;
   const ctx = canvas.getContext('2d');
   const paint = new Painter(ctx);
-  const rimCanvas = document.createElement('canvas'), rctx = rimCanvas.getContext('2d');
+  // The settled layer (rims and resting paper) is an offscreen canvas, never in the DOM: the page keeps a
+  // single canvas, and each frame only the box the moving paper used is cleared and re-blitted from it.
+  const rimCanvas = document.createElement('canvas'), rctx = rimCanvas.getContext('2d');      // settled rims
+  const flapCanvas = document.createElement('canvas'), fctx = flapCanvas.getContext('2d');    // settled paper
+  let lastBox = 'all';
   const STEP = EDGE.step;
 
   let W = 0, H = 0, dpr = 1, EXTRA = 140;
   let R0 = 18, w0 = 140, Rf = MATERIAL.foldRadius, sF = PI * Rf;
   let front = rgbOf(MATERIAL.front), back = rgbOf(MATERIAL.back);
   let strips = [], peek = null, drag = null, letgo = null, paste = null, revealed = false, planIdx = 0;
-  let falls = [], tasks = [], scripts = [], seedN = 0, announced = false, rimsDirty = true, debugOn = !!opts.debug;
-  const stats = { draw: [] };
+  let falls = [], tasks = [], scripts = [], seedN = 0, announced = false, rimsDirty = true, pendRims = [], pendFlaps = [], debugOn = !!opts.debug;
+  const stats = { draw: [], sec: {} };
+  const tick = (k, t0) => { const t = nowMs(); stats.sec[k] = (stats.sec[k] || 0) + t - t0; return t; };
   const track = new Track();
   const revealPath = document.createElementNS(SVGNS, 'path');
   const peekPath = document.createElementNS(SVGNS, 'path');
@@ -517,14 +570,14 @@ function mountHero(root, opts) {
     W = r.width; H = r.height;
     const cr = canvas.getBoundingClientRect();
     EXTRA = Math.max(0, Math.round(cr.height - H)) || 0;
-    dpr = Math.min(window.devicePixelRatio || 1, W * H > 9e5 ? 1.5 : 2);
+    dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
     canvas.width = Math.round(W * dpr); canvas.height = Math.round((H + EXTRA) * dpr);
-    rimCanvas.width = canvas.width; rimCanvas.height = canvas.height;
+    rimCanvas.width = flapCanvas.width = canvas.width; rimCanvas.height = flapCanvas.height = canvas.height;
     paint.dpr = dpr;
     R0 = clamp(MATERIAL.memoryK * Math.min(W, H), MATERIAL.memoryMin, MATERIAL.memoryMax);
     w0 = clamp(MATERIAL.widthK * Math.min(W, H), MATERIAL.widthMin, MATERIAL.widthMax);
     if (ow && (Math.abs(ow - W) > 0.5 || Math.abs(oh - H) > 0.5)) rescale(W / ow, H / oh);
-    rimsDirty = true; render(1);
+    rimsDirty = true; lastBox = 'all'; render(1);
   }
   function rescale(sx, sy) {
     for (const st of strips) {
@@ -561,14 +614,24 @@ function mountHero(root, opts) {
     const [t0, t1] = slab(p.x, p.y, p.nx, p.ny, W, H);
     let hi = Math.min(p.hl, t1), lo = Math.max(-p.hr, t0), shi = Math.min(p.w + MATERIAL.edgeEnvelope, t1), slo = Math.max(-(p.w + MATERIAL.edgeEnvelope), t0);
     let tl = p.hl <= t1 ? 1 : 0, tr = -p.hr >= t0 ? 1 : 0;
-    const older = strips.filter(o => o !== st && o.test && o.id < st.id);
-    if (older.length && hi > lo) {
-      const inHole = (t) => { const x = p.x + p.nx * t, y = p.y + p.ny * t; for (const o of older) if (pip(x, y, o.test)) return true; return false; };
-      const c0 = clamp(0, lo, hi);
-      if (inHole(c0)) { hi = lo = 0; }
-      else {
-        for (let t = c0 + 3; t < hi; t += 3) if (inHole(t)) { hi = t - 1.5; tl = 1; break; }
-        for (let t = c0 - 3; t > lo; t -= 3) if (inHole(t)) { lo = t + 1.5; tr = 1; break; }
+    if (hi > lo) {
+      // the nearest older-hole edge on each side of the centre line, by direct line/edge intersection
+      const c0 = clamp(0, lo, hi), cx = p.x + p.nx * c0, cy = p.y + p.ny * c0;
+      const ax = p.x + p.nx * lo, ay = p.y + p.ny * lo, bx = p.x + p.nx * hi, by = p.y + p.ny * hi;
+      const sx0 = Math.min(ax, bx), sx1 = Math.max(ax, bx), sy0 = Math.min(ay, by), sy1 = Math.max(ay, by);
+      for (const o of strips) {
+        if (o === st || !o.test || o.id >= st.id) continue;
+        const bb = o.test.box; if (sx1 < bb[0] || sx0 > bb[2] || sy1 < bb[1] || sy0 > bb[3]) continue;
+        if (pip(cx, cy, o.test)) { hi = lo = 0; break; }
+        const X = o.test.xs, Y = o.test.ys, n = X.length;
+        for (let i = 0, j = n - 1; i < n; j = i++) {
+          // solve p + n t = edge(a..b): t along the lateral line, u along the edge
+          const ex = X[i] - X[j], ey = Y[i] - Y[j], den = p.nx * ey - p.ny * ex;
+          if (Math.abs(den) < 1e-9) continue;
+          const wx = X[j] - p.x, wy = Y[j] - p.y, t = (wx * ey - wy * ex) / den, u = (wx * p.ny - wy * p.nx) / den;
+          if (u < 0 || u > 1) continue;
+          if (t > c0 && t - 1.5 < hi) { hi = t - 1.5; tl = 1; } else if (t < c0 && t + 1.5 > lo) { lo = t + 1.5; tr = 1; }
+        }
       }
     }
     if (hi <= lo) { p.cl = p.cr = p.sl = p.sr = 0; }
@@ -640,7 +703,7 @@ function mountHero(root, opts) {
         const holeAhead = strips.some(o => o !== st && o.test && o.id < st.id && pip(nx, ny, o.test));
         if (w < MATERIAL.minWidth || (st.entered && !inside(nx, ny, 3)) || holeAhead || st.L > 6000) detach(st);
       }
-      st.dirty = true; rimsDirty = true;
+      st.dirty = true;
     }
   }
   // the flap direction is sgn * rot(d, gamma); keep gamma continuous, flip sgn only through the head
@@ -663,18 +726,19 @@ function mountHero(root, opts) {
   }
   function release(st) {
     if (st.detached) return;
+    pendRims.push(st);                // its rims join the settled layer
     st.mode = 'roll'; st.liftV = 0;
-    st.roll = { rho: { x: -1, v: 0 }, X0: st.X, g0: st.gamma, k0: st.lift };
+    st.roll = { rho: { x: -1, v: MOTION.snap * W_ROLL }, X0: st.X, g0: st.gamma, k0: st.lift };
     st.pX = st.X; st.pG = st.gamma; st.pK = st.lift;
     emit('release', { strip: st.id });
   }
   function rollStep(st, h) {
     const r = st.roll;
-    cdStep(r.rho, omega(MOTION.roll), h);
+    cdStep(r.rho, W_ROLL, h);
     const k = landed(r.rho.x);                // 1 -> 0
     st.X = r.X0 * k; st.gamma = r.g0 * k; st.lift = r.k0 * k;
     if (k <= 0) {
-      st.X = 0; st.gamma = 0; st.lift = 0; st.mode = 'rest'; st.roll = null; rimsDirty = true;
+      st.X = 0; st.gamma = 0; st.lift = 0; st.mode = 'rest'; st.roll = null; pendFlaps.push(st);   // its paper joins the settled layer
     }
   }
   function detach(st) {
@@ -691,7 +755,7 @@ function mountHero(root, opts) {
     if (carried) { drag.st = null; drag.carry = f; drag.cx0 = drag.lx; drag.cy0 = drag.ly; void v; }
     else { f.vx = clamp(v.x, -1500, 1500) * 0.6; f.vy = clamp(v.y, -1500, 1500) * 0.6 - 60; f.vr = clamp(v.x * 0.0009, -2.2, 2.2); }
     if (!announced) { announced = true; say('A strip came off. The poster underneath reads: Get seen. Get chosen. Grow.'); }
-    rimsDirty = true;
+    if (st.inFlaps) rimsDirty = true; else if (!st.inRims) pendRims.push(st);
     tasks.push({ t: loop.t + 0.12, fn: checkCoverage });
     emit('detach', { strip: st.id });
   }
@@ -707,10 +771,8 @@ function mountHero(root, opts) {
   function syncHoles() {
     for (const st of strips) {
       if (!st.dirty && st.poly) continue;
-      const hp = holePoly(st); st.poly = hp;
-      let d = 'M';
-      for (let i = 0; i < hp.xs.length; i++) d += (i ? 'L' : '') + hp.xs[i].toFixed(1) + ' ' + hp.ys[i].toFixed(1);
-      st.path.setAttribute('d', d + 'Z');
+      const hp = holePoly(st); st.poly = hp; st.dirtyRims = true;
+      st.path.setAttribute('d', pathD(hp.xs, hp.ys));
       const tx = [], ty = []; let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
       for (let i = 0; i < hp.xs.length; i++) {
         const x = hp.xs[i], y = hp.ys[i];
@@ -721,46 +783,86 @@ function mountHero(root, opts) {
       st.dirty = false;
     }
   }
-  function drawRims(c) {
-    c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, rimCanvas.width, rimCanvas.height);
-    if (revealed) return;
+  // Rims: the top poster's thickness shading the poster underneath, then its white fibre core, then tufts.
+  function drawStripRims(c, st, grower) {
+    if (!st.poly) return;
+    const A = st.poly.all, n = A.length, others = strips.filter(o => o !== st && o.test);
     c.lineJoin = 'round'; c.lineCap = 'round';
-    for (const st of strips) {
-      if (!st.poly) continue;
-      const A = st.poly.all, n = A.length, others = strips.filter(o => o !== st && o.test);
-      for (let side = 0; side < 2; side++) {
-        const sg = side ? -1 : 1;
-        const ex = [], X = [], Y = [], NX = [], NY = [];
-        for (let i = 0; i < n; i++) {
-          const p = A[i], w = side ? p.hr : p.hl, x = p.x + sg * p.nx * w, y = p.y + sg * p.ny * w;
-          X.push(x); Y.push(y); NX.push(sg * p.nx); NY.push(sg * p.ny);
-          ex.push(inside(x, y, -1) && !others.some(o => pip(x, y, o.test)));
-        }
-        const runs = [];
-        let run = null;
-        for (let i = 0; i < n; i++) { if (ex[i]) { if (!run) run = []; run.push(i); } else if (run) { if (run.length > 1) runs.push(run); run = null; } }
-        if (run && run.length > 1) runs.push(run);
-        const pass = (off, style, width) => {
-          c.strokeStyle = style; c.lineWidth = width * dpr; c.beginPath();
-          for (const r of runs) r.forEach((i, k) => { const x = (X[i] - NX[i] * off) * dpr, y = (Y[i] - NY[i] * off) * dpr; k ? c.lineTo(x, y) : c.moveTo(x, y); });
-          c.stroke();
-        };
-        // the top poster's thickness shading the poster underneath, then its white fibre core
-        pass(3.2, 'rgba(' + MATERIAL.shade + ',0.18)', 6.5);
-        pass(1.3, 'rgba(' + MATERIAL.shade + ',0.32)', 2.2);
-        pass(-0.7, MATERIAL.fibre, 2.5);
-        pass(-2.2, 'rgba(251,251,246,0.45)', 1);
-        // fibre tufts: short hairs at seeded spots along the material
-        c.strokeStyle = 'rgba(251,251,246,0.75)'; c.lineWidth = 0.8 * dpr; c.beginPath();
-        for (const r of runs) for (const i of r) {
-          const hsh = hash(st.seed * 7.7 + i * (side ? 3.17 : 1.91));
-          if (hsh > 0.42) continue;
-          const len = 1 + hash(i * 9.1 + st.seed) * 2.4, x = X[i] - NX[i] * 0.7, y = Y[i] - NY[i] * 0.7;
-          c.moveTo(x * dpr, y * dpr); c.lineTo((x + NX[i] * len) * dpr, (y + NY[i] * len) * dpr);
-        }
-        c.stroke();
+    for (let side = 0; side < 2; side++) {
+      const sg = side ? -1 : 1;
+      const ex = [], X = [], Y = [], NX = [], NY = [];
+      for (let i = 0; i < n; i++) {
+        const p = A[i], w = side ? p.hr : p.hl, x = p.x + sg * p.nx * w, y = p.y + sg * p.ny * w;
+        X.push(x); Y.push(y); NX.push(sg * p.nx); NY.push(sg * p.ny);
+        ex.push(inside(x, y, -1) && !others.some(o => pip(x, y, o.test)));
+        if (grower && ex[i]) grower.grow(x * dpr, y * dpr, 10 * dpr);
       }
+      const runs = [];
+      let run = null;
+      for (let i = 0; i < n; i++) { if (ex[i]) { if (!run) run = []; run.push(i); } else if (run) { if (run.length > 1) runs.push(run); run = null; } }
+      if (run && run.length > 1) runs.push(run);
+      const pass = (off, style, width) => {
+        c.strokeStyle = style; c.lineWidth = width * dpr; c.beginPath();
+        for (const r of runs) r.forEach((i, k) => { const x = (X[i] - NX[i] * off) * dpr, y = (Y[i] - NY[i] * off) * dpr; k ? c.lineTo(x, y) : c.moveTo(x, y); });
+        c.stroke();
+      };
+      pass(3.2, 'rgba(' + MATERIAL.shade + ',0.18)', 6.5);
+      pass(1.3, 'rgba(' + MATERIAL.shade + ',0.32)', 2.2);
+      pass(-0.7, MATERIAL.fibre, 2.5);
+      pass(-2.2, 'rgba(251,251,246,0.45)', 1);
+      c.strokeStyle = 'rgba(251,251,246,0.75)'; c.lineWidth = 0.8 * dpr; c.beginPath();
+      for (const r of runs) for (const i of r) {
+        const hsh = hash(st.seed * 7.7 + i * (side ? 3.17 : 1.91));
+        if (hsh > 0.42) continue;
+        const len = 1 + hash(i * 9.1 + st.seed) * 2.4, x = X[i] - NX[i] * 0.7, y = Y[i] - NY[i] * 0.7;
+        c.moveTo(x * dpr, y * dpr); c.lineTo((x + NX[i] * len) * dpr, (y + NY[i] * len) * dpr);
+      }
+      c.stroke();
     }
+  }
+  const isActive = st => !st.detached && (st.mode === 'held' || st.mode === 'script');
+  // The settled layers: rims of every strip not being torn right now, and the paper of every strip at
+  // rest. Each joins by being drawn on top once; only rare events (a resting strip grabbed again,
+  // let-go, paste, resize) redraw them. A growing hole erases the settled rims it tears away.
+  const isSettled = st => !st.detached && st.mode === 'rest' && st.L >= 0.5;
+  const rimPaint = new Painter(rctx), flapPaint = new Painter(fctx), addPaint = new Painter(rctx);
+  const settledPaint = rimPaint;
+  const resetBox = B => { B[0] = B[1] = Infinity; B[2] = B[3] = -Infinity; };
+  const unionBox = (A, B) => { if (B[2] > B[0]) { A[0] = Math.min(A[0], B[0]); A[1] = Math.min(A[1], B[1]); A[2] = Math.max(A[2], B[2]); A[3] = Math.max(A[3], B[3]); } };
+  function drawRims() {
+    for (const c of [rctx, fctx]) { c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, rimCanvas.width, rimCanvas.height); }
+    resetBox(rimPaint.box); resetBox(flapPaint.box);
+    for (const st of strips) st.inRims = st.inFlaps = false;
+    pendRims.length = pendFlaps.length = 0;
+    if (revealed) return;
+    for (const st of strips) if (!isActive(st)) { drawStripRims(rctx, st, rimPaint); st.inRims = true; }
+    flapPaint.dpr = dpr;
+    for (const st of strips) if (isSettled(st)) { flapPaint.flap(flapGeo(frameOf(st, viewOf(st, 1)), geo), { front, back, alpha: 1, fibre: true }); st.inFlaps = true; }
+  }
+  // draw newly settled pieces on top; returns the device-px box that changed
+  function appendSettled() {
+    const box = [Infinity, Infinity, -Infinity, -Infinity];
+    if (revealed) { pendRims.length = pendFlaps.length = 0; return box; }
+    for (const st of pendRims.splice(0)) if (!st.inRims && strips.includes(st)) {
+      resetBox(addPaint.box); drawStripRims(rctx, st, addPaint); st.inRims = true; unionBox(rimPaint.box, addPaint.box); unionBox(box, addPaint.box);
+    }
+    flapPaint.dpr = dpr;
+    for (const st of pendFlaps.splice(0)) if (!st.inFlaps && isSettled(st)) {
+      const B = flapPaint.box, save = B.slice(); resetBox(B);
+      flapPaint.flap(flapGeo(frameOf(st, viewOf(st, 1)), geo), { front, back, alpha: 1, fibre: true }); st.inFlaps = true;
+      unionBox(box, B); unionBox(B, save);
+    }
+    return box;
+  }
+  // a hole that is still growing erases the settled rims it has torn through
+  function eraseUnder(st) {
+    const P = st.poly, RB = rimPaint.box, T = st.test.box;
+    if (!P || !(RB[2] > RB[0])) return null;
+    const bx = [Math.max(T[0] * dpr - 2, RB[0]), Math.max(T[1] * dpr - 2, RB[1]), Math.min(T[2] * dpr + 2, RB[2]), Math.min(T[3] * dpr + 2, RB[3])];
+    if (!(bx[2] > bx[0] && bx[3] > bx[1])) return null;
+    rctx.save(); rctx.setTransform(dpr, 0, 0, dpr, 0, 0); rctx.globalCompositeOperation = 'destination-out'; rctx.fillStyle = '#000';
+    rctx.beginPath(); for (let i = 0; i < P.xs.length; i++) i ? rctx.lineTo(P.xs[i], P.ys[i]) : rctx.moveTo(P.xs[i], P.ys[i]); rctx.closePath(); rctx.fill(); rctx.restore();
+    return bx;
   }
 
   /* ---------- input ---------- */
@@ -811,6 +913,7 @@ function mountHero(root, opts) {
     let gx, gy;
     if (st) {
       if (st.mode === 'script') endScript(st, false);
+      if (st.inFlaps || st.inRims) rimsDirty = true;        // leaves the settled layers
       const g = gripOf(st); gx = g.x; gy = g.y;
       st.mode = 'held'; st.roll = null;
       if (st.X < 0.5) { const h = headOf(st); st.X = 0; gx = h.x; gy = h.y; }
@@ -843,7 +946,7 @@ function mountHero(root, opts) {
       st.L += adv;
       if (st.L >= st.pts.length * STEP - 1e-6) { st.L = st.pts.length * STEP; const p = st.pts[st.pts.length - 1]; pushPt(st, p.x + st.dx * STEP, p.y + st.dy * STEP); }
     }
-    st.dirty = true; rimsDirty = true;
+    st.dirty = true;
   }
   function beginHold(st, info, gx, gy) {
     drag = { id: info.id, st, ox: gx - info.x, oy: gy - info.y, lx: info.x, ly: info.y };
@@ -1091,18 +1194,23 @@ function mountHero(root, opts) {
 
   /* ---------- physics step (fixed 1/240 s) ---------- */
   function step(h) {
+    const ts = nowMs();
+    stepBody(h);
+    stats.stepMs = (stats.stepMs || 0) + nowMs() - ts;
+  }
+  function stepBody(h) {
     for (const st of strips) { st.pX = st.X; st.pG = st.gamma; st.pK = st.lift; }
     if (replay) replayStep(h);
     scriptStep(h);
     for (const st of strips) {
       if (st.mode === 'roll') rollStep(st, h);
       else if ((st.mode === 'held' || st.mode === 'script') && !st.detached) {   // the hand lifts the flap off the wall
-        const sp = { x: st.lift - MATERIAL.lift, v: st.liftV }; cdStep(sp, omega(MOTION.lift), h); st.lift = sp.x + MATERIAL.lift; st.liftV = sp.v;
+        const sp = { x: st.lift - MATERIAL.lift, v: st.liftV }; cdStep(sp, W_LIFT, h); st.lift = sp.x + MATERIAL.lift; st.liftV = sp.v;
       }
     }
     if (peek) {
       peek.pL = peek.L.x;
-      const s = { x: peek.L.x - peek.target, v: peek.L.v }; cdStep(s, omega(MOTION.peek), h);
+      const s = { x: peek.L.x - peek.target, v: peek.L.v }; cdStep(s, W_PEEK, h);
       peek.L.x = s.x + peek.target; peek.L.v = s.v;
       if (peek.target === 0 && peek.L.x < 0.05) killPeek();
     }
@@ -1132,20 +1240,49 @@ function mountHero(root, opts) {
     if (!W) return;
     syncHoles();
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     const ly = letgo ? lerp(letgo.py, letgo.y, alpha) : -1;
     if (letgo) revealPath.setAttribute('d', 'M-4 -4H' + (W + 4).toFixed(1) + 'V' + ly.toFixed(2) + 'H-4Z');
     const clipBelow = () => { if (ly >= 0) { ctx.beginPath(); ctx.rect(-10, ly * dpr, canvas.width + 20, canvas.height); ctx.clip(); } };
-    if (rimsDirty) { drawRims(rctx); rimsDirty = false; }
-    if (!revealed) { ctx.save(); clipBelow(); ctx.drawImage(rimCanvas, 0, 0); ctx.restore(); }
+    let tq = tick('sync', t0);
+    // settled layers: full redraw (rare), or append what just settled and erase what a growing hole tore away
+    const extra = [Infinity, Infinity, -Infinity, -Infinity];
+    if (rimsDirty) { drawRims(); rimsDirty = false; lastBox = 'all'; stats.sec.rimN = (stats.sec.rimN || 0) + 1; }
+    else {
+      if (pendRims.length || pendFlaps.length) unionBox(extra, appendSettled());
+      for (const st of strips) if (st.dirtyRims && isActive(st)) { const e = eraseUnder(st); if (e) unionBox(extra, e); }
+    }
+    for (const st of strips) st.dirtyRims = false;
+    if (lastBox !== 'all' && extra[2] > extra[0]) { if (!lastBox) lastBox = extra; else unionBox(lastBox, extra); }
+    if (ly >= 0) lastBox = 'all';
+    // restore the settled pixels wherever moving paper was last frame (or everywhere, when they changed)
+    const cw = canvas.width, chh = canvas.height;
+    let bx0 = 0, by0 = 0, bx1 = cw, by1 = chh;
+    if (lastBox !== 'all') { if (!lastBox) { bx1 = by1 = 0; } else { bx0 = clamp(Math.floor(lastBox[0]), 0, cw); by0 = clamp(Math.floor(lastBox[1]), 0, chh); bx1 = clamp(Math.ceil(lastBox[2]) + 1, 0, cw); by1 = clamp(Math.ceil(lastBox[3]) + 1, 0, chh); } }
+    if (bx1 > bx0 && by1 > by0) {
+      ctx.clearRect(bx0, by0, bx1 - bx0, by1 - by0);
+      if (!revealed) {
+        // copy back only where each settled layer actually has pixels (letting go: only below the peel line)
+        for (const [cv, P] of [[rimCanvas, rimPaint], [flapCanvas, flapPaint]]) {
+          const SB = P.box;
+          const sx0 = Math.max(bx0, Math.floor(SB[0])), sy0 = Math.max(by0, Math.floor(SB[1]), ly >= 0 ? Math.ceil(ly * dpr) : 0);
+          const sx1 = Math.min(bx1, Math.ceil(SB[2]) + 1), sy1 = Math.min(by1, Math.ceil(SB[3]) + 1);
+          if (sx1 > sx0 && sy1 > sy0) ctx.drawImage(cv, sx0, sy0, sx1 - sx0, sy1 - sy0, sx0, sy0, sx1 - sx0, sy1 - sy0);
+        }
+      }
+    }
+    const B = paint.box; B[0] = B[1] = Infinity; B[2] = B[3] = -Infinity;
+    if (!revealed) for (const st of strips) if (isActive(st)) drawStripRims(ctx, st, paint);   // the growing tear, live
+    tq = tick('rims', tq);
+    tq = tick('blit', tq);
     const opt = { front, back, alpha: 1, fibre: true };
     if (!revealed) for (const st of strips) {
-      if (st.detached || st.L < 0.5) continue;
+      if (st.detached || st.L < 0.5 || st.inFlaps) continue;
       const v = viewOf(st, alpha);
       ctx.save(); clipBelow();
       paint.flap(flapGeo(frameOf(st, v), geo), opt);
       ctx.restore();
     }
+    tq = tick('flaps', tq);
     if (peek && !revealed) {
       const ps = peekStrip();
       const hp = holePolyOf(ps);
@@ -1163,17 +1300,28 @@ function mountHero(root, opts) {
       ctx.restore();
     }
     if (paste) drawSqueegee(lerp(paste.px, paste.x, alpha));
+    tq = tick('other', tq);
     if (debugOn) drawDebug(alpha);
+    lastBox = (falls.length || paste || debugOn || letgo) ? 'all' : (B[2] > B[0] ? B.slice() : null);
     const dt = nowMs() - t0;
     stats.draw.push(dt); if (stats.draw.length > 600) stats.draw.shift();
+  }
+  // Chrome merges a clipPath's children into one nonzero path, so every hole must wind the same way
+  // as the full-sheet rectangle (positive area), or overlapping holes cancel out.
+  function pathD(xs, ys) {
+    let a = 0; const n = xs.length;
+    for (let i = 0, j = n - 1; i < n; j = i++) a += xs[j] * ys[i] - xs[i] * ys[j];
+    const parts = new Array(n);
+    for (let i = 0; i < n; i++) { const k = a >= 0 ? i : n - 1 - i; parts[i] = (Math.round(xs[k] * 10) / 10) + ' ' + (Math.round(ys[k] * 10) / 10); }
+    return 'M' + parts.join('L') + 'Z';
   }
   function holePolyOf(ps) {
     const P = ps.pts.slice(); const h = headOf(ps); const k = ps.L / STEP, k0 = Math.floor(k), f = k - k0, w = widthAt(ps, ps.L) / 2;
     P.push({ x: h.x, y: h.y, nx: -ps.dy, ny: ps.dx, hl: w + lerp(jagK(ps.seed, k0), jagK(ps.seed, k0 + 1), f), hr: w + lerp(jagK(ps.seed + 97, k0), jagK(ps.seed + 97, k0 + 1), f) });
-    let d = 'M';
-    P.forEach((p, i) => { d += (i ? 'L' : '') + (p.x + p.nx * p.hl).toFixed(1) + ' ' + (p.y + p.ny * p.hl).toFixed(1); });
-    for (let i = P.length - 1; i >= 0; i--) { const p = P[i]; d += 'L' + (p.x - p.nx * p.hr).toFixed(1) + ' ' + (p.y - p.ny * p.hr).toFixed(1); }
-    return d + 'Z';
+    const xs = [], ys = [];
+    P.forEach(p => { xs.push(p.x + p.nx * p.hl); ys.push(p.y + p.ny * p.hl); });
+    for (let i = P.length - 1; i >= 0; i--) { const p = P[i]; xs.push(p.x - p.nx * p.hr); ys.push(p.y - p.ny * p.hr); }
+    return pathD(xs, ys);
   }
   function drawSqueegee(x) {
     const X = x * dpr, h = H * dpr;
@@ -1284,6 +1432,15 @@ function mountHero(root, opts) {
         for (const R of G2.order) for (let j = 0; j < R.n; j++) { const q = R.s[j]; out.push([R === G2.coilOut ? 'o' : R === G2.coilIn ? 'i' : R === G2.flat ? 'f' : 'd', q.m, q.cx, q.cy, q.l, q.r, q.z]); }
         return { coil: G2.coil, v: out };
       },
+      // the incremental frame must equal a full redraw of the same state, pixel for pixel
+      verifyFrame(rebuild) {
+        const w = canvas.width, h = canvas.height, A = ctx.getImageData(0, 0, w, h).data;
+        lastBox = 'all'; if (rebuild) rimsDirty = true; render(loop.alpha);
+        const Bd = ctx.getImageData(0, 0, w, h).data; let n = 0, mx = 0;
+        let big = 0;
+        for (let i = 0; i < A.length; i++) { const d = Math.abs(A[i] - Bd[i]); if (d > 2) { n++; if (d > mx) mx = d; if (d > 60) big++; } }
+        return { diffBytes: n, maxDiff: mx, bigBytes: big };
+      },
       coverage, get t() { return loop.t; }, get revealed() { return revealed; }, get letgo() { return letgo; }, get falls() { return falls.length; }
     }
   });
@@ -1313,7 +1470,7 @@ function mountPeel(el, opts) {
   el.appendChild(canvas); el.appendChild(grip); el.appendChild(btn);
   el.setAttribute('data-peel-mounted', ''); el.classList.add('peel--live');
   const ctx = canvas.getContext('2d'), paint = new Painter(ctx), geo = new Geo(), track = new Track();
-  const MARGIN = 48;
+  const MARGIN = 0;      // the canvas is exactly the sheet: paper past its edges has left the frame
   let W = 0, H = 0, dpr = 1, R0 = 14, Lrest = 40;
   const Rf = MATERIAL.foldRadius, sF = PI * Rf;
   let front = rgbOf(MATERIAL.front), back = rgbOf(MATERIAL.back);
@@ -1333,7 +1490,7 @@ function mountPeel(el, opts) {
     const r = el.getBoundingClientRect(); if (r.width < 2 || r.height < 2) return;
     const fresh = !W;
     W = r.width; H = r.height;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
     canvas.width = Math.round((W + 2 * MARGIN) * dpr); canvas.height = Math.round((H + 2 * MARGIN) * dpr);
     canvas.style.width = (W + 2 * MARGIN) + 'px'; canvas.style.height = (H + 2 * MARGIN) + 'px';
     canvas.style.left = -MARGIN + 'px'; canvas.style.top = -MARGIN + 'px';
@@ -1391,7 +1548,8 @@ function mountPeel(el, opts) {
   }
   function startRoll(away) {
     S.mode = 'roll';
-    S.roll = { rho: { x: -1, v: 0 }, L0: S.L, X0: S.X, Lt: away ? farL() : Lrest, away, w: omega(away ? MOTION.peelAway : MOTION.peelRoll) };
+    const w = omega(away ? MOTION.peelAway : MOTION.peelRoll, MOTION.snap);
+    S.roll = { rho: { x: -1, v: MOTION.snap * w }, L0: S.L, X0: S.X, Lt: away ? farL() : Lrest, away, w };
     S.pL = S.L; S.pX = S.X;
     loop.wake(nowMs()); loop.request();
   }
@@ -1417,7 +1575,7 @@ function mountPeel(el, opts) {
       }
     }
     if (S.mode === 'rest' && !S.peeled) {
-      const s = { x: S.hover.x - S.hoverT, v: S.hover.v }; cdStep(s, omega(MOTION.peek), h); S.hover.x = s.x + S.hoverT; S.hover.v = s.v;
+      const s = { x: S.hover.x - S.hoverT, v: S.hover.v }; cdStep(s, W_PEEK, h); S.hover.x = s.x + S.hoverT; S.hover.v = s.v;
       S.L = Lrest + S.hover.x;
     }
   }
@@ -1432,7 +1590,7 @@ function mountPeel(el, opts) {
       ctx.save();
       ctx.translate(MARGIN * dpr, MARGIN * dpr);
       // paper that rolls past the sheet's own edges has left the frame
-      ctx.beginPath(); ctx.rect(-3 * dpr, -3 * dpr, (W + 6) * dpr, (H + 6) * dpr); ctx.clip();
+      ctx.beginPath(); ctx.rect(0, 0, W * dpr, H * dpr); ctx.clip();
       paint.flap(flapGeo(frame(L, X), geo), { front, back, alpha: 1, fibre: false });
       ctx.restore();
     }

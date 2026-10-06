@@ -33,7 +33,9 @@
 <script>if(location.protocol!=='file:')['../assets/fonts/yatra-one-latin.woff2','../assets/fonts/mukta-400-latin.woff2','../assets/fonts/mukta-800-latin.woff2'].forEach(function(h){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href=h;document.head.appendChild(l)})</script>
 <link rel="stylesheet" href="../assets/css/base.css">
 <link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/work.css">
 <script defer src="../assets/js/core.js"></script>
+<script defer src="../assets/js/pages/work.js"></script>
 <!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.elvanamedia.com/#organization","name":"Elvana Media","legalName":"ELEVANA MEDIA PRIVATE LIMITED","url":"https://www.elvanamedia.com/","email":"info@elvanamedia.com","telephone":"+91 89283 39531","foundingDate":"2026-06-04","slogan":"Ideas that create impact.","description":"Digital marketing, media & AI-powered growth.","image":"https://www.elvanamedia.com/assets/og-default.png","parentOrganization":{"@type":"Organization","name":"BeyondSure Private Limited"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}],"address":{"@id":"https://www.elvanamedia.com/#registered-office"}},{"@type":"LocalBusiness","@id":"https://www.elvanamedia.com/#mumbai","name":"Elvana Media","url":"https://www.elvanamedia.com/","image":"https://www.elvanamedia.com/assets/og-default.png","email":"info@elvanamedia.com","telephone":"+91 89283 39531","parentOrganization":{"@id":"https://www.elvanamedia.com/#organization"},"address":{"@type":"PostalAddress","@id":"https://www.elvanamedia.com/#registered-office","streetAddress":"203, Shivam Square, Building No. 4, Sahar Road, Andheri East","addressLocality":"Mumbai","addressRegion":"Maharashtra","postalCode":"400069","addressCountry":"IN"}},{"@type":"WebSite","@id":"https://www.elvanamedia.com/#website","url":"https://www.elvanamedia.com/","name":"Elvana Media","publisher":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN"},{"@type":"WebPage","@id":"https://www.elvanamedia.com/work/#webpage","url":"https://www.elvanamedia.com/work/","name":"Work: first case studies being written | Elvana Media","description":"Elvana Media is new, so its first case studies are still being written. No borrowed logos or made-up numbers: become one of the first brands we work with.","isPartOf":{"@id":"https://www.elvanamedia.com/#website"},"about":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.elvanamedia.com/"},{"@type":"ListItem","position":2,"name":"Work","item":"https://www.elvanamedia.com/work/"}]}}]}</script>
 </head>
@@ -69,7 +71,11 @@
 </header>
 
 <main id="main">
-<!-- Work: the honest empty state is the content (CONTENT.md: no client work is published yet).
+<!-- Work. The honest empty state IS the content (CONTENT.md: no client work is published yet).
+     Signature: "This space is available" (INTERACTIONS.md). An empty hoarding carries the classic
+     advertise-here board; the visitor types a brand name and js/pages/work.js has a sign painter
+     whitewash the board and paint the name on, stroke by stroke, with wet paint that dries.
+     No JS: the form takes the name to /contact/ (?brand=), where it fills the Company field.
      When a real, approved case study exists, copy src/pages/work/case-study-template.html. -->
 <section class="page-hero" aria-labelledby="page-h">
   <div class="page-hero__main g-yellow">
@@ -82,30 +88,77 @@
   </div>
 </section>
 
-<section class="poster" id="wall" aria-labelledby="wall-h" style="--under:var(--red)">
-  <div class="paste vacant">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="first case studies"><b>Coming soon</b>Case studies</p>
-      <h2 class="vacant__title" id="wall-h">First case studies are being written.</h2>
+<section class="poster" id="space" aria-labelledby="space-h" style="--under:var(--ink)">
+  <div class="paste g-blue space">
+    <div class="head-split">
+      <h2 class="d1" id="space-h">Your brand could go up here first.</h2>
+      <p class="lede">Elvana Media is new, so this hoarding is empty. Type your brand name and our sign painter will put it up. It's a mock-up. The invitation is real.</p>
     </div>
-    <div class="plate g-red">
-      <p>Elvana Media is new, so this wall is still blank. No borrowed logos, no made-up numbers: the first stories go up here when they are real.</p>
-      <a class="tag" href="../contact/index.html">Become one of the first brands we work with</a>
+
+    <!-- The hoarding: a steel frame, three lamps, two legs. The panel carries the advertise-here board
+         (real text); the painter's canvas sits over it and is drawn only once someone paints. -->
+    <figure class="hoarding" aria-labelledby="board-cap">
+      <div class="hoarding__lamps" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="hoarding__panel">
+        <div class="adboard" id="adboard">
+          <p class="adboard__big">This space is available</p>
+          <!-- Hindi echo, for the client to approve: "Space available for advertising" -->
+          <p class="adboard__hi" lang="hi">विज्ञापन के लिए स्थान उपलब्ध</p>
+          <p class="adboard__call"><span>For advertising, call</span> <span class="adboard__num">+91 89283 39531</span></p>
+        </div>
+        <canvas class="painter js-only" aria-hidden="true"></canvas>
+        <p class="sr" id="painted" aria-live="polite"></p>
+      </div>
+      <div class="hoarding__legs" aria-hidden="true"><i></i><i></i></div>
+      <figcaption class="sr" id="board-cap">An empty hoarding with a painted board: this space is available, for advertising call +91 89283 39531.</figcaption>
+    </figure>
+
+    <div class="paint-row">
+      <form class="paint-form" id="paint-form" action="../contact/index.html" method="get" novalidate>
+        <label for="brand">Your brand name</label>
+        <div class="paint-form__row">
+          <input id="brand" name="brand" maxlength="60" autocomplete="organization" autocapitalize="words" spellcheck="false" enterkeyhint="go" required aria-describedby="brand-hint brand-err">
+          <button class="tag" type="submit"><span class="js-only">Paint it on</span><span class="nojs-only">Take it to Contact</span></button>
+        </div>
+        <p class="paint-form__hint" id="brand-hint"><span class="js-only">Any length, any script. Nothing is saved or sent: it only paints this page.</span><span class="nojs-only">We'll carry the name to the contact form for you.</span></p>
+        <p class="err" id="brand-err" aria-live="polite"></p>
+      </form>
+      <div class="offer plate g-yellow" id="offer">
+        <p class="offer__line" id="offer-line">This could be one of Elvana's first case studies.</p>
+        <p class="offer__small">No borrowed logos, no made-up numbers. Tell us about the brand and what it needs, and the first real story can go up here.</p>
+        <div class="tags">
+          <a class="tag tag-ink" id="offer-cta" href="../contact/index.html">Talk to us about your brand</a>
+          <button class="replay js-only" id="paint-again" type="button" hidden>Paint another name</button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="poster" aria-labelledby="meantime-h" style="--under:var(--paper)">
-  <div class="paste g-ink">
+<!-- The honest note -->
+<section class="poster" id="written" aria-labelledby="written-h" style="--under:var(--blue)">
+  <div class="paste g-paper note">
+    <p class="coming-soon" data-todo="first case studies"><b>Coming soon</b>Case studies</p>
     <div class="head-split">
-      <h2 class="d2" id="meantime-h">Where the proof comes from today</h2>
-      <p class="lede">The group behind us, the team, and a process you can see from the first brief.</p>
+      <h2 class="d2" id="written-h">First case studies are being written.</h2>
+      <p class="lede">We'd rather show an empty wall than a borrowed one. Until the first stories are ready, the proof is the group behind us, the team, and a process you can see from the first brief.</p>
     </div>
     <p class="poster-foot tags">
-      <a class="tag" href="../how-we-work/index.html">How we work</a>
+      <a class="tag tag-ink" href="../how-we-work/index.html">How we work</a>
       <a class="tag tag-line" href="../about/index.html">The people and the group</a>
       <a class="tag tag-line" href="../our-edge/index.html">Our edge</a>
     </p>
+  </div>
+</section>
+
+<!-- Closing CTA poster: every page ends here, always to /contact/. -->
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+  <div class="paste g-yellow cta-poster">
+    <h2 class="d1" id="cta-h">Let's create impact together</h2>
+    <div>
+      <p class="lede">Write to info@elvanamedia.com or call +91 89283 39531. Offices in Mumbai, Delhi, Gurgaon and Noida.</p>
+      <div class="tags"><a class="tag tag-ink" href="../contact/index.html">Let's talk</a><a class="tag tag-line" href="tel:+918928339531">Call +91 89283 39531</a></div>
+    </div>
   </div>
 </section>
 </main>

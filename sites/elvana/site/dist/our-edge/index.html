@@ -33,7 +33,9 @@
 <script>if(location.protocol!=='file:')['../assets/fonts/yatra-one-latin.woff2','../assets/fonts/mukta-400-latin.woff2','../assets/fonts/mukta-800-latin.woff2'].forEach(function(h){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href=h;document.head.appendChild(l)})</script>
 <link rel="stylesheet" href="../assets/css/base.css">
 <link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/our-edge.css">
 <script defer src="../assets/js/core.js"></script>
+<script defer src="../assets/js/pages/our-edge.js"></script>
 <!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.elvanamedia.com/#organization","name":"Elvana Media","legalName":"ELEVANA MEDIA PRIVATE LIMITED","url":"https://www.elvanamedia.com/","email":"info@elvanamedia.com","telephone":"+91 89283 39531","foundingDate":"2026-06-04","slogan":"Ideas that create impact.","description":"Digital marketing, media & AI-powered growth.","image":"https://www.elvanamedia.com/assets/og-default.png","parentOrganization":{"@type":"Organization","name":"BeyondSure Private Limited"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}],"address":{"@id":"https://www.elvanamedia.com/#registered-office"}},{"@type":"LocalBusiness","@id":"https://www.elvanamedia.com/#mumbai","name":"Elvana Media","url":"https://www.elvanamedia.com/","image":"https://www.elvanamedia.com/assets/og-default.png","email":"info@elvanamedia.com","telephone":"+91 89283 39531","parentOrganization":{"@id":"https://www.elvanamedia.com/#organization"},"address":{"@type":"PostalAddress","@id":"https://www.elvanamedia.com/#registered-office","streetAddress":"203, Shivam Square, Building No. 4, Sahar Road, Andheri East","addressLocality":"Mumbai","addressRegion":"Maharashtra","postalCode":"400069","addressCountry":"IN"}},{"@type":"WebSite","@id":"https://www.elvanamedia.com/#website","url":"https://www.elvanamedia.com/","name":"Elvana Media","publisher":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN"},{"@type":"WebPage","@id":"https://www.elvanamedia.com/our-edge/#webpage","url":"https://www.elvanamedia.com/our-edge/","name":"Our edge: where media meets AI | Elvana Media","description":"Built inside a technology-first group, Elvana pairs creative work with automation that keeps working after the campaign goes live.","isPartOf":{"@id":"https://www.elvanamedia.com/#website"},"about":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.elvanamedia.com/"},{"@type":"ListItem","position":2,"name":"Our edge","item":"https://www.elvanamedia.com/our-edge/"}]}}]}</script>
 </head>
@@ -69,8 +71,16 @@
 </header>
 
 <main id="main">
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
+<!-- =====================================================================
+     Our edge. Signature: "Follow one lead" (INTERACTIONS.md), a pinned
+     scroll story on WEB.md 26, "Pinned chapters with one changing figure".
+     Source order is the readable sequence: each chapter's text, then its
+     mock-up and its live-report line. That is what no JS, reduced motion,
+     tablets and phones get. At 1100px and up with motion, pages/our-edge.css
+     pins one stage beside the chapters (route, mock-up, live report) and
+     pages/our-edge.js changes it as each chapter crosses mid-screen.
+     Every mock-up is a sample institute; no client, number or result.
+     ===================================================================== -->
 <section class="page-hero" aria-labelledby="page-h">
   <div class="page-hero__main g-yellow">
     <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li aria-current="page">Our edge</li></ol></nav>
@@ -82,22 +92,240 @@
   </div>
 </section>
 
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
+<!-- 1. The signature: follow one lead from a post to your team -->
+<section class="poster" id="follow" aria-labelledby="follow-h" style="--under:var(--ink)">
+  <div class="paste g-ink">
+    <div class="head-split">
+      <h2 class="d1" id="follow-h">Follow one lead</h2>
+      <div class="follow-intro">
+        <p class="lede">Built inside a technology-first group, Elvana pairs creative work with automation that keeps working after the campaign goes live.</p>
+        <p>A campaign starts a conversation, and automation keeps it going. Follow one person from a post to your team, and type to the bot on the way.</p>
+      </div>
     </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>AI Calling</li><li>WhatsApp Chat Bot</li><li>WhatsApp &amp; SMS Blasting</li><li>Live reporting</li><li>How a campaign and its automation work together</li></ul>
+
+    <div class="story" data-story data-active="1">
+      <div class="stage">
+        <nav class="route" aria-label="The lead's route">
+          <span class="route__rail" aria-hidden="true"><i></i></span>
+          <ol>
+            <li><a href="#lead-1" aria-current="step"><span class="route__n" aria-hidden="true">1</span><span class="route__name">Post</span><span class="route__short" aria-hidden="true">Post</span></a></li>
+            <li><a href="#lead-2"><span class="route__n" aria-hidden="true">2</span><span class="route__name">WhatsApp bot</span><span class="route__short" aria-hidden="true">Bot</span></a></li>
+            <li><a href="#lead-3"><span class="route__n" aria-hidden="true">3</span><span class="route__name">Reminder SMS</span><span class="route__short" aria-hidden="true">SMS</span></a></li>
+            <li><a href="#lead-4"><span class="route__n" aria-hidden="true">4</span><span class="route__name">AI call</span><span class="route__short" aria-hidden="true">Call</span></a></li>
+            <li><a href="#lead-5"><span class="route__n" aria-hidden="true">5</span><span class="route__name">Your team</span><span class="route__short" aria-hidden="true">Team</span></a></li>
+            <li><a href="#lead-6"><span class="route__n" aria-hidden="true">6</span><span class="route__name">Live report</span><span class="route__short" aria-hidden="true">Report</span></a></li>
+          </ol>
+        </nav>
+        <div class="ledger" aria-hidden="true">
+          <p class="ledger__h">Live report</p>
+          <p class="ledger__sub">What each step did. Illustration only, no client data.</p>
+          <ol class="ledger__slots"><li></li><li></li><li></li><li></li><li></li><li></li></ol>
+        </div>
+      </div>
+
+      <!-- 1. The post -->
+      <div class="ch is-active" style="--step:1">
+        <div class="ch-text" id="lead-1">
+          <p class="ch-n" aria-hidden="true">1</p>
+          <h3>The post</h3>
+          <p>A post, ad, SMS or broadcast reaches the right person. Here it is a post for weekend classes at a sample institute, and one person taps Chat on WhatsApp.</p>
+        </div>
+        <figure class="ch-fig">
+          <div class="scr scr--post g-paper">
+            <p class="scr__bar"><span>Their phone</span><span class="mock">Mock-up</span></p>
+            <div class="post bit" data-ms="700">
+              <p class="post__from"><span class="post__ava" aria-hidden="true">SI</span><span><b>Sample Institute</b>Post</span></p>
+              <div class="post__art g-yellow">
+                <p class="post__h">Weekend batches</p>
+                <p class="post__s">Data course. Classroom in Andheri, or online.</p>
+                <p class="post__days" aria-hidden="true"><span>Sat</span><span>Sun</span></p>
+              </div>
+            </div>
+            <p class="post__cta bit" data-ms="900">Chat on WhatsApp</p>
+          </div>
+          <figcaption class="ch-log"><b class="stamp">Reached</b><span class="ch-log__t"><b>Post</b>Reached the right person, who tapped Chat on WhatsApp.</span></figcaption>
+        </figure>
+      </div>
+
+      <!-- 2. The WhatsApp bot (the visitor can type to it) -->
+      <div class="ch" style="--step:2">
+        <div class="ch-text" id="lead-2">
+          <p class="ch-n" aria-hidden="true">2</p>
+          <h3>The WhatsApp bot</h3>
+          <p>They reply on WhatsApp, and the chat bot answers, qualifies and offers to book. It says it is a bot, and a person is one message away.</p>
+          <p class="ch-try js-only">Type to it. The answers are scripted for this mock-up.</p>
+        </div>
+        <figure class="ch-fig">
+          <div class="scr scr--chat g-blue">
+            <p class="scr__bar"><span>Their phone, on WhatsApp</span><span class="mock">Mock-up</span></p>
+            <p class="chat-head"><b>Sample Institute</b><span>Automated assistant</span></p>
+            <ol class="thread" aria-label="Chat between the lead and the bot">
+              <li class="when" aria-hidden="true">Tonight, 10:52 pm</li>
+              <li class="msg them bit" data-ms="900"><span class="sr">They wrote: </span>Saw your post. Are weekend batches open?</li>
+              <li class="msg bot bit" data-ms="1200"><span class="sr">Bot: </span>Yes. Saturday and Sunday batches start next month. Classroom or online?</li>
+              <li class="msg them bit" data-ms="900"><span class="sr">They wrote: </span>Classroom. Which centre?</li>
+              <li class="msg bot bit" data-ms="1300"><span class="sr">Bot: </span>Andheri. Want a free counselling call to pick a batch? Saturday 11 am or Sunday 4 pm.</li>
+              <li class="msg them bit" data-ms="900"><span class="sr">They wrote: </span>Let me think about it.</li>
+              <li class="msg bot bit" data-ms="700"><span class="sr">Bot: </span>Sure. Your slot stays open. Message here any time.</li>
+            </ol>
+            <form class="ask js-only" data-ask autocomplete="off">
+              <div class="ask__chips">
+                <button type="button" data-say="What are the fees?">Fees?</button>
+                <button type="button" data-say="Book Saturday 11 am">Book Saturday</button>
+                <button type="button" data-say="Can I talk to a person?">Talk to a person</button>
+              </div>
+              <div class="ask__row">
+                <label class="sr" for="ask-in">Message the bot</label>
+                <input id="ask-in" name="q" maxlength="140" placeholder="Type to the bot" enterkeyhint="send">
+                <button class="ask__send" type="submit">Send</button>
+              </div>
+            </form>
+          </div>
+          <figcaption class="ch-log"><b class="stamp">Qualified</b><span class="ch-log__t"><b>WhatsApp bot</b>Answered, qualified (classroom, Andheri) and offered a call.</span></figcaption>
+        </figure>
+      </div>
+
+      <!-- 3. The reminder SMS -->
+      <div class="ch" style="--step:3">
+        <div class="ch-text" id="lead-3">
+          <p class="ch-n" aria-hidden="true">3</p>
+          <h3>The reminder SMS</h3>
+          <p>People who don't reply get a reminder. This one goes out the next day, on a DLT-registered template, at a permitted time.</p>
+        </div>
+        <figure class="ch-fig">
+          <div class="scr scr--sms g-paper">
+            <p class="scr__bar"><span>Their phone, the next day</span><span class="mock">Mock-up</span></p>
+            <div class="sms bit" data-ms="900">
+              <p class="sms__from"><b>SAMPLE</b><span>Sender ID</span></p>
+              <p class="sms__text">Hi, your free counselling slot for weekend batches is still open. Reply on WhatsApp to book, or we'll give you a quick call. Sample Institute</p>
+            </div>
+            <ul class="sms__meta">
+              <li class="bit" data-ms="420">DLT-registered template</li>
+              <li class="bit" data-ms="420">Registered sender ID</li>
+              <li class="bit" data-ms="420">Sent at a permitted time</li>
+            </ul>
+          </div>
+          <figcaption class="ch-log"><b class="stamp">Reminded</b><span class="ch-log__t"><b>Reminder SMS</b>Went out on a DLT-registered template when the chat went quiet.</span></figcaption>
+        </figure>
+      </div>
+
+      <!-- 4. The AI call -->
+      <div class="ch" style="--step:4">
+        <div class="ch-text" id="lead-4">
+          <p class="ch-n" aria-hidden="true">4</p>
+          <h3>The AI call</h3>
+          <p>Still no booking, so an AI voice agent calls. It says it is an automated assistant, answers the question and books the counselling call.</p>
+        </div>
+        <figure class="ch-fig">
+          <div class="scr scr--call g-red">
+            <p class="scr__bar"><span>Their phone, a call</span><span class="mock">Mock-up</span></p>
+            <p class="call__who"><b>Sample Institute</b><span>Automated assistant, calling</span></p>
+            <div class="wave" aria-hidden="true"><i style="--h:63;--d:77"></i><i style="--h:72;--d:333"></i><i style="--h:28;--d:37"></i><i style="--h:90;--d:48"></i><i style="--h:68;--d:298"></i><i style="--h:29;--d:259"></i><i style="--h:49;--d:19"></i><i style="--h:33;--d:222"></i><i style="--h:75;--d:35"></i><i style="--h:52;--d:46"></i><i style="--h:92;--d:217"></i><i style="--h:29;--d:289"></i><i style="--h:37;--d:114"></i><i style="--h:96;--d:31"></i><i style="--h:95;--d:299"></i><i style="--h:72;--d:25"></i><i style="--h:50;--d:23"></i><i style="--h:93;--d:68"></i><i style="--h:59;--d:214"></i><i style="--h:40;--d:276"></i><i style="--h:37;--d:292"></i><i style="--h:61;--d:286"></i><i style="--h:45;--d:52"></i><i style="--h:96;--d:292"></i><i style="--h:46;--d:190"></i><i style="--h:34;--d:280"></i><i style="--h:30;--d:288"></i><i style="--h:29;--d:316"></i><i style="--h:48;--d:254"></i><i style="--h:90;--d:218"></i><i style="--h:62;--d:238"></i><i style="--h:96;--d:232"></i><i style="--h:68;--d:153"></i><i style="--h:53;--d:92"></i></div>
+            <ol class="call__lines">
+              <li class="say ai bit" data-ms="2300"><span class="who">AI agent</span>Hello, I'm the institute's automated assistant. You asked about weekend batches. Is now a good time?</li>
+              <li class="say bit" data-ms="1100"><span class="who">They said</span>Yes. What are the fees?</li>
+              <li class="say ai bit" data-ms="2300"><span class="who">AI agent</span>A counsellor shares the exact fee on a free call. Shall I book Saturday at 11 am?</li>
+              <li class="say bit" data-ms="900"><span class="who">They said</span>Okay, book it.</li>
+              <li class="say ai bit" data-ms="1600"><span class="who">AI agent</span>Booked. I've sent the details on WhatsApp.</li>
+            </ol>
+          </div>
+          <figcaption class="ch-log"><b class="stamp">Booked</b><span class="ch-log__t"><b>AI call</b>Said it was automated, answered, and booked Saturday 11 am.</span></figcaption>
+        </figure>
+      </div>
+
+      <!-- 5. Your team -->
+      <div class="ch" style="--step:5">
+        <div class="ch-text" id="lead-5">
+          <p class="ch-n" aria-hidden="true">5</p>
+          <h3>Your team</h3>
+          <p>Your team gets the warm lead, with notes: what they want, what they asked and when the call is. Their time goes to people ready to talk.</p>
+        </div>
+        <figure class="ch-fig">
+          <div class="scr scr--team g-yellow">
+            <p class="scr__bar"><span>Your team</span><span class="mock">Mock-up</span></p>
+            <div class="chit bit" data-ms="900">
+              <p class="chit__h"><b>Warm lead</b><span>For the counsellor</span></p>
+              <dl class="chit__dl">
+                <div><dt>Wants</dt><dd>Weekend batch, classroom, Andheri</dd></div>
+                <div><dt>Booked</dt><dd>Counselling call, Saturday 11 am</dd></div>
+                <div><dt>Asked about</dt><dd>Fees, on the AI call</dd></div>
+                <div><dt>Prefers</dt><dd>WhatsApp</dd></div>
+                <div><dt>Came through</dt><dd>Post, bot, SMS, AI call</dd></div>
+              </dl>
+              <p class="chit__note"><b>For the call</b>Share the fee for the weekend classroom batch.</p>
+            </div>
+            <p class="chit__stamp bit" data-ms="500" aria-hidden="true">Warm</p>
+          </div>
+          <figcaption class="ch-log"><b class="stamp">Handed over</b><span class="ch-log__t"><b>Your team</b>The counsellor had the lead and the notes before the call.</span></figcaption>
+        </figure>
+      </div>
+
+      <!-- 6. Live reporting -->
+      <div class="ch" style="--step:6">
+        <div class="ch-text" id="lead-6">
+          <p class="ch-n" aria-hidden="true">6</p>
+          <h3>Live reporting</h3>
+          <p>Live reporting shows what each step did: one dashboard across channels, and a monthly report in plain language.</p>
+        </div>
+        <figure class="ch-fig">
+          <div class="scr scr--report g-paper">
+            <p class="scr__bar"><span>Your dashboard</span><span class="mock">Mock-up</span></p>
+            <p class="rep__h bit" data-ms="500">One lead, followed from first touch to conversation</p>
+            <ol class="rep__path bit" data-ms="700">
+              <li>Post</li><li>WhatsApp bot</li><li>Reminder SMS</li><li>AI call</li><li>Your team</li>
+            </ol>
+            <p class="rep__chan bit" data-ms="500">One dashboard across search, social, WhatsApp, SMS, calls and site enquiries.</p>
+            <div class="rep__month bit" data-ms="500">
+              <p class="rep__mh">Monthly report, in plain language</p>
+              <ul><li>What moved</li><li>What didn't</li><li>What we'll change</li></ul>
+            </div>
+          </div>
+          <figcaption class="ch-log"><b class="stamp">Reported</b><span class="ch-log__t"><b>Live report</b>Every step above, in one dashboard and a monthly report.</span></figcaption>
+        </figure>
+      </div>
+    </div>
+    <p class="story-note">Every mock-up on this page shows a sample institute: no client, no data and no results.</p>
+  </div>
+</section>
+
+<!-- 2. The pieces: the services behind each step -->
+<section class="poster" id="pieces" aria-labelledby="pieces-h" style="--under:var(--ink)">
+  <div class="paste flush">
+    <div class="pieces-head g-paper">
+      <div class="head-split">
+        <h2 class="d1" id="pieces-h">The pieces behind the story</h2>
+        <p class="lede">Each step is a service you can use on its own or together, with one dashboard across all of them.</p>
+      </div>
+    </div>
+    <div class="flyer-wall">
+      <article class="flyer g-yellow w4"><h3><a href="../services/ai-calling/index.html">AI Calling</a></h3><p>Voice agents in Indian languages for leads, reminders and follow-ups.</p></article>
+      <article class="flyer g-blue w4"><h3><a href="../services/whatsapp-chat-bot/index.html">WhatsApp Chat Bot</a></h3><p>Answers, qualifies and books, around the clock.</p></article>
+      <article class="flyer g-red w4"><h3><a href="../services/whatsapp-blasting/index.html">WhatsApp Blasting</a></h3><p>Targeted broadcasts, only to customers who have opted in.</p></article>
+      <article class="flyer g-paper w6 half"><h3><a href="../services/sms-blasting/index.html">SMS Blasting</a></h3><p>Bulk SMS campaigns on DLT-registered templates.</p></article>
+      <article class="flyer flyer--static g-ink w6 half"><h3 class="hi-ink">Live reporting</h3><p>Clear dashboards so you always see what is working.</p></article>
     </div>
   </div>
 </section>
 
+<!-- 3. Rules we keep -->
+<section class="poster" id="rules" aria-labelledby="rules-h" style="--under:var(--ink)">
+  <div class="paste g-red">
+    <div class="head-split">
+      <h2 class="d1" id="rules-h">Rules we keep</h2>
+      <p class="lede">Automation only works when people trust it. These hold on every campaign.</p>
+    </div>
+    <ul class="rules">
+      <li><h3>Opt-ins respected.</h3><p>WhatsApp broadcasts go only to customers who have agreed to hear from you.</p></li>
+      <li><h3>DLT registration for SMS.</h3><p>Your entity, sender IDs and templates, registered as TRAI's rules for commercial SMS require.</p></li>
+      <li><h3>Automated agents say so.</h3><p>The bot and the AI caller introduce themselves as automated.</p></li>
+      <li><h3>A human is one step away.</h3><p>Any customer can ask for a person, at any point.</p></li>
+    </ul>
+    <p class="rules-note">In-house AI expertise: automation and AI tools built by the group's own technology team, run with the discipline of a regulated-industry group.</p>
+  </div>
+</section>
+
 <!-- Closing CTA poster: every page ends here, always to /contact/. -->
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--red)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>

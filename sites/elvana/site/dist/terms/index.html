@@ -33,6 +33,7 @@
 <script>if(location.protocol!=='file:')['../assets/fonts/yatra-one-latin.woff2','../assets/fonts/mukta-400-latin.woff2','../assets/fonts/mukta-800-latin.woff2'].forEach(function(h){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href=h;document.head.appendChild(l)})</script>
 <link rel="stylesheet" href="../assets/css/base.css">
 <link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/legal.css">
 <script defer src="../assets/js/core.js"></script>
 <!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.elvanamedia.com/#organization","name":"Elvana Media","legalName":"ELEVANA MEDIA PRIVATE LIMITED","url":"https://www.elvanamedia.com/","email":"info@elvanamedia.com","telephone":"+91 89283 39531","foundingDate":"2026-06-04","slogan":"Ideas that create impact.","description":"Digital marketing, media & AI-powered growth.","image":"https://www.elvanamedia.com/assets/og-default.png","parentOrganization":{"@type":"Organization","name":"BeyondSure Private Limited"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}],"address":{"@id":"https://www.elvanamedia.com/#registered-office"}},{"@type":"LocalBusiness","@id":"https://www.elvanamedia.com/#mumbai","name":"Elvana Media","url":"https://www.elvanamedia.com/","image":"https://www.elvanamedia.com/assets/og-default.png","email":"info@elvanamedia.com","telephone":"+91 89283 39531","parentOrganization":{"@id":"https://www.elvanamedia.com/#organization"},"address":{"@type":"PostalAddress","@id":"https://www.elvanamedia.com/#registered-office","streetAddress":"203, Shivam Square, Building No. 4, Sahar Road, Andheri East","addressLocality":"Mumbai","addressRegion":"Maharashtra","postalCode":"400069","addressCountry":"IN"}},{"@type":"WebSite","@id":"https://www.elvanamedia.com/#website","url":"https://www.elvanamedia.com/","name":"Elvana Media","publisher":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN"},{"@type":"WebPage","@id":"https://www.elvanamedia.com/terms/#webpage","url":"https://www.elvanamedia.com/terms/","name":"Terms | Elvana Media","description":"The terms of use for www.elvanamedia.com. The final text is being prepared; write to info@elvanamedia.com with any question.","isPartOf":{"@id":"https://www.elvanamedia.com/#website"},"about":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.elvanamedia.com/"},{"@type":"ListItem","position":2,"name":"Terms","item":"https://www.elvanamedia.com/terms/"}]}}]}</script>
@@ -69,8 +70,8 @@
 </header>
 
 <main id="main">
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
+<!-- Terms. Plain and readable, carrying the designed notice from CONTENT-PAGES.md (Legal pages).
+     The final legal text comes from Elvana and its legal advisers: do not draft it here. -->
 <section class="page-hero" aria-labelledby="page-h">
   <div class="page-hero__main g-yellow">
     <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li aria-current="page">Terms</li></ol></nav>
@@ -82,22 +83,26 @@
   </div>
 </section>
 
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
-    </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>The terms of use, to be supplied by Elvana and its legal advisers</li><li>Company particulars: legal name, CIN and registered office</li><li>Contact for questions: info@elvanamedia.com</li></ul>
-    </div>
+<section class="poster" id="notice" aria-labelledby="notice-h" style="--under:var(--ink)">
+  <div class="paste g-ink notice-wall">
+    <article class="notice g-paper">
+      <!-- Hindi echo, for the client to approve: "Notice" -->
+      <h2 class="notice__h" id="notice-h">Notice <span class="deva" lang="hi">सूचना</span></h2>
+      <p class="notice__stamp" aria-hidden="true"><b>Being finalised</b><span>Elvana Media</span></p>
+      <p class="notice__text">Our terms of use are being finalised with our legal advisers. For any question about them, write to <a href="mailto:info@elvanamedia.com">info@elvanamedia.com</a>.</p>
+      <p class="coming-soon" data-todo="terms of use text, from Elvana and its legal advisers"><b>Coming soon</b>The full terms of use</p>
+      <dl class="notice__meta">
+        <div><dt>Write to</dt><dd><a href="mailto:info@elvanamedia.com">info@elvanamedia.com</a></dd></div>
+        <div><dt>Call</dt><dd><a href="tel:+918928339531">+91 89283 39531</a></dd></div>
+        <div><dt>Registered office</dt><dd>203, Shivam Square, Building No. 4, Sahar Road, Andheri East, Mumbai 400069</dd></div>
+      </dl>
+      <p class="notice__also">Also on the wall: <a href="../privacy/index.html">Privacy</a></p>
+    </article>
   </div>
 </section>
 
 <!-- Closing CTA poster: every page ends here, always to /contact/. -->
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--ink)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>

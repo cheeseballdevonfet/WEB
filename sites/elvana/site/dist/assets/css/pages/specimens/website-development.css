@@ -1,0 +1,70 @@
+/* Specimen: Website Development. A landing page that pastes itself up over its wireframe,
+   block by block, as the section scrolls by (or as the slider moves). --p (0..1) on the figure
+   drives every block: each pastes between its own --a and --b, a squeegee riding its edge.
+   No JS or reduced motion: --p stays 1, the finished page. */
+.spec-web{display:grid;gap:18px}
+.web-ctl{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px 18px}
+.web-ctl label{font-weight:800;font-size:16px}
+.web-ctl input{width:100%;height:44px;margin:0;accent-color:var(--yellow);cursor:pointer}
+.web-stage{min-width:7.5em;font-family:var(--display);font-size:clamp(22px,2vw,28px);line-height:1;color:var(--yellow);text-align:right}
+.web-frame{background:var(--ink);padding:0 10px 10px;box-shadow:10px 10px 0 rgba(0,0,0,.25)}
+.web-url{display:flex;align-items:center;height:44px;padding:0 6px}
+.web-url span{flex:1;max-width:420px;margin:0 auto;padding:5px 14px 3px;background:#3D3A35;color:var(--paper-dim);font-weight:600;font-size:14px;text-align:center;border-radius:14px}
+.web-page{display:grid;grid-template-columns:7fr 5fr;background:var(--paper);color:var(--ink);overflow:hidden}
+.wb{position:relative;display:grid;--wk:clamp(0, calc((var(--p) - var(--a)) / (var(--b) - var(--a))), 1)}
+.wb>.wf,.wb>.fin{grid-area:1 / 1;min-width:0}
+.wb .fin{clip-path:inset(0 calc(100% - var(--wk) * 100%) 0 0)}
+/* the squeegee on each block's wet edge, only while it is being pasted */
+.wb::after{content:"";position:absolute;top:0;bottom:0;left:0;width:100%;pointer-events:none;z-index:2;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.55) 36px,var(--ink) 36px 42px,transparent 42px) 0 0/100% 100% no-repeat;
+  transform:translateX(calc(var(--wk) * 100% - 40px));opacity:calc(min(var(--wk), 1 - var(--wk)) * 60)}
+.wb-nav,.wb-feat,.wb-form{grid-column:1 / -1}
+/* wireframe: grey boxes, crossed image, ruled lines */
+.wf{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:16px 18px;background:var(--paper)}
+.wf i{display:block;background:var(--paper-dim);box-shadow:inset 0 0 0 2px #B9B7B0}
+.wf-logo{width:120px;height:22px}
+.wf-line{width:60px;height:12px}
+.wf-line.short{width:40%}
+.wf-btn{width:96px;height:30px;margin-left:auto}
+.wf-h{width:90%;height:30px}
+.wf-h.short{width:60%}
+.wb-hero .wf{flex-direction:column;align-items:flex-start;padding:28px 22px;gap:14px}
+.wb-hero .wf .wf-line{width:80%}
+.wb-hero .wf .wf-btn{margin-left:0;width:170px;height:40px}
+.wf-x{background:linear-gradient(to top right,transparent calc(50% - 1px),#B9B7B0 calc(50% - 1px) calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(to bottom right,transparent calc(50% - 1px),#B9B7B0 calc(50% - 1px) calc(50% + 1px),transparent calc(50% + 1px)),var(--paper-dim);box-shadow:inset 0 0 0 2px #B9B7B0;min-height:220px}
+.wb-feat .wf{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.wf-box{height:84px}
+.wf-field{width:28%;height:38px}
+/* finished */
+.fin{display:flex;flex-wrap:wrap;align-items:center;gap:8px 22px;padding:16px 18px;min-width:0}
+.wb-nav .fin{background:var(--ink);color:var(--paper);font-weight:600;font-size:15px}
+.web-logo{font-family:var(--display);font-weight:400;font-size:22px;color:var(--yellow);margin-right:auto}
+.web-btn{display:inline-block;padding:8px 14px 6px;background:var(--yellow);color:var(--ink);font-weight:800;font-size:15px}
+.web-btn--big{padding:12px 20px 9px;font-size:17px;background:var(--ink);color:var(--yellow)}
+.wb-hero .fin{flex-direction:column;align-items:flex-start;gap:14px;padding:28px 22px;background:var(--yellow)}
+.web-h{font-family:var(--display);font-size:clamp(28px,3.2vw,46px);line-height:.98;max-width:14ch}
+.web-sub{font-size:17px;line-height:1.4;max-width:34ch}
+.web-art{position:relative;min-height:220px;background:var(--red);overflow:hidden}
+.web-art i{position:absolute;display:block}
+.web-art i:nth-child(1){width:46%;aspect-ratio:1;border-radius:50%;background:var(--yellow);right:12%;top:12%}
+.web-art i:nth-child(2){left:0;right:0;bottom:0;height:34%;background:var(--blue)}
+.web-art i:nth-child(3){left:12%;bottom:22%;width:22%;height:46%;background:var(--paper);clip-path:polygon(0 30%,50% 0,100% 30%,100% 100%,0 100%)}
+.wb-feat .fin{display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:0;background:var(--paper)}
+.wb-feat .fin p{display:grid;gap:4px;padding:18px;font-size:15px;line-height:1.35;border-right:2px solid rgba(26,24,20,.14)}
+.wb-feat .fin p:last-child{border-right:0}
+.wb-feat .fin b{font-family:var(--display);font-weight:400;font-size:clamp(20px,1.7vw,24px);line-height:1.05}
+.wb-form .fin{background:var(--blue);color:var(--paper)}
+.wb-form .fin b{font-family:var(--display);font-weight:400;font-size:24px;margin-right:auto}
+.web-field{min-width:150px;padding:9px 12px 7px;background:var(--paper);color:var(--ink-soft);font-size:15px}
+@media (max-width:699px){
+  .web-ctl{grid-template-columns:1fr auto}
+  .web-ctl input{grid-column:1 / -1;grid-row:2}
+  .web-page{grid-template-columns:1fr}
+  .wb-img{grid-row:auto}
+  .wf-x,.web-art{min-height:150px}
+  .wb-nav .fin span:not(.web-btn){display:none}
+  .wb-feat .fin,.wb-feat .wf{grid-template-columns:1fr}
+  .wb-feat .fin p{border-right:0;border-bottom:2px solid rgba(26,24,20,.14);padding:12px 16px}
+  .wf-box{height:46px}
+  .web-field{flex:1 1 100%}
+}

@@ -1,0 +1,75 @@
+/* =========================================================================
+   Elvana Media: pages/work.css
+   The Work page's one signature, "This space is available": an empty
+   hoarding (steel frame, three lamps, two legs) carrying the classic
+   advertise-here board. js/pages/work.js paints the visitor's brand name
+   onto it in a canvas laid over the board. Without JS the board is the
+   finished picture, and the form takes the name to /contact/.
+   ========================================================================= */
+.js .nojs-only{display:none!important}
+
+.space .head-split h2{max-width:11ch}
+
+/* ---------- The hoarding ---------- */
+.hoarding{margin:clamp(32px,4vw,56px) 0 0;position:relative;--frame:clamp(8px,1vw,14px);--steel:var(--ink)}
+.hoarding__lamps{display:flex;justify-content:space-around;height:clamp(30px,3.4vw,48px);margin:0 8%}
+.hoarding__lamps i{position:relative;width:clamp(44px,5vw,72px)}
+.hoarding__lamps i::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:4px;margin-left:-2px;background:var(--steel)}            /* the arm */
+.hoarding__lamps i::after{content:"";position:absolute;left:0;right:0;top:0;height:clamp(12px,1.3vw,18px);background:var(--steel);
+  clip-path:polygon(10% 0,90% 0,100% 100%,0 100%)}                                                                                    /* the lamp head */
+.hoarding__panel{position:relative;aspect-ratio:3 / 1;border:var(--frame) solid var(--steel);background:var(--paper);container:panel / size;
+  box-shadow:0 0 0 2px rgba(242,243,239,.18),8px 10px 0 rgba(0,0,0,.28)}
+.hoarding__legs{display:flex;justify-content:space-between;height:clamp(36px,4vw,60px);margin:0 18%}
+.hoarding__legs i{width:clamp(10px,1.1vw,16px);background:var(--steel);box-shadow:inset -4px 0 0 rgba(255,255,255,.08)}
+
+/* The advertise-here board, painted on the panel the way every empty Indian hoarding is */
+.adboard{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.2cqh;text-align:center;padding:5cqh 5cqw;
+  box-shadow:inset 0 0 0 2.2cqh var(--paper),inset 0 0 0 calc(2.2cqh + 5px) var(--red),inset 0 0 0 calc(2.2cqh + 9px) var(--paper),inset 0 0 0 calc(2.2cqh + 12px) var(--red)}
+.adboard__big{font-family:var(--display);font-size:min(8.6cqw,28cqh);line-height:.95;color:var(--red);max-width:13ch;text-wrap:balance}
+.adboard__hi{font-family:var(--display);font-size:min(4.2cqw,12cqh);line-height:1.2;color:var(--ink)}
+.adboard__call{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:.1em .5em;font-weight:800;font-size:max(14px,min(2.2cqw,7cqh));line-height:1.2;color:var(--ink)}
+.adboard__num{font-family:var(--display);font-weight:400;font-size:1.6em;color:var(--blue);white-space:nowrap}
+.painter{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hoarding__panel.is-busy{cursor:pointer}
+
+/* ---------- The paint form and the offer ---------- */
+.paint-row{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:28px clamp(28px,4vw,64px);align-items:start;margin-top:clamp(-28px,-1.6vw,-8px)}
+.paint-form{display:grid;gap:8px;padding-top:clamp(12px,1.6vw,24px)}
+.paint-form label{font-weight:800;font-size:17px}
+.paint-form__row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px}
+.paint-form input{width:100%;min-height:58px;padding:12px 14px 6px;border:3px solid var(--ink);border-radius:0;background:var(--paper);color:var(--ink);
+  font:400 clamp(22px,2vw,28px)/1.2 var(--display)}
+.paint-form input:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.paint-form input[aria-invalid="true"]{border-color:var(--yellow);box-shadow:inset 6px 0 0 var(--red)}
+.paint-form .tag{min-height:58px}
+.paint-form__hint{font-size:var(--fs-small);color:var(--paper)}
+.paint-form .err{color:var(--paper)}
+.offer{margin:calc(clamp(24px,3vw,48px) * -1) 0 0 auto;transform:rotate(-1.4deg);transform-origin:100% 0;width:100%;max-width:560px;color:var(--ink)}
+.offer .offer__line{font-family:var(--display);font-size:clamp(26px,2.5vw,38px);line-height:1.04;overflow-wrap:anywhere}
+.offer .offer__small{font-size:17px;line-height:1.45}
+.offer .tags{margin-top:6px}
+.offer .tag{max-width:100%;overflow-wrap:anywhere}
+
+/* ---------- The honest note ---------- */
+.note .coming-soon{margin-bottom:clamp(28px,3.6vw,52px);max-width:none}
+.note .head-split h2{max-width:14ch}
+
+/* ---------- Tablet and phone: the hoarding gets taller so a long name has room ---------- */
+@media (max-width:1099px){
+  .hoarding__panel{aspect-ratio:2 / 1}
+  .paint-row{grid-template-columns:1fr}
+  .offer{margin:0 0 0 auto}
+}
+@media (max-width:699px){
+  .hoarding{margin-left:calc(var(--pad-x) * -.4);margin-right:calc(var(--pad-x) * -.4)}
+  .hoarding__panel{aspect-ratio:1 / 1.02}
+  .hoarding__lamps{margin:0 4%}
+  .hoarding__legs{margin:0 14%}
+  .adboard{gap:3cqh}
+  .adboard__big{font-size:min(15cqw,17cqh)}
+  .adboard__hi{font-size:min(7.4cqw,8cqh)}
+  .adboard__call{font-size:max(14px,min(4.4cqw,4.4cqh));flex-direction:column;align-items:center}
+  .paint-form__row{grid-template-columns:1fr}
+  .paint-form .tag{width:100%}
+  .offer{transform:rotate(-1deg);margin-right:calc(var(--pad-x) * -.5)}
+}

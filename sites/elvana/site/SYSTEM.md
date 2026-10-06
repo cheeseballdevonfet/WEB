@@ -145,7 +145,7 @@ Labels are sentence case in Mukta 800, never all-caps eyebrows. Use no middle-do
 | `--ease-tug` | cubic-bezier(.55,0,.75,.2) | gravity: a sheet letting go |
 | `--ease-lift` | cubic-bezier(.3,1.3,.5,1) | a corner lifting, one tiny overshoot |
 | `--t-press` / `--t-lift` / `--t-paste` / `--t-paste-in` | 120 / 220 / 320 / 900 ms | press, hover lift, small paste, poster paste fallback |
-| springs (tear.js) | flap k260 c26, roll k120 c19, peek k300 c30 | tear and peel physics |
+| tear and peel physics | see the `MATERIAL` and `MOTION` blocks at the top of `tear.js` (memory-curl radius, wrap thickness, taut fold radius, one critically damped roll normalised to 560 ms, fixed 240 Hz steps); `lab/TEAR.md` explains the model | tear and peel |
 
 Every duration multiplies by `--slow` (10 while slow motion is on). JS timers divide by `Elvana.timeScale`.
 
@@ -210,7 +210,7 @@ These are on every page already. Page builders use them and never rebuild them. 
 
 **Per-page signatures** (the fly-poster wall, the tri-vision hoarding, the ticket counter, the paste-up and the rest) and the 14 service specimens are specified in `INTERACTIONS.md`. Build each one as `src/js/pages/<page>.js` plus `src/css/pages/<page>.css`, sitting below or inside the page hero, never on top of it.
 - **Specimens.** Label every specimen "Mock-up" and invent no numbers.
-- **404.** It currently shows the peel as the contract example. INTERACTIONS.md plans "Torn down" (drag the scraps aside); that replaces it.
+- **404.** "Torn down": draggable poster scraps over a list of every page (`js/pages/404.js`).
 
 ## 6. Component catalogue
 
@@ -265,7 +265,7 @@ Contract:
 - **CSS fallback.** Until `data-peel-mounted` is set (no JS, reduced motion, or tear.js failing), tear.css shows a still, pre-curled corner: `.peel__over` is clipped at the corner (size `--peel`) and a folded paper triangle sits on top. All peel CSS lives in tear.css with the engine. components.css only places the peel in the page hero.
 - **Keyboard.** The engine adds a visually hidden "Peel back" button (`.peel__btn`) that appears on focus. You can change its labels with `data-peel-label` and `data-peel-label-back`.
 - **Content placement.** Essential content and links go on `.peel__over`. `.peel__under` is a reward (short, `aria-hidden` when it repeats something).
-- **Wiring.** Add `tear` to `css` and `js` in the front matter. `404.html` is the live example.
+- **Wiring.** Add `tear` to `css` and `js` in the front matter. Every service page is a live example (`pages/services/*.html`).
 
 ### Hero tear (home only)
 The block between `<!-- TEAR:BEGIN -->` and `<!-- TEAR:END -->` in `pages/index.html` is variation A's markup, unchanged. Its parts:
@@ -492,3 +492,11 @@ It warns when a title is over 65 characters or a description falls outside 70 to
 - `tools/crawl.js`: the link crawl.
 - `tools/ship.js`: the Ship-ready checks (4× CPU throttle, slow 4G over http, CLS, LCP, interaction latency, keyboard, reduced motion, no JS).
 - `tools/compare.js`: home vs A.
+
+## 10. Gotchas (found while building the pages)
+
+- **Registered custom properties don't inherit.** `--k` and `--c` are registered in `components.css` with `inherits: false`, so a page variable with the same name silently reads its initial value. Use page-prefixed names (`--svc-k`, `--tv-k`).
+- **Scroll with `behavior: 'instant'` from scripts.** `html` has `scroll-behavior: smooth`, so programmatic jumps (rails, "back to the top" inside a pinned stage) must pass `behavior: 'instant'` or they animate.
+- **Class names that collide.** `.legal` (the footer legal line) and `.board` (station board) are system classes. Prefix page classes (`.notice`, `.tv-board`).
+- **Fonts and layout shift.** `base.css` declares metric-matched fallbacks (`'Yatra One fb'`, `'Mukta fb'`: Arial or Liberation Sans scaled with `size-adjust` and ascent and descent overrides), so headings don't reflow when the embedded fonts finish decoding. Keep the `--display` and `--text` stacks intact.
+- **Page-local pieces worth promoting later:** the rubber stamp (`.stamp` in contact.css, `.notice__stamp` in legal.css), the choice chips (`.chip`), the mock-up sticker (`.mockup` / `.mock` / `.pf-mock`), the FAQ (`.faq` in services.css), the compact steps strip (`.runs-steps`), and `.nojs-only` (work.css). Each currently lives in its page CSS.

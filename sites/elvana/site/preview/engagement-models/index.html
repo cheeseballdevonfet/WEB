@@ -80,8 +80,8 @@
 
   /* Type. Display: Yatra One (Latin + Devanagari, one brush). Text: Mukta 400/600/800.
      Devanagari inside body text falls back to Yatra One (Mukta ships Latin only). */
-  --display:'Yatra One','Mukta',sans-serif;
-  --text:'Mukta','Yatra One',sans-serif;
+  --display:'Yatra One','Yatra One fb','Mukta',sans-serif;
+  --text:'Mukta','Mukta fb','Yatra One',sans-serif;
   --fs-d1:clamp(48px,8.2vw,124px);
   --fs-d2:clamp(34px,4.2vw,64px);
   --fs-d3:clamp(26px,2.6vw,38px);
@@ -143,6 +143,14 @@ img,svg{max-width:100%}
 .no-js .js-only,.js:not(.motion) .motion-only{display:none!important}
 .skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--yellow);color:var(--ink);padding:12px 18px;font-weight:800;text-decoration:none}
 .skip:focus{top:12px}
+
+/* Metric-matched fallbacks: while the embedded fonts decode, text is laid out in Arial / Liberation Sans
+   scaled to the real fonts' average width and vertical metrics, so nothing reflows when they arrive.
+   Values measured with fontTools against Liberation Sans (metric-compatible with Arial) on a mixed sample. */
+@font-face{font-family:'Yatra One fb';font-weight:400;src:local('Arial'),local('ArialMT'),local('Liberation Sans'),local('Helvetica'),local('Roboto');size-adjust:110.3%;ascent-override:89.9%;descent-override:44.2%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:400;src:local('Arial'),local('ArialMT'),local('Liberation Sans'),local('Helvetica'),local('Roboto');size-adjust:94.2%;ascent-override:120%;descent-override:56.5%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:600;src:local('Arial Bold'),local('Arial-BoldMT'),local('Liberation Sans Bold'),local('Helvetica Bold'),local('Roboto Bold');size-adjust:91.3%;ascent-override:123.8%;descent-override:58.3%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:800;src:local('Arial Bold'),local('Arial-BoldMT'),local('Liberation Sans Bold'),local('Helvetica Bold'),local('Roboto Bold');size-adjust:94.2%;ascent-override:119.9%;descent-override:56.4%;line-gap-override:0%}
 
 /* components.css */
 /* =========================================================================
@@ -544,7 +552,7 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
 
 /* ---------- Footer: the promise, the site map, contact, the legal line ---------- */
 .foot{position:relative;z-index:1;margin-top:-10px;padding:clamp(56px,7vw,104px) var(--pad-x) 28px}
-.foot .d1{color:var(--yellow);font-size:clamp(56px,10.6vw,180px);line-height:.88}
+.foot .d1{color:var(--yellow);font-size:clamp(36px,10.6vw,180px);line-height:.88}
 .foot .tagline{margin-top:clamp(18px,2.4vw,32px);font-size:var(--fs-lede);max-width:40ch}
 .foot-map{display:grid;grid-template-columns:3fr 3fr 3fr 4fr;gap:36px clamp(24px,3vw,48px);margin-top:clamp(48px,6vw,88px);padding-top:28px;border-top:6px solid var(--yellow)}
 .foot-h{font-family:var(--display);font-weight:400;font-size:clamp(24px,2vw,30px);line-height:1.05;color:var(--yellow);margin:0 0 12px}
@@ -640,6 +648,175 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
   .flyer:hover{transform:none}
 }
 
+/* pages/engagement-models.css */
+/* =========================================================================
+   Elvana Media: pages/engagement-models.css
+   Engagement models only. The signature, "The ticket counter"
+   (INTERACTIONS.md): pick a model, a ticket prints from the slot, tear off
+   its stub to enquire with that model chosen.
+   - No JS: the three tickets side by side, each stub a working GET form.
+   - JS: a booking window. The tickets share one grid cell under the slot
+     (so the window is always as tall as the tallest ticket and nothing
+     shifts); pages/engagement-models.js prints, swaps and tears them.
+   Tickets are cut with masks (the notches at the perforation), so their
+   shadow is a drop-shadow filter on the ticket.
+   ========================================================================= */
+
+#counter-h{max-width:11ch}
+.counter{margin-top:clamp(40px,5.5vw,80px)}
+
+/* ---------- Tickets ---------- */
+.ticket{position:relative;display:grid;align-content:start;color:var(--ink);filter:drop-shadow(5px 7px 0 rgba(0,0,0,.34));transform-origin:50% 0;--notch:11px}
+.ticket__body{position:relative;display:grid;gap:14px;align-content:start;padding:22px 24px 26px;background:var(--paper);
+  box-shadow:inset 0 0 0 7px var(--paper),inset 0 0 0 9px var(--red);
+  -webkit-mask:radial-gradient(circle var(--notch) at 0 100%,#0000 calc(var(--notch) - .5px),#000 var(--notch)) 0 0/51% 100% no-repeat,radial-gradient(circle var(--notch) at 100% 100%,#0000 calc(var(--notch) - .5px),#000 var(--notch)) 100% 0/51% 100% no-repeat;
+  mask:radial-gradient(circle var(--notch) at 0 100%,#0000 calc(var(--notch) - .5px),#000 var(--notch)) 0 0/51% 100% no-repeat,radial-gradient(circle var(--notch) at 100% 100%,#0000 calc(var(--notch) - .5px),#000 var(--notch)) 100% 0/51% 100% no-repeat}
+.ticket__top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;padding:4px 4px 10px;border-bottom:3px solid var(--ink);font-weight:800;font-size:14px;line-height:1.2}
+.ticket__name{font-size:clamp(38px,3.4vw,52px);line-height:.95;color:var(--red);padding:0 4px}
+.ticket__dl{display:grid;gap:12px;padding:0 4px}
+.ticket__dl div{display:grid;gap:2px}
+.ticket__dl dt{font-weight:800;font-size:14px;line-height:1.3}
+.ticket__dl dd{font-size:17px;line-height:1.4}
+.ticket .price{font-size:16px}
+.ticket .price .amt{font-size:30px}
+.ticket .price .gap{box-shadow:inset 0 0 0 2px var(--ink);background:rgba(26,24,20,.06)}
+.ticket .coming-soon--over{--strip-top:auto;top:auto;bottom:18px;left:36%;right:-12%;--strip-angle:-7deg;transform:rotate(var(--strip-angle));transform-origin:0 50%;justify-content:flex-start;font-size:15px;padding:.45em .8em .32em}
+.ticket .coming-soon--over>b{font-size:26px}
+
+/* The stub: a yellow strip under the perforation; a GET form to /contact/?model=… */
+.ticket__stub{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;padding:16px 18px 16px 24px;background:var(--yellow);
+  border-top:3px dashed rgba(26,24,20,.55);touch-action:pan-y;
+  -webkit-mask:radial-gradient(circle var(--notch) at 0 0,#0000 calc(var(--notch) - .5px),#000 var(--notch)) 0 0/51% 100% no-repeat,radial-gradient(circle var(--notch) at 100% 0,#0000 calc(var(--notch) - .5px),#000 var(--notch)) 100% 0/51% 100% no-repeat;
+  mask:radial-gradient(circle var(--notch) at 0 0,#0000 calc(var(--notch) - .5px),#000 var(--notch)) 0 0/51% 100% no-repeat,radial-gradient(circle var(--notch) at 100% 0,#0000 calc(var(--notch) - .5px),#000 var(--notch)) 100% 0/51% 100% no-repeat}
+#ticket-campaign .ticket__stub{background:var(--blue);color:var(--paper);border-top-color:rgba(242,243,239,.7)}
+#ticket-campaign .stub__tear{background:var(--yellow);color:var(--ink)}
+#ticket-campaign .stub__tear:focus-visible{outline-color:var(--yellow)}
+#ticket-project .ticket__stub{background:var(--ink);color:var(--paper);border-top-color:rgba(242,243,239,.6);box-shadow:inset 0 -3px 0 rgba(242,243,239,.18)}
+#ticket-project .stub__tear{background:var(--yellow);color:var(--ink)}
+#ticket-project .stub__tear:focus-visible{outline-color:var(--yellow)}
+.stub__label{display:grid;gap:2px;font-weight:800;font-size:14px;line-height:1.2}
+.stub__label b{font:400 22px/1.05 var(--display)}
+.stub__tear{position:relative;min-height:48px;padding:12px 16px 9px;border:0;border-radius:0;background:var(--ink);color:var(--yellow);font:800 16px/1.1 var(--text);cursor:pointer;transform-origin:0 0;
+  transition:transform calc(220ms * var(--slow)) var(--ease-lift)}
+.stub__tear:hover{transform:rotate(-2.2deg)}
+.stub__tear:active{transform:translate(-1%,2px) scale(1.02,.92)}
+.stub__tear:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.stub__tear:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.js.motion .ticket__stub{cursor:grab}
+.js.motion .ticket__stub.is-dragging{cursor:grabbing}
+
+/* ---------- No JS: the tickets side by side ---------- */
+.counter__mouth{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,36px);align-items:start}
+.counter__sign,.counter__slot,.counter__ledge{display:none}
+.counter__plain{margin-top:clamp(28px,3vw,44px);font-weight:600;font-size:var(--fs-body)}
+/* JS, desktop: the plain way in sits at the foot of the left column, level with the counter ledge */
+.js .counter__plain{grid-column:1;grid-row:2;align-self:end;margin:0;padding:18px 0 0;border-top:3px solid rgba(242,243,239,.4);max-width:30ch}
+.js .counter__window{grid-column:2;grid-row:1 / span 2}
+
+/* ---------- JS: the booking window ---------- */
+.js .counter{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,4vw,72px);align-items:start}
+.counter__pick{min-width:0;margin:0;padding:0;border:0;display:grid;gap:14px}
+.counter__pick legend{padding:0;margin-bottom:8px;font-weight:800;font-size:var(--fs-body)}
+.pick{position:relative;display:grid;gap:4px;padding:18px 22px 16px;background:var(--paper);color:var(--ink);cursor:pointer;box-shadow:6px 7px 0 rgba(0,0,0,.3);transform-origin:0 0;
+  transition:transform calc(220ms * var(--slow)) var(--ease-lift),box-shadow calc(120ms * var(--slow)) linear,background-color calc(160ms * var(--slow)) linear}
+.pick input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.pick__name{font:400 var(--fs-d3)/1 var(--display)}
+.pick__for{font-weight:600;font-size:16px;line-height:1.3}
+.pick:hover{transform:rotate(-1.3deg)}
+.pick:active{transform:translate(4px,5px);box-shadow:2px 2px 0 rgba(0,0,0,.3)}
+/* each model is its own ink, and its ticket's stub is printed in the same ink */
+.pick--retainer{background:var(--yellow)}
+.pick--campaign{background:var(--blue);color:var(--paper)}
+.pick--project{background:var(--paper)}
+.pick::after{content:"";position:absolute;inset:7px;border:3px solid currentColor;opacity:0;pointer-events:none;transition:opacity calc(120ms * var(--slow)) linear}
+.pick:has(input:checked){transform:translate(4px,5px);box-shadow:2px 2px 0 rgba(0,0,0,.3)}
+.pick:has(input:checked)::after{opacity:1}
+.pick__name{position:relative;z-index:1}
+.pick:has(input:focus-visible){outline:3px solid var(--paper);outline-offset:4px}
+.pick:has(input:disabled){opacity:.5;cursor:not-allowed}
+.counter__how{margin-top:6px;font-size:var(--fs-small);font-weight:600;max-width:36ch}
+
+.js .counter__window{position:relative;padding:0 clamp(18px,3vw,48px);background:repeating-linear-gradient(90deg,rgba(242,243,239,.07) 0 4px,transparent 4px 38px),var(--ink);color:var(--paper);
+  box-shadow:inset 0 0 0 8px rgba(0,0,0,.28),9px 11px 0 rgba(0,0,0,.3)}
+.js .counter__sign{display:block;margin:0 calc(-1 * clamp(18px,3vw,48px));padding:16px 0 12px;text-align:center;background:var(--ink);font:400 clamp(34px,3.4vw,52px)/1 var(--display);color:var(--yellow);border-bottom:5px solid var(--yellow)}
+.js .counter__slot{display:block;width:min(100%,468px);height:18px;margin:28px auto 0;background:#000;box-shadow:0 3px 0 var(--post),inset 0 4px 4px rgba(255,255,255,.08)}
+.js .counter__mouth{grid-template-columns:minmax(0,420px);justify-content:center;gap:0;padding:0 0 44px;clip-path:inset(0 -80px -120px -80px)}
+.js .ticket{grid-area:1 / 1;visibility:hidden}
+.js .ticket.is-out{visibility:visible}
+.js .counter__idle{grid-area:1 / 1;align-self:stretch;display:grid;align-content:center;justify-items:center;gap:8px;margin:0 6px 4px;padding:24px;text-align:center;font-size:var(--fs-lede);line-height:1.3;color:var(--paper-dim);
+  border:3px dashed rgba(242,243,239,.4);border-top:0;transition:opacity calc(200ms * var(--slow)) linear}
+.js .counter__idle b{font:400 var(--fs-d3)/1 var(--display);color:var(--paper)}
+.js .counter__idle::before{content:"";position:absolute;left:50%;top:0;width:min(100%,420px);height:22px;transform:translateX(-50%);background:var(--paper);box-shadow:0 4px 0 rgba(0,0,0,.35);
+  -webkit-mask:linear-gradient(#000,#000) top/100% 12px no-repeat,radial-gradient(circle 5px at 50% 100%,#0000 4.5px,#000 5px) 0 100%/14px 10px repeat-x;mask:linear-gradient(#000,#000) top/100% 12px no-repeat,radial-gradient(circle 5px at 50% 100%,#0000 4.5px,#000 5px) 0 100%/14px 10px repeat-x}
+.js .counter__idle{position:relative}
+.js .counter.has-ticket .counter__idle{opacity:0}
+.js .counter__ledge{display:block;height:24px;margin:0 calc(-1 * clamp(18px,3vw,48px));background:var(--yellow);box-shadow:inset 0 -6px 0 rgba(0,0,0,.18)}
+
+/* ---------- How to start ---------- */
+#start-h{max-width:10ch}
+.start{display:grid;grid-template-columns:repeat(3,1fr);margin:clamp(40px,5vw,72px) calc(var(--pad-x) * -1) 0;border-top:6px solid var(--ink)}
+.start li{display:grid;gap:12px;align-content:start;padding:26px var(--pad-x) 8px}
+.start li+li{box-shadow:inset 3px 0 0 rgba(26,24,20,.85)}
+.start .n{font:400 clamp(84px,8.4vw,132px)/.8 var(--display);color:var(--red)}
+.start h3{font-size:var(--fs-d3);max-width:14ch}
+.start p{max-width:30ch}
+
+/* ---------- Questions ---------- */
+.qs{margin-top:clamp(36px,4.5vw,64px);border-top:6px solid var(--yellow);max-width:1180px}
+.qs div{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:12px 56px;padding:28px 0 30px;border-bottom:3px solid rgba(242,243,239,.35)}
+.qs dt{font:400 var(--fs-d3)/1.05 var(--display);color:var(--yellow);max-width:20ch}
+.qs dd{font-size:var(--fs-lede);line-height:1.42;max-width:40ch}
+.qs .coming-soon--inline{margin-top:10px}
+
+/* ---------- Tablet ---------- */
+@media (max-width:1099px){
+  .counter__mouth{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .js .counter{grid-template-columns:1fr}
+  .js .counter__window{grid-column:1;grid-row:auto}
+  .js .counter__plain{grid-column:1;grid-row:auto;max-width:none}
+  .js .counter__pick{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .js .counter__pick legend,.js .counter__how{grid-column:1 / -1}
+  .pick{padding:16px 16px 14px}
+  .start{grid-template-columns:1fr}
+  .start li{grid-template-columns:96px 1fr;column-gap:20px}
+  .start .n{grid-row:span 2;font-size:96px}
+  .start li+li{box-shadow:none;border-top:3px solid rgba(26,24,20,.85)}
+}
+@media (max-width:860px){
+  .qs div{grid-template-columns:1fr}
+}
+/* ---------- Phone ---------- */
+@media (max-width:699px){
+  .counter__mouth{grid-template-columns:1fr}
+  .js .counter__pick{gap:8px}
+  .pick{padding:14px 10px 13px;gap:2px;box-shadow:4px 5px 0 rgba(0,0,0,.3)}
+  .pick::after{inset:4px}
+  .pick__name{font-size:min(21px,4.9vw)}
+  .pick__for{font-size:14px}
+  .pick:has(input:checked),.pick:active{transform:translate(3px,4px)}
+  .js .counter__window{padding:0 14px}
+  .js .counter__sign{margin:0 -14px}
+  .js .counter__ledge{margin:0 -14px}
+  .js .counter__slot{margin-top:20px}
+  .js .counter__mouth{grid-template-columns:minmax(0,1fr);padding-bottom:32px}
+  .ticket__body{padding:18px 18px 22px}
+  .ticket__stub{padding:14px 14px 14px 18px;gap:10px}
+  .stub__label b{font-size:20px}
+  .stub__tear{padding:12px 12px 9px;font-size:15px}
+  .ticket .coming-soon--over{left:30%;right:-14%;font-size:14px}
+  .ticket .coming-soon--over>b{font-size:22px}
+  .start li{grid-template-columns:64px 1fr;column-gap:14px}
+  .start .n{font-size:72px}
+}
+@media (max-width:359px){
+  .ticket__stub{grid-template-columns:1fr}
+  .stub__tear{justify-self:start}
+}
+@media (prefers-reduced-motion:reduce){
+  .pick,.stub__tear,.counter__idle{transition:none}
+  .pick:hover,.stub__tear:hover{transform:none}
+}
+
 </style>
 
 <!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
@@ -677,8 +854,15 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
 </header>
 
 <main id="main">
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
+<!-- =====================================================================
+     Engagement models. Signature: "The ticket counter" (INTERACTIONS.md).
+     Choose Retainer, Campaign or Project and a ticket prints from the slot.
+     Tear off its stub (drag it, or press its button) to open
+     /contact/?model=retainer|campaign|project; the contact page pre-selects
+     the model from that parameter. Each stub is a GET form, so without JS
+     the button does the same. No JS: the three tickets side by side.
+     Prices are not supplied yet: every price is a "Coming soon" snipe.
+     ===================================================================== -->
 <section class="page-hero" aria-labelledby="page-h">
   <div class="page-hero__main g-yellow">
     <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li aria-current="page">Engagement models</li></ol></nav>
@@ -690,22 +874,119 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
   </div>
 </section>
 
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
+<!-- 1. The signature: the ticket counter -->
+<section class="poster" id="counter" aria-labelledby="counter-h" style="--under:var(--ink)">
+  <div class="paste g-red">
+    <div class="head-split">
+      <h2 class="d1" id="counter-h">Pick a model, take a ticket</h2>
+      <p class="lede">Three ways to work with Elvana. Choose one and a ticket prints with what it includes. Tear off the stub to send an enquiry with that model already chosen.</p>
     </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>Monthly Retainer: always-on growth</li><li>Campaign SOW: launches &amp; seasons</li><li>Project-based: build once, use daily</li><li>Prices (TODO: to come from Elvana)</li><li>How to start</li></ul>
+
+    <div class="counter" data-counter>
+      <fieldset class="counter__pick js-only">
+        <legend>Choose a model</legend>
+        <label class="pick pick--retainer"><input type="radio" name="model-pick" value="retainer"><span class="pick__name">Monthly Retainer</span><span class="pick__for">Always-on growth</span></label>
+        <label class="pick pick--campaign"><input type="radio" name="model-pick" value="campaign"><span class="pick__name">Campaign SOW</span><span class="pick__for">Launches &amp; seasons</span></label>
+        <label class="pick pick--project"><input type="radio" name="model-pick" value="project"><span class="pick__name">Project-based</span><span class="pick__for">Build once, use daily</span></label>
+        <p class="counter__how">The ticket prints in the window. Drag its stub to tear it off, or press Tear off the stub.</p>
+      </fieldset>
+
+      <div class="counter__window">
+        <p class="counter__sign" aria-hidden="true">Tickets</p>
+        <div class="counter__slot" aria-hidden="true"></div>
+        <div class="counter__mouth">
+          <p class="counter__idle js-only" aria-hidden="true"><b>Choose a model.</b>Your ticket prints here.</p>
+
+          <article class="ticket" id="ticket-retainer" data-model="retainer" aria-labelledby="ticket-retainer-h">
+            <div class="ticket__body has-strip">
+              <p class="ticket__top"><span>Elvana Media</span><span>Admit one brand</span></p>
+              <h3 class="ticket__name" id="ticket-retainer-h">Monthly Retainer</h3>
+              <dl class="ticket__dl">
+                <div><dt>Best for</dt><dd>Always-on growth</dd></div>
+                <div><dt>What's included</dt><dd>Social media, content, SEO, ads management and monthly reporting.</dd></div>
+                <div class="ticket__price"><dt>Price</dt><dd class="price"><span class="pl">From</span><span class="amt">₹<span class="gap" role="img" aria-label="amount to be confirmed"></span></span><span class="pl">a month</span></dd></div>
+              </dl>
+              <p class="coming-soon coming-soon--over" data-todo="price"><b>Coming soon</b>Price</p>
+            </div>
+            <form class="ticket__stub" action="../contact/index.html" method="get">
+              <input type="hidden" name="model" value="retainer">
+              <p class="stub__label"><span>Enquiry stub</span><b>Monthly Retainer</b></p>
+              <button class="stub__tear" type="submit">Tear off the stub<span class="sr">: send an enquiry about the Monthly Retainer</span></button>
+            </form>
+          </article>
+
+          <article class="ticket" id="ticket-campaign" data-model="campaign" aria-labelledby="ticket-campaign-h">
+            <div class="ticket__body has-strip">
+              <p class="ticket__top"><span>Elvana Media</span><span>Admit one brand</span></p>
+              <h3 class="ticket__name" id="ticket-campaign-h">Campaign SOW</h3>
+              <dl class="ticket__dl">
+                <div><dt>Best for</dt><dd>Launches &amp; seasons</dd></div>
+                <div><dt>What's included</dt><dd>Product launches, festive pushes, events and PR bursts, scoped per campaign.</dd></div>
+                <div class="ticket__price"><dt>Price</dt><dd class="price"><span class="pl">Per campaign</span><span class="amt">₹<span class="gap" role="img" aria-label="amount to be confirmed"></span></span></dd></div>
+              </dl>
+              <p class="coming-soon coming-soon--over" data-todo="price"><b>Coming soon</b>Price</p>
+            </div>
+            <form class="ticket__stub" action="../contact/index.html" method="get">
+              <input type="hidden" name="model" value="campaign">
+              <p class="stub__label"><span>Enquiry stub</span><b>Campaign SOW</b></p>
+              <button class="stub__tear" type="submit">Tear off the stub<span class="sr">: send an enquiry about a Campaign SOW</span></button>
+            </form>
+          </article>
+
+          <article class="ticket" id="ticket-project" data-model="project" aria-labelledby="ticket-project-h">
+            <div class="ticket__body has-strip">
+              <p class="ticket__top"><span>Elvana Media</span><span>Admit one brand</span></p>
+              <h3 class="ticket__name" id="ticket-project-h">Project-based</h3>
+              <dl class="ticket__dl">
+                <div><dt>Best for</dt><dd>Build once, use daily</dd></div>
+                <div><dt>What's included</dt><dd>Websites, WhatsApp bots, AI calling set-up and brand identity.</dd></div>
+                <div class="ticket__price"><dt>Price</dt><dd class="price"><span class="pl">Per project</span><span class="amt">₹<span class="gap" role="img" aria-label="amount to be confirmed"></span></span></dd></div>
+              </dl>
+              <p class="coming-soon coming-soon--over" data-todo="price"><b>Coming soon</b>Price</p>
+            </div>
+            <form class="ticket__stub" action="../contact/index.html" method="get">
+              <input type="hidden" name="model" value="project">
+              <p class="stub__label"><span>Enquiry stub</span><b>Project-based</b></p>
+              <button class="stub__tear" type="submit">Tear off the stub<span class="sr">: send an enquiry about a project</span></button>
+            </form>
+          </article>
+        </div>
+        <div class="counter__ledge" aria-hidden="true"></div>
+      </div>
+      <p class="counter__plain">In a hurry? <a href="../contact/index.html">Write to us without a ticket</a>.</p>
     </div>
   </div>
 </section>
 
+<!-- 2. How to start -->
+<section class="poster" id="start" aria-labelledby="start-h" style="--under:var(--red)">
+  <div class="paste g-paper">
+    <div class="head-split">
+      <h2 class="d1" id="start-h">How to start</h2>
+      <p class="lede">Any service can be part of a Monthly Retainer, a Campaign SOW or a Project. We help you choose after the first step.</p>
+    </div>
+    <ol class="start">
+      <li><span class="n" aria-hidden="true">1</span><h3>Tell us the problem</h3><p>Use the <a href="../contact/index.html">contact form</a> or call <a href="tel:+918928339531">+91 89283 39531</a>.</p></li>
+      <li><span class="n" aria-hidden="true">2</span><h3>We run Discover with you</h3><p>Your business, audience, competitors and goals. <a href="../how-we-work/index.html">How we work</a></p></li>
+      <li><span class="n" aria-hidden="true">3</span><h3>We propose the model that fits</h3><p>Retainer, campaign or project.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 3. Questions -->
+<section class="poster" id="questions" aria-labelledby="questions-h" style="--under:var(--paper)">
+  <div class="paste g-blue">
+    <h2 class="d1" id="questions-h">Questions</h2>
+    <dl class="qs">
+      <div><dt>Can we start with a project and move to a retainer?</dt><dd>Yes. You can start with a project, such as a website or a WhatsApp bot, and add always-on work later.</dd></div>
+      <div><dt>What's in the monthly report?</dt><dd>What moved, what didn't, and what we'll change next month, in plain language.</dd></div>
+      <div><dt>What does each model cost?</dt><dd>Prices are shared after Discover, based on scope. <span class="coming-soon coming-soon--inline coming-soon--yellow" data-todo="price list">Price list coming soon</span></dd></div>
+    </dl>
+  </div>
+</section>
+
 <!-- Closing CTA poster: every page ends here, always to /contact/. -->
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--blue)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>
@@ -810,12 +1091,10 @@ const motionOK = root.classList.contains('motion');
 /* 1. MOTION ---------------------------------------------------------------
    Springs: k = stiffness, c = damping, mass 1. zeta = c / (2 * sqrt(k)).   */
 const MOTION = {
+  // The tear and peel physics (material constants, springs, roll timing) live in tear.js's MATERIAL / MOTION blocks.
   paste: bezier(.2, .7, .1, 1),     // paste: cubic-bezier(.2,.7,.1,1). Squeegee settle; every entrance eases out.
   tug: bezier(.55, 0, .75, .2),     // tug: cubic-bezier(.55,0,.75,.2). Gravity: a sheet letting go of the wall.
   lift: 'cubic-bezier(.3,1.3,.5,1)',// lift: a corner lifting, one tiny overshoot (CSS only)
-  flap: { k: 260, c: 26 },          // flap: a torn strip's free end follows the hand (zeta .81)   [tear.js]
-  roll: { k: 120, c: 19 },          // roll: a released strip curls up into a roll (zeta .87)     [tear.js]
-  peek: { k: 300, c: 30 },          // peek: the poster edge lifts toward a hovering pointer      [tear.js]
   ms: { press: 120, lift: 220, paste: 320, pasteIn: 900, letGo: 900, pasteBack: 1100, fallLife: 950, chatGap: 650, cellStagger: 40, barStagger: 120 }
 };
 let timeScale = 1;                  // 0.1 while slow-motion review is on
@@ -1045,6 +1324,156 @@ if (hero && tearClip && 'MutationObserver' in window) {
 }
 
 window.Elvana = { MOTION, announce, setSlow, feedback, setSound, get timeScale() { return timeScale; }, get sound() { return soundOn; } };
+})();
+
+</script>
+<script>
+/* =========================================================================
+   Elvana Media: pages/engagement-models.js
+   "The ticket counter" (INTERACTIONS.md).
+   1. Print: choosing a model (radios: click, tap or arrow keys) feeds its
+      ticket out of the slot in pulses, like a thermal printer, and the
+      ticket swings once as it comes free. The last ticket drops away.
+      Choosing again mid-print is fine: everything starts from where it is.
+   2. Tear: drag the stub sideways (or down, with a mouse) and it hinges at
+      the far end of the perforation and follows; let go early and it springs
+      back; pull past the threshold and it rips off and falls, then
+      /contact/?model=<id> opens. The stub's button does the same tear, for
+      keyboards and for anyone in a hurry. Each stub is a GET form, so with
+      no JS the button simply opens the same URL.
+   Reduced motion: the ticket is just there; the button opens the URL at once.
+   Curves: paste, tug, lift (base.css). Timers divide by Elvana.timeScale.
+   ========================================================================= */
+(() => {
+'use strict';
+const counter = document.querySelector('[data-counter]');
+if (!counter) return;
+const root = document.documentElement;
+const E = window.Elvana || { announce() {}, feedback() {}, timeScale: 1 };
+const motionOK = root.classList.contains('motion');
+const slow = () => E.timeScale || 1;
+const PASTE = 'cubic-bezier(.2,.7,.1,1)';   // paste: every entrance eases out
+const TUG = 'cubic-bezier(.55,0,.75,.2)';   // tug: gravity, a sheet letting go
+const LIFT = 'cubic-bezier(.3,1.3,.5,1)';   // lift: one tiny overshoot
+const radios = [...counter.querySelectorAll('.pick input')];
+const tickets = new Map([...counter.querySelectorAll('.ticket')].map(t => [t.dataset.model, t]));
+const nameOf = t => t.querySelector('.ticket__name').textContent.trim();
+let out = null;
+
+/* ---- 1. Print ------------------------------------------------------------ */
+function print(model) {
+  const t = tickets.get(model);
+  if (!t || t === out) return;
+  const prev = out;
+  out = t;
+  counter.classList.add('has-ticket');
+  if (prev) drop(prev);
+  t.getAnimations().forEach(a => a.cancel());
+  resetStub(t);
+  t.style.zIndex = '2';
+  t.classList.add('is-out');
+  E.announce(`${nameOf(t)} ticket printed. Tear off the stub to send an enquiry with this model chosen.`);
+  if (!motionOK) return;
+  t.animate([
+    { transform: 'translateY(-101%)', easing: PASTE },
+    { transform: 'translateY(-69%)', offset: .2 },
+    { transform: 'translateY(-69%)', offset: .27, easing: PASTE },
+    { transform: 'translateY(-37%)', offset: .47 },
+    { transform: 'translateY(-37%)', offset: .54, easing: PASTE },
+    { transform: 'translateY(-5%)', offset: .74, easing: PASTE },
+    { transform: 'translateY(0) rotate(1.3deg)', offset: .85, easing: LIFT },
+    { transform: 'translateY(0) rotate(0deg)' }
+  ], { duration: 1150 / slow(), delay: (prev ? 120 : 0) / slow(), fill: 'backwards' });
+}
+function drop(t) {
+  const from = getComputedStyle(t).transform;
+  t.getAnimations().forEach(a => a.cancel());
+  t.style.zIndex = '1';
+  if (!motionOK) { t.classList.remove('is-out'); return; }
+  const a = t.animate([{ transform: from === 'none' ? 'translateY(0)' : from, opacity: 1 }, { transform: 'translateY(70px) rotate(6deg)', opacity: 0 }],
+    { duration: 320 / slow(), easing: TUG, fill: 'forwards' });
+  a.onfinish = () => { if (out !== t) { t.classList.remove('is-out'); a.cancel(); } };
+}
+radios.forEach(r => r.addEventListener('change', () => { if (r.checked) print(r.value); }));
+
+/* ---- 2. Tear ---------------------------------------------------------------- */
+function resetStub(t) {
+  const stub = t.querySelector('.ticket__stub');
+  stub.getAnimations().forEach(a => a.cancel());
+  stub.style.transform = ''; stub.style.transformOrigin = '';
+  stub.classList.remove('is-dragging');
+  delete t.dataset.torn;
+}
+function tear(t, hinge, dx, dy, auto) {
+  if (t.dataset.torn) return;
+  t.dataset.torn = '1';
+  const stub = t.querySelector('.ticket__stub');
+  const url = new URL(stub.action);
+  url.searchParams.set('model', stub.elements.model.value);
+  E.feedback('rip');
+  E.announce(`Stub torn off. Opening the contact page with ${nameOf(t)} chosen.`);
+  if (!motionOK) { location.assign(url.href); return; }
+  t.getAnimations().forEach(a => a.finish());
+  const s = hinge === 'right' ? -1 : 1;           // which end lets go last
+  const from = getComputedStyle(stub).transform;
+  stub.style.transformOrigin = hinge === 'right' ? '100% 0' : '0 0';
+  const frames = auto
+    ? [{ transform: 'none', easing: PASTE }, { transform: `rotate(${s * 7}deg)`, offset: .38, easing: TUG }, { transform: `translate(${s * -36}px, 150px) rotate(${s * 26}deg)`, opacity: 0 }]
+    : [{ transform: from === 'none' ? 'none' : from, easing: TUG }, { transform: `translate(${(dx * 1.5).toFixed(1)}px, ${(Math.max(0, dy) + 160).toFixed(1)}px) rotate(${s * 34}deg)`, opacity: 0 }];
+  const a = stub.animate(frames, { duration: (auto ? 540 : 380) / slow(), fill: 'forwards' });
+  a.onfinish = () => location.assign(url.href);
+}
+tickets.forEach(t => {
+  const stub = t.querySelector('.ticket__stub');
+  const btn = stub.querySelector('.stub__tear');
+  let drag = null, suppress = false;
+  stub.addEventListener('pointerdown', e => {
+    if (!motionOK || e.button > 0 || t.dataset.torn || t !== out) return;
+    const box = stub.getBoundingClientRect();
+    drag = { x: e.clientX, y: e.clientY, id: e.pointerId, moved: false, w: box.width, mouse: e.pointerType === 'mouse',
+      hinge: e.clientX - box.left < box.width / 2 ? 'right' : 'left' };
+  });
+  stub.addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dx = e.clientX - drag.x, dy = drag.mouse ? e.clientY - drag.y : 0;
+    if (!drag.moved) {
+      if (Math.hypot(dx, dy) < 6) return;
+      drag.moved = true;
+      try { stub.setPointerCapture(e.pointerId); } catch (_) {}
+      stub.classList.add('is-dragging');
+      t.getAnimations().forEach(a => a.finish());
+      stub.getAnimations().forEach(a => a.cancel());
+      stub.style.transformOrigin = drag.hinge === 'right' ? '100% 0' : '0 0';
+    }
+    e.preventDefault();
+    // the tear opens from the end you hold; the paper resists, so it follows at less than your hand
+    const pull = Math.abs(dx) * .9 + Math.max(0, dy);
+    const ang = Math.min(22, pull / drag.w * 52);
+    const s = drag.hinge === 'right' ? -1 : 1;
+    stub.style.transform = `translate(${(dx * .16).toFixed(1)}px, ${(Math.max(0, dy) * .3).toFixed(1)}px) rotate(${(s * ang).toFixed(2)}deg)`;
+    if (pull > drag.w * (drag.mouse ? .36 : .3)) { const h = drag.hinge; drag = null; suppress = true; stub.classList.remove('is-dragging'); tear(t, h, dx, dy, false); }
+  });
+  const end = () => {
+    if (!drag) return;
+    if (drag.moved) {
+      suppress = true;
+      stub.classList.remove('is-dragging');
+      const from = stub.style.transform;
+      stub.style.transform = '';
+      if (from) stub.animate([{ transform: from }, { transform: 'none' }], { duration: 420 / slow(), easing: LIFT });   // let go early: it springs back
+    }
+    drag = null;
+  };
+  stub.addEventListener('pointerup', end);
+  stub.addEventListener('pointercancel', end);
+  // a drag must not also press the button
+  btn.addEventListener('click', e => { if (suppress) { e.preventDefault(); e.stopPropagation(); suppress = false; } }, true);
+  stub.addEventListener('pointerdown', () => { suppress = false; }, true);
+  stub.addEventListener('submit', e => { e.preventDefault(); tear(t, 'right', 0, 0, true); });
+});
+
+// back from the contact page (bfcache): the torn stub is whole again
+addEventListener('pageshow', e => { if (e.persisted) tickets.forEach(resetStub); });
 })();
 
 </script>

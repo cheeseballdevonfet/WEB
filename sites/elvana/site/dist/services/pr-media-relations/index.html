@@ -33,11 +33,18 @@
 <script>if(location.protocol!=='file:')['../../assets/fonts/yatra-one-latin.woff2','../../assets/fonts/mukta-400-latin.woff2','../../assets/fonts/mukta-800-latin.woff2'].forEach(function(h){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href=h;document.head.appendChild(l)})</script>
 <link rel="stylesheet" href="../../assets/css/base.css">
 <link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/tear.css">
+<link rel="stylesheet" href="../../assets/css/pages/services.css">
+<link rel="stylesheet" href="../../assets/css/pages/specimens/pr-media-relations.css">
+<script defer src="../../assets/js/tear.js"></script>
 <script defer src="../../assets/js/core.js"></script>
+<script defer src="../../assets/js/pages/services.js"></script>
+<script defer src="../../assets/js/pages/specimens/pr-media-relations.js"></script>
 <!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.elvanamedia.com/#organization","name":"Elvana Media","legalName":"ELEVANA MEDIA PRIVATE LIMITED","url":"https://www.elvanamedia.com/","email":"info@elvanamedia.com","telephone":"+91 89283 39531","foundingDate":"2026-06-04","slogan":"Ideas that create impact.","description":"Digital marketing, media & AI-powered growth.","image":"https://www.elvanamedia.com/assets/og-default.png","parentOrganization":{"@type":"Organization","name":"BeyondSure Private Limited"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}],"address":{"@id":"https://www.elvanamedia.com/#registered-office"}},{"@type":"LocalBusiness","@id":"https://www.elvanamedia.com/#mumbai","name":"Elvana Media","url":"https://www.elvanamedia.com/","image":"https://www.elvanamedia.com/assets/og-default.png","email":"info@elvanamedia.com","telephone":"+91 89283 39531","parentOrganization":{"@id":"https://www.elvanamedia.com/#organization"},"address":{"@type":"PostalAddress","@id":"https://www.elvanamedia.com/#registered-office","streetAddress":"203, Shivam Square, Building No. 4, Sahar Road, Andheri East","addressLocality":"Mumbai","addressRegion":"Maharashtra","postalCode":"400069","addressCountry":"IN"}},{"@type":"WebSite","@id":"https://www.elvanamedia.com/#website","url":"https://www.elvanamedia.com/","name":"Elvana Media","publisher":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN"},{"@type":"WebPage","@id":"https://www.elvanamedia.com/services/pr-media-relations/#webpage","url":"https://www.elvanamedia.com/services/pr-media-relations/","name":"PR & Media Relations | Elvana Media","description":"Stories placed with the press and the people who matter. PR & Media Relations by Elvana Media in Mumbai, Delhi, Gurgaon and Noida.","isPartOf":{"@id":"https://www.elvanamedia.com/#website"},"about":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.elvanamedia.com/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://www.elvanamedia.com/services/"},{"@type":"ListItem","position":3,"name":"PR & Media Relations","item":"https://www.elvanamedia.com/services/pr-media-relations/"}]}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","@id":"https://www.elvanamedia.com/services/pr-media-relations/#service","name":"PR & Media Relations","serviceType":"PR & Media Relations","description":"Stories placed with the press and the people who matter.","url":"https://www.elvanamedia.com/services/pr-media-relations/","provider":{"@id":"https://www.elvanamedia.com/#organization"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}]}</script>
 </head>
-<body class="page-service" id="top">
+<body class="page-service svc-pr-media-relations" id="top">
 <a class="skip" href="#main">Skip to content</a>
 <header class="hdr">
   <a class="wordmark" href="../../index.html" aria-label="Elvana Media, home"><!-- Official Elvana Media logo SVG goes here once supplied. Until then this is a typographic wordmark set in the display face. Never redraw or trace the raster logo. -->Elvana</a>
@@ -69,40 +76,149 @@
 </header>
 
 <main id="main">
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
-<section class="page-hero" aria-labelledby="page-h">
-  <div class="page-hero__main g-yellow">
-    <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">Home</a></li><li><a href="../index.html">Services</a></li><li aria-current="page">PR &amp; Media Relations</li></ol></nav>
-    <h1 id="page-h" class="is-long">PR &amp; Media Relations</h1>
+<!-- PR & Media Relations. Service page from the shared template (SYSTEM.md, services.css). Signature: the corner peel in the hero
+     (the yellow title poster peels back to show the promise underneath; tear.js owns the peel), then the
+     "Mock-up" specimen (pages/specimens/pr-media-relations.css + .js). Copy: CONTENT.md and CONTENT-PAGES.md. -->
+<section class="page-hero svc-hero" aria-labelledby="page-h">
+  <div class="peel svc-peel" data-peel data-peel-corner="tr" data-peel-label="Peel back the poster" data-peel-label-back="Paste it back">
+    <div class="peel__under page-hero__main g-ink svc-under" aria-hidden="true">
+      <p class="svc-under__k">The promise</p>
+      <p class="svc-under__line">Stories placed with the press and the people who matter.</p>
+    </div>
+    <div class="peel__over page-hero__main g-yellow">
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">Home</a></li><li><a href="../index.html">Services</a></li><li aria-current="page">PR &amp; Media Relations</li></ol></nav>
+      <h1 id="page-h" class="is-long">PR &amp; Media Relations</h1>
+    </div>
   </div>
-  <div class="page-hero__side g-red">
-    <p class="page-hero__line">Stories placed with the press and the people who matter.</p>
+  <div class="page-hero__side g-red svc-side">
     <p class="page-hero__sign"><span class="d">Core service</span>Elvana Media</p>
+    <div class="svc-side__pillar">
+      <p class="svc-side__w">Connect.</p>
+      <p class="svc-side__t">Social, WhatsApp, SMS, AI calling and PR that reach the right audience at the right time.</p>
+    </div>
+    <p class="svc-side__hint js-only motion-only">Peel the yellow poster's corner to read the promise.</p>
   </div>
 </section>
-
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
+<section class="poster svc-what svc-what--side" id="what-we-do" aria-labelledby="what-h" style="--under:var(--ink)">
+  <div class="paste g-paper">
+    <div class="what-head">
+      <h2 class="d1" id="what-h">What we do</h2>
+      <p class="lede">Stories placed with the press and the people who matter.</p>
     </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>What we do</li><li>How it runs, through our five steps</li><li>Who it suits</li><li>Services it works with</li><li>Questions people ask</li></ul>
+    <ul class="what-list">
+      <li>Find the story in your business: launches, milestones, founders, data, opinions.</li>
+      <li>Press releases and pitches written for how journalists work.</li>
+      <li>Media lists for your category and your cities.</li>
+      <li>Founder profiles, interviews and opinion pieces.</li>
+      <li>Coverage tracking, and help when a story needs careful handling.</li>
+    </ul>
+  </div>
+</section>
+<section class="poster svc-spec svc-spec--wide" id="mock-up" aria-labelledby="spec-h" style="--under:var(--paper)">
+  <div class="paste g-ink">
+    <div class="spec-grid">
+      <div class="spec-head">
+        <p class="mockup">Mock-up</p>
+        <h2 class="d2" id="spec-h">Set your headline in hot metal</h2>
+        <p class="lede">Write a headline and set it, letter by letter, on the front page of a sample paper.</p>
+      </div>
+      <figure class="spec spec-pr" data-spec="pr">
+        <form class="pr-ctl js-only" action="#" autocomplete="off">
+          <label for="pr-in">Your headline</label>
+          <div class="pr-row">
+            <input id="pr-in" type="text" maxlength="56" placeholder="A sample brand finds its story" spellcheck="false">
+            <button class="tag" type="submit">Set it in hot metal</button>
+          </div>
+        </form>
+        <div class="pr-stick" aria-hidden="true"></div>
+        <div class="pr-paper">
+          <p class="pr-mast">The Mock-up</p>
+          <p class="pr-date"><span>Morning edition</span><span>Mumbai</span><span>A sample paper</span></p>
+          <p class="pr-head">A sample brand finds its story</p>
+          <div class="pr-cols">
+            <div class="pr-lead">
+              <p class="pr-kick">Business</p>
+              <p>Every business has a story in it: a launch, a milestone, a founder, some data, an opinion. The work is finding the one worth telling.</p>
+              <p>Then it is written the way journalists work, and pitched to the people who cover your category and your cities.</p>
+            </div>
+            <div class="pr-side">
+              <p class="pr-kick">Inside</p>
+              <p class="pr-sub">Founder profiles, interviews and opinion pieces</p>
+              <p class="pr-sub">Coverage tracked, and help when a story needs careful handling</p>
+            </div>
+            <div class="pr-photo" aria-hidden="true"></div>
+          </div>
+        </div>
+        <figcaption class="spec-cap">Mock-up of a front page in a sample paper, not a real publication. No coverage is ever promised: this shows how a story reads, not where it will run.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
-
-<!-- Closing CTA poster: every page ends here, always to /contact/. -->
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+<section class="poster svc-fit svc-fit--stack" id="good-for" aria-labelledby="good-h" style="--under:var(--ink)">
+  <div class="paste g-yellow">
+    <div class="fit-grid">
+      <div class="fit-good">
+        <h2 class="d2" id="good-h">Good for</h2>
+        <ul class="cast fit-cast"><li>Launches</li><li>Funding and milestones</li><li>Founder visibility</li><li>Reputation in trust-driven categories</li></ul>
+        <h3 class="fit-sub" id="sectors-h">Sectors where it often fits</h3>
+        <ul class="tags fit-sectors" aria-labelledby="sectors-h">
+          <li><a class="tag tag-line" href="../../industries/index.html">Insurance &amp; Financial Services</a></li>
+          <li><a class="tag tag-line" href="../../industries/index.html">Corporate &amp; B2B</a></li>
+        </ul>
+      </div>
+      <div class="fit-works">
+        <h2 class="d2" id="works-h">Works with</h2>
+        <div class="works">
+          <article class="flyer works__p g-yellow"><p class="fam">Beyond digital</p><h3><a href="../content-video-production/index.html">Content &amp; Video Production</a></h3><p>Ad films, brand films, animation, graphics and sound, from pre- to post-production.</p></article>
+          <article class="flyer works__p g-ink"><p class="fam">Beyond digital</p><h3><a href="../events-activations/index.html">Events &amp; Activations</a></h3><p>Pan-India event management, launches and on-ground brand experiences.</p></article>
+          <article class="flyer works__p g-paper"><p class="fam">Beyond digital</p><h3><a href="../print-digital-publishing/index.html">Print &amp; Digital Publishing</a></h3><p>Magazines, brochures and regional-language content in print and online.</p></article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="poster svc-runs" id="how-it-runs" aria-labelledby="runs-h" style="--under:var(--yellow)">
+  <div class="paste g-red">
+    <div class="head-split runs-head">
+      <h2 class="d1" id="runs-h">How it runs</h2>
+      <p class="lede">Like every Elvana service, through the same five steps, from brief to impact.</p>
+    </div>
+    <ol class="runs-steps">
+      <li><span aria-hidden="true">1</span>Discover</li>
+      <li><span aria-hidden="true">2</span>Strategise</li>
+      <li><span aria-hidden="true">3</span>Create</li>
+      <li><span aria-hidden="true">4</span>Launch</li>
+      <li><span aria-hidden="true">5</span>Optimise</li>
+    </ol>
+    <div class="runs-grid">
+      <div class="runs">
+        <p>It can be part of a Monthly Retainer, a Campaign SOW or a Project, and it reports into the same live dashboard and monthly report as every other service.</p>
+        <p class="tags runs-tags"><a class="tag tag-line" href="../../how-we-work/index.html">How we work</a><a class="tag tag-line" href="../../engagement-models/index.html">Engagement models</a></p>
+      </div>
+      <div class="faq">
+        <h2 class="d2" id="faq-h">Questions</h2>
+        <details class="q">
+          <summary>Can you guarantee coverage?</summary>
+          <p>No one honest can. We find stories worth telling and pitch them well.</p>
+        </details>
+        <details class="q">
+          <summary>Can this be a retainer, a campaign or a project?</summary>
+          <p>Yes. Any service can be part of a Monthly Retainer, a Campaign SOW or a Project.</p>
+        </details>
+        <details class="q">
+          <summary>What does it cost?</summary>
+          <p>Prices are shared after Discover, based on scope.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--red)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>
-      <p class="lede">Write to info@elvanamedia.com or call +91 89283 39531. Offices in Mumbai, Delhi, Gurgaon and Noida.</p>
-      <div class="tags"><a class="tag tag-ink" href="../../contact/index.html">Let's talk</a><a class="tag tag-line" href="tel:+918928339531">Call +91 89283 39531</a></div>
+      <p class="lede">Tell us what you want PR &amp; Media Relations to do for you. Write to info@elvanamedia.com or call +91 89283 39531.</p>
+      <div class="tags"><a class="tag tag-ink" href="../../contact/index.html">Let's talk</a><a class="tag tag-line" href="../index.html">All 14 services</a></div>
     </div>
   </div>
 </section>

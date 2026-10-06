@@ -1,0 +1,51 @@
+/* Specimen: AI Calling. A written sample call you play: the waveform fills as it runs, the
+   transcript follows, English or Hinglish. No JS: the full transcript in both, and the note. */
+.call-card{display:grid;gap:20px;padding:clamp(20px,2.6vw,34px);box-shadow:8px 8px 0 rgba(0,0,0,.35)}
+.call-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px 24px}
+.call-who{display:grid;gap:2px}
+.call-who b{font-family:var(--display);font-weight:400;font-size:clamp(26px,2.4vw,34px);line-height:1}
+.call-who span{font-weight:800;font-size:15px;color:var(--ink-soft)}
+.call-play{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.call-btn{display:inline-flex;align-items:center;gap:12px;min-height:56px;padding:10px 20px 8px 14px;border:0;border-radius:0;background:var(--red);color:var(--paper);font:800 17px/1 var(--text);cursor:pointer;transition:transform var(--t-lift) var(--ease-lift)}
+.call-btn:hover{transform:rotate(-2deg)}
+.call-btn:active{transform:translate(-1%,2px) scale(1.02,.92);transition-duration:var(--t-press)}
+.call-btn:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.call-ico{width:26px;height:26px;display:grid;place-items:center;background:var(--paper);clip-path:polygon(28% 18%,82% 50%,28% 82%)}
+.call-btn.is-on .call-ico{clip-path:polygon(22% 18%,42% 18%,42% 82%,22% 82%,22% 18%,58% 18%,78% 18%,78% 82%,58% 82%,58% 18%)}
+.call-wave{position:relative;height:64px;overflow:hidden}
+.call-bars{position:absolute;inset:0;display:flex;align-items:center;gap:2px}
+.call-bars i{flex:1;height:calc(var(--h) * 1%);background:var(--ink);opacity:.22;transform-origin:50% 50%}
+.call-bars i.c{background:var(--blue)}
+.call-bars--on{clip-path:inset(0 100% 0 0)}
+.call-bars--on i{opacity:1;background:var(--red)}
+.call-bars--on i.c{background:var(--blue)}
+.is-talking .call-bars--on i{animation:call-talk calc(360ms * var(--slow)) ease-in-out infinite alternate;animation-delay:calc(var(--d) * -1ms)}
+@keyframes call-talk{from{transform:scaleY(.4)}to{transform:scaleY(1.06)}}
+.call-seek{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.call-wave:has(.call-seek:focus-visible){outline:3px solid var(--blue);outline-offset:4px}
+.call-wave::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--ink) 0 3px,transparent 3px);transform:translateX(calc(var(--p,0) * 100% - 1px));pointer-events:none}
+.call-script{display:grid;border-top:3px solid var(--ink)}
+.call-script li{display:grid;grid-template-columns:118px 1fr;gap:2px 18px;padding:12px 0 11px 0;border-bottom:2px solid rgba(26,24,20,.18);position:relative}
+.call-script .who{grid-column:1;grid-row:1 / span 2;order:-2;color:var(--red);margin:3px 0 0;font-size:15px}
+.call-script .t{grid-column:2}
+.call-script li[data-who="c"] .who{color:var(--blue)}
+.call-script .t{font-size:18px;line-height:1.4;font-weight:600}
+.call-script .t-hi{font-size:15px;font-weight:400;color:var(--ink-soft)}
+.call-script li.is-now{box-shadow:inset 6px 0 0 var(--yellow);padding-left:16px;background:rgba(255,208,0,.16)}
+.call-note{display:grid;gap:4px;padding:14px 16px 12px;background:var(--ink);color:var(--paper);font-size:16px;line-height:1.4;transform:rotate(-.8deg)}
+.call-note b{color:var(--yellow);font-weight:800;font-size:15px}
+/* live: the chosen language leads; Hinglish keeps the English meaning beneath it */
+.spec-call.is-live[data-lang="en"] .t-hi{display:none}
+.spec-call.is-live[data-lang="hi"] .t-hi{order:-1;font-size:18px;font-weight:600;color:var(--ink)}
+.spec-call.is-live[data-lang="hi"] .t-en{font-size:15px;font-weight:400;color:var(--ink-soft)}
+.spec-call.is-live .call-note{display:none}
+.spec-call.is-live.is-ended .call-note{display:grid}
+@media (prefers-reduced-motion:reduce){.is-talking .call-bars--on i{animation:none}}
+@media (max-width:699px){
+  .call-play{grid-template-columns:1fr}
+  .call-btn{justify-self:start}
+  .call-script li{grid-template-columns:1fr}
+  .call-script .who{grid-row:auto;margin:0}
+  .call-script .t{grid-column:1}
+  .call-script .t{font-size:17px}
+}

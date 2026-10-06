@@ -80,8 +80,8 @@
 
   /* Type. Display: Yatra One (Latin + Devanagari, one brush). Text: Mukta 400/600/800.
      Devanagari inside body text falls back to Yatra One (Mukta ships Latin only). */
-  --display:'Yatra One','Mukta',sans-serif;
-  --text:'Mukta','Yatra One',sans-serif;
+  --display:'Yatra One','Yatra One fb','Mukta',sans-serif;
+  --text:'Mukta','Mukta fb','Yatra One',sans-serif;
   --fs-d1:clamp(48px,8.2vw,124px);
   --fs-d2:clamp(34px,4.2vw,64px);
   --fs-d3:clamp(26px,2.6vw,38px);
@@ -143,6 +143,14 @@ img,svg{max-width:100%}
 .no-js .js-only,.js:not(.motion) .motion-only{display:none!important}
 .skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--yellow);color:var(--ink);padding:12px 18px;font-weight:800;text-decoration:none}
 .skip:focus{top:12px}
+
+/* Metric-matched fallbacks: while the embedded fonts decode, text is laid out in Arial / Liberation Sans
+   scaled to the real fonts' average width and vertical metrics, so nothing reflows when they arrive.
+   Values measured with fontTools against Liberation Sans (metric-compatible with Arial) on a mixed sample. */
+@font-face{font-family:'Yatra One fb';font-weight:400;src:local('Arial'),local('ArialMT'),local('Liberation Sans'),local('Helvetica'),local('Roboto');size-adjust:110.3%;ascent-override:89.9%;descent-override:44.2%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:400;src:local('Arial'),local('ArialMT'),local('Liberation Sans'),local('Helvetica'),local('Roboto');size-adjust:94.2%;ascent-override:120%;descent-override:56.5%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:600;src:local('Arial Bold'),local('Arial-BoldMT'),local('Liberation Sans Bold'),local('Helvetica Bold'),local('Roboto Bold');size-adjust:91.3%;ascent-override:123.8%;descent-override:58.3%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:800;src:local('Arial Bold'),local('Arial-BoldMT'),local('Liberation Sans Bold'),local('Helvetica Bold'),local('Roboto Bold');size-adjust:94.2%;ascent-override:119.9%;descent-override:56.4%;line-gap-override:0%}
 
 /* components.css */
 /* =========================================================================
@@ -544,7 +552,7 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
 
 /* ---------- Footer: the promise, the site map, contact, the legal line ---------- */
 .foot{position:relative;z-index:1;margin-top:-10px;padding:clamp(56px,7vw,104px) var(--pad-x) 28px}
-.foot .d1{color:var(--yellow);font-size:clamp(56px,10.6vw,180px);line-height:.88}
+.foot .d1{color:var(--yellow);font-size:clamp(36px,10.6vw,180px);line-height:.88}
 .foot .tagline{margin-top:clamp(18px,2.4vw,32px);font-size:var(--fs-lede);max-width:40ch}
 .foot-map{display:grid;grid-template-columns:3fr 3fr 3fr 4fr;gap:36px clamp(24px,3vw,48px);margin-top:clamp(48px,6vw,88px);padding-top:28px;border-top:6px solid var(--yellow)}
 .foot-h{font-family:var(--display);font-weight:400;font-size:clamp(24px,2vw,30px);line-height:1.05;color:var(--yellow);margin:0 0 12px}
@@ -640,10 +648,240 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
   .flyer:hover{transform:none}
 }
 
+/* pages/services.css */
+/* =========================================================================
+   Elvana Media: pages/services.css
+   The Services section. Two parts:
+   A. /services/ overview: the pillars as filters and the fly-poster wall
+      (the page's one signature; services.js runs the tear-down and paste-up).
+   B. The shared template of the 14 service pages: the hero with its corner
+      peel (tear.js owns the peel; this only places it), What we do, the
+      Mock-up specimen frame, Good for / Works with, How it runs, Questions.
+   Each specimen's own look is in pages/specimens/<slug>.css.
+   Pieces that may be worth promoting to components.css are marked PROMOTE.
+   ========================================================================= */
+
+/* ---------- PROMOTE: Mock-up sticker. A double-ruled rubber stamp on every specimen ---------- */
+.mockup{align-self:flex-start;display:inline-block;padding:9px 15px 6px;font:800 16px/1.2 var(--text);letter-spacing:.02em;color:var(--fg);
+  box-shadow:inset 0 0 0 3px currentColor,inset 0 0 0 6px var(--ground),inset 0 0 0 8px currentColor;transform:rotate(-4deg);transform-origin:0 100%}
+/* on a specimen poster it is the poster's big rubber stamp: the honest label, set loud */
+.spec-head .mockup{order:3;margin-top:clamp(16px,3vw,48px);padding:.2em .42em .06em;font:400 clamp(44px,6.2vw,104px)/1 var(--display);letter-spacing:0;color:var(--hi);
+  box-shadow:inset 0 0 0 5px currentColor,inset 0 0 0 11px var(--ground),inset 0 0 0 15px currentColor;transform:rotate(-7deg);transform-origin:0 50%}
+
+/* ---------- PROMOTE: chip. A small square-cut toggle for specimen controls (aria-pressed) ---------- */
+.chip{min-height:44px;padding:10px 15px 7px;border:0;border-radius:0;background:transparent;color:inherit;box-shadow:inset 0 0 0 2px currentColor;
+  font:800 16px/1.05 var(--text);cursor:pointer;transform-origin:0 0;transition:transform var(--t-lift) var(--ease-lift),background-color var(--t-lift) linear,color var(--t-lift) linear}
+.chip:hover{transform:rotate(-2deg)}
+.chip:active{transform:translateY(2px) scale(.97);transition-duration:var(--t-press)}
+.chip[aria-pressed="true"],.chip[aria-checked="true"],.chip.is-on{background:var(--fg);color:var(--ground);box-shadow:none}
+.chip:disabled,.chip[aria-disabled="true"]{opacity:.45;cursor:not-allowed;transform:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+
+/* =========================================================================
+   A. OVERVIEW
+   ========================================================================= */
+.page-services .page-hero h1{font-size:clamp(68px,min(14vw,25svh),230px);line-height:.86;max-width:none}
+.svc-pillars .pillar{min-height:min(30vw,460px)}
+.pillar__foot{display:grid;gap:22px;justify-items:start}
+
+/* The wall poster: heading, the sticky filter bar, then the wall bleeding to the edges */
+.svc-wall .head-split{margin-bottom:clamp(36px,4.4vw,64px)}
+.svc-wall .head-split h2{font-size:var(--fs-d2);max-width:13ch}
+.fp-bar{position:sticky;top:var(--hdr);z-index:6;margin:0 calc(var(--pad-x) * -1);padding:12px var(--pad-x) 12px;display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:8px 22px;
+  border-top:6px solid var(--yellow);box-shadow:0 6px 0 rgba(0,0,0,.18)}
+.fp-bar__h{font-family:var(--display);font-size:clamp(26px,2.2vw,34px);line-height:1;color:var(--yellow);padding-top:4px}
+.fp-bar__btns{display:flex;flex-wrap:wrap;gap:8px}
+.fp-bar__note{font-size:var(--fs-small);line-height:1.35;color:var(--paper-dim);max-width:48ch;justify-self:end;text-align:right}
+.fp-btn{min-height:46px;padding:11px 18px 8px;border:0;border-radius:0;background:transparent;color:var(--paper);box-shadow:inset 0 0 0 2px rgba(242,243,239,.75);
+  font:800 17px/1 var(--text);cursor:pointer;transform-origin:0 0;transition:transform var(--t-lift) var(--ease-lift),background-color var(--t-lift) linear,color var(--t-lift) linear}
+.fp-btn:hover{transform:rotate(-2.2deg);background:rgba(242,243,239,.12)}
+.fp-btn:active{transform:translate(-1%,2px) scale(1.02,.92);transition-duration:var(--t-press)}
+.fp-btn[aria-pressed="true"]{background:var(--yellow);color:var(--ink);box-shadow:none}
+.fp-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* The wall: concrete with old paste marks, seen only where a poster has come down */
+.fp-wall{position:relative;display:grid;grid-template-columns:repeat(12,1fr);grid-auto-flow:row;align-content:start;margin:0 calc(var(--pad-x) * -1) calc(var(--pad-y) * -1);overflow:clip;isolation:isolate;
+  background-color:var(--wall);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 600' preserveAspectRatio='none'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cpath d='M-20 120 C 220 70 420 150 660 90 S 1020 40 1240 60' stroke='%23fff' stroke-opacity='.10' stroke-width='60'/%3E%3Cpath d='M40 420 C 260 360 400 400 620 330 S 980 260 1180 230' stroke='%23000' stroke-opacity='.07' stroke-width='80'/%3E%3Cpath d='M200 600 C 420 520 640 560 860 480 S 1120 440 1260 420' stroke='%23fff' stroke-opacity='.08' stroke-width='44'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:100% 100%}
+.fp{grid-column:span var(--s,4);min-height:clamp(250px,21vw,330px);justify-content:flex-start;gap:14px}
+.fp[hidden]{display:none!important}
+.fp .fam,.works__p .fam{font-weight:800;font-size:15px;line-height:1.25}
+.fp h3{font-size:clamp(32px,min(14.5cqw,4.4vw),72px);line-height:.9}
+.fp-line{margin-top:auto;max-width:30ch}
+.fp-pills{display:flex;flex-wrap:wrap;gap:8px}
+.fp-pills li{font:800 14px/1 var(--text);padding:7px 10px 5px;box-shadow:inset 0 0 0 2px currentColor;transform:rotate(-2deg)}
+.fp-pills li:nth-child(2){transform:rotate(1.5deg)}
+/* Torn-down scraps (clones, aria-hidden) fall in front of the wall; the squeegee blade rides last */
+.fp-scrap{position:absolute;z-index:4;margin:0;pointer-events:none;clip-path:none!important;box-shadow:0 18px 28px rgba(0,0,0,.28);will-change:transform}
+.fp-blade{position:absolute;top:0;bottom:0;left:0;width:180px;z-index:5;pointer-events:none;opacity:0;transform:translateX(-200px);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.26) calc(100% - 9px),var(--ink) calc(100% - 9px),var(--ink) calc(100% - 3px),rgba(255,255,255,.5) calc(100% - 3px),transparent calc(100% - 1px))}
+.fp.is-moving{z-index:2}
+
+/* Engagement teaser */
+.models{display:grid;grid-template-columns:repeat(3,1fr);gap:0 clamp(28px,4vw,56px);margin-top:clamp(36px,4.5vw,64px);border-top:6px solid var(--yellow)}
+.models li{padding:26px 0 8px;display:grid;gap:8px;align-content:start}
+.models h3{font-size:var(--fs-d3);color:var(--yellow)}
+.models__best{font-weight:800}
+/* the beyond-digital bill also says who each service is for */
+.bill-good{font-size:var(--fs-small);line-height:1.4;color:var(--ink-soft)}
+.bill-good b{color:var(--ink);font-weight:800;margin-right:4px}
+
+/* =========================================================================
+   B. SERVICE PAGE TEMPLATE
+   ========================================================================= */
+/* Hero: the yellow title poster is the peel's over-poster; the promise is pasted underneath */
+.svc-hero .peel{grid-column:span 8}
+.svc-peel>.peel__under,.svc-peel>.peel__over{grid-area:1 / 1;height:100%}
+.svc-hero h1{font-size:clamp(56px,min(11.6vw,21svh),190px);line-height:.86;max-width:9ch}
+.svc-hero h1.is-long{font-size:clamp(48px,min(8.4vw,15.5svh),138px);line-height:.88;max-width:12ch}
+.svc-under{justify-content:flex-end}
+.svc-under__k{font-weight:800;font-size:15px;line-height:1.3;margin-bottom:auto}
+.svc-under__line{font-family:var(--display);font-size:clamp(38px,min(5.6vw,9.4svh),88px);line-height:.98;max-width:14ch;text-wrap:balance}
+.svc-side__pillar{display:grid;gap:12px;margin-top:auto}
+.svc-side__w{font-family:var(--display);font-size:clamp(40px,min(4.6vw,8.6svh),76px);line-height:.92;color:var(--hi)}
+.svc-side__t{font-size:var(--fs-body);line-height:1.4;max-width:30ch}
+.svc-side__hint{font-weight:800;font-size:15px;line-height:1.3;max-width:28ch}
+
+/* What we do: a ruled handbill list */
+.what-list{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(28px,4vw,64px);margin-top:clamp(36px,4.5vw,64px)}
+.what-list li{position:relative;padding:20px 0 24px 34px;border-top:3px solid currentColor;font-size:var(--fs-lede);line-height:1.38;font-weight:600}
+.what-list li::before{content:"";position:absolute;left:0;top:34px;width:20px;height:6px;background:var(--hi);transform:rotate(-8deg)}
+.svc-what--side .paste{display:grid;grid-template-columns:5fr 7fr;gap:28px clamp(32px,5vw,88px);align-items:start}
+.what-head{position:sticky;top:calc(var(--hdr) + 32px);display:grid;gap:22px}
+.what-head h2{max-width:8ch}
+/* side rhythm: each line is a snipe pasted across the poster, one under another */
+.svc-what--side .what-list{grid-template-columns:1fr;gap:14px;margin-top:0;--sb:var(--paper);--sf:var(--ink);--sm:var(--red)}
+.g-paper.paste .what-list,.svc-what--side .g-yellow .what-list{--sb:var(--ink);--sf:var(--paper);--sm:var(--yellow)}
+.svc-what--side .g-ink .what-list{--sb:var(--yellow);--sf:var(--ink);--sm:var(--red)}
+.svc-what--side .what-list li{padding:20px 24px 18px 58px;border:0;background:var(--sb);color:var(--sf);font-size:clamp(20px,1.8vw,27px);line-height:1.3;box-shadow:5px 6px 0 rgba(0,0,0,.22);transform:rotate(-.5deg)}
+.svc-what--side .what-list li:nth-child(even){transform:rotate(.4deg);margin-left:clamp(0px,2vw,28px)}
+.svc-what--side .what-list li::before{left:22px;top:34px;background:var(--sm)}
+
+/* Specimen frame: the head (Mock-up sticker, heading, how to use it) and the specimen */
+.spec-grid{display:grid;grid-template-columns:5fr 7fr;gap:32px clamp(32px,5vw,80px);align-items:start}
+.spec-head{display:flex;flex-direction:column;gap:18px;position:sticky;top:calc(var(--hdr) + 32px)}
+.spec-head h2{max-width:13ch}
+.svc-spec--wide .spec-grid{grid-template-columns:1fr}
+.svc-spec--wide .spec-head{position:static;display:grid;grid-template-columns:7fr 5fr;column-gap:48px;row-gap:16px;align-items:end;margin-bottom:clamp(8px,1.4vw,20px)}
+.svc-spec--wide .spec-head .lede{grid-column:1}
+.svc-spec--wide .spec-head .mockup{grid-column:2;grid-row:1 / span 2;justify-self:end;align-self:center;margin:0 clamp(8px,2vw,32px) 0 0;font-size:clamp(40px,4.6vw,76px)}
+.svc-spec--wide .spec-head h2{max-width:16ch}
+.spec{position:relative;margin:0;min-width:0}
+.spec-cap{margin-top:16px;font-size:var(--fs-small);line-height:1.4;max-width:62ch}
+.spec-todo{padding:40px;box-shadow:inset 0 0 0 3px currentColor;font-weight:800}
+
+/* Good for / Works with */
+.fit-grid{display:grid;grid-template-columns:5fr 7fr;gap:48px clamp(32px,5vw,80px);align-items:start}
+.svc-fit--stack .fit-grid{grid-template-columns:1fr}
+.svc-fit--stack .fit-good{display:grid;grid-template-columns:5fr 7fr;column-gap:clamp(32px,5vw,80px);align-items:start}
+.svc-fit--stack .fit-good>h2,.svc-fit--stack .fit-good>.fit-note{grid-column:1}
+.svc-fit--stack .fit-good>.fit-cast{grid-column:2;grid-row:1 / span 3;margin-top:0}
+.svc-fit--stack .fit-good>.fit-sub,.svc-fit--stack .fit-good>.fit-sectors{grid-column:1 / -1}
+.fit-note{margin-top:14px;font-size:var(--fs-lede);line-height:1.38;max-width:32ch}
+.fit-cast{margin-top:clamp(20px,2.4vw,32px)}
+.fit-cast li{font-size:clamp(28px,3vw,48px)}
+.fit-sub{margin-top:clamp(32px,4vw,52px);font-family:var(--text);font-weight:800;font-size:17px;line-height:1.3}
+.fit-sectors{margin-top:12px}
+.fit-sectors .tag{min-height:44px;padding:10px 16px 7px;font-size:16px}
+.works{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px;margin-top:clamp(20px,2.4vw,32px);background:var(--wall)}
+.works__p{min-height:clamp(250px,21vw,320px);justify-content:flex-start;gap:12px}
+.works__p h3{font-size:clamp(28px,min(15cqw,3.4vw),52px);line-height:.92}
+.works__p h3+p{margin-top:auto}
+.svc-fit--stack .fit-works{margin-top:clamp(8px,1vw,16px)}
+
+/* How it runs + Questions */
+.runs-head{margin-bottom:clamp(28px,3.4vw,48px)}
+.runs-steps{display:grid;grid-template-columns:repeat(5,1fr);margin:0 calc(var(--pad-x) * -1) clamp(40px,5vw,72px);border-block:6px solid var(--hi)}
+.runs-steps li{display:flex;flex-direction:column;gap:6px;padding:20px clamp(16px,2vw,32px) 18px;font-family:var(--display);font-size:clamp(24px,2.3vw,34px);line-height:1}
+.runs-steps li+li{box-shadow:inset 3px 0 0 currentColor}
+.runs-steps span{color:var(--hi);font-size:clamp(64px,7vw,112px);line-height:.82}
+.runs-grid{display:grid;grid-template-columns:5fr 7fr;gap:48px clamp(32px,5vw,80px);align-items:start}
+.runs{display:grid;gap:18px;align-content:start}
+.runs>p:not(.tags){max-width:40ch;font-size:var(--fs-lede);line-height:1.42}
+.runs-tags{margin-top:6px}
+.faq{display:grid}
+.faq h2{margin-bottom:clamp(18px,2.4vw,32px)}
+.faq .q{border-top:3px solid currentColor}
+.faq .q:last-child{border-bottom:3px solid currentColor}
+.faq summary{display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:64px;padding:16px 0 12px;font:800 var(--fs-lede)/1.28 var(--text);cursor:pointer;list-style:none;transition:transform var(--t-press) var(--ease-paste)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";flex:none;width:24px;height:24px;margin-top:-4px;background:linear-gradient(currentColor,currentColor) 50% 50%/100% 4px no-repeat,linear-gradient(currentColor,currentColor) 50% 50%/4px 100% no-repeat;
+  transition:transform var(--t-lift) var(--ease-lift)}
+.faq [open]>summary::after{transform:rotate(135deg)}
+.faq summary:hover{text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:.2em}
+.faq summary:active{transform:translateY(1px)}
+.faq summary:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+.faq .q p{padding:0 0 24px;max-width:58ch;font-size:var(--fs-body);line-height:1.5}
+@media (prefers-reduced-motion:no-preference){
+  .js.motion .faq [open]>p{animation:faq-in calc(320ms * var(--slow)) var(--ease-paste) both}
+}
+@keyframes faq-in{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+
+/* ---------- Per-page poster rhythm: a few headings sized to their page ---------- */
+.svc-what .head-split h2{max-width:8ch}
+
+/* ---------- Tablet ---------- */
+@media (max-width:1099px){
+  .fp{grid-column:span var(--st,6)}
+  .fp-bar{grid-template-columns:auto 1fr}
+  .fp-bar__note{grid-column:1 / -1;justify-self:start;text-align:left}
+  .models{grid-template-columns:1fr}
+  .models li{grid-template-columns:5fr 7fr;column-gap:32px;border-bottom:3px solid rgba(242,243,239,.3);padding-bottom:22px}
+  .models h3{grid-row:span 2}
+  .svc-hero .peel{grid-column:span 12}
+  .svc-what--side .paste{grid-template-columns:1fr}
+  .what-head{position:static}
+  .spec-grid,.svc-spec--wide .spec-head,.fit-grid,.runs-grid{grid-template-columns:1fr}
+  .svc-fit--stack .fit-good{grid-template-columns:1fr}
+  .svc-fit--stack .fit-good>.fit-cast{grid-column:1;grid-row:auto;margin-top:clamp(20px,2.4vw,32px)}
+  .spec-head h2{max-width:18ch}
+  .spec-head{position:static}
+  .svc-spec--wide .spec-head .mockup{grid-column:1;grid-row:auto;justify-self:start;margin:8px 0 0}
+  .runs-steps{grid-template-columns:repeat(5,1fr)}
+  .runs-steps li{padding:16px 12px 14px;font-size:clamp(18px,2.6vw,24px)}
+  .runs-steps span{font-size:clamp(48px,8vw,72px)}
+}
+@media (max-width:860px){
+  .what-list{grid-template-columns:1fr}
+  .what-list li:last-child{border-bottom:3px solid currentColor}
+  .svc-pillars .pillar{min-height:0}
+}
+/* ---------- Phone ---------- */
+@media (max-width:699px){
+  .fp{grid-column:span var(--sp,12);min-height:0;padding:24px 20px 26px}
+  .fp h3{font-size:clamp(28px,12cqw,44px)}
+  .fp-bar{grid-template-columns:1fr;padding:10px var(--pad-x)}
+  .fp-bar__h,.fp-bar__note{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .fp-bar__btns{gap:6px;flex-wrap:nowrap}
+  .fp-btn{flex:1 1 auto;padding:11px 8px 8px;font-size:16px}
+  .models li{grid-template-columns:1fr}
+  .models h3{grid-row:auto}
+  .what-list li{font-size:19px;padding:16px 0 18px 30px}
+  .what-list li::before{top:28px;width:16px;height:5px}
+  .svc-what--side .what-list li{font-size:19px;padding:15px 16px 13px 44px}
+  .svc-what--side .what-list li:nth-child(even){margin-left:0}
+  .svc-what--side .what-list li::before{left:16px;top:26px;width:16px;height:5px}
+  .works{grid-template-columns:1fr;gap:6px;padding:6px}
+  .works__p{min-height:0}
+  .faq summary{font-size:19px}
+  .svc-side__w{font-size:clamp(40px,13vw,60px)}
+  .spec-head .mockup{font-size:clamp(40px,13vw,56px);margin-top:4px}
+  .runs-steps{grid-template-columns:1fr}
+  .runs-steps li{flex-direction:row;align-items:baseline;gap:16px;padding:10px var(--pad-x) 8px;font-size:26px}
+  .runs-steps li+li{box-shadow:inset 0 3px 0 currentColor}
+  .runs-steps span{font-size:52px;min-width:40px}
+}
+@media (prefers-reduced-motion:reduce){
+  .chip,.fp-btn,.faq summary,.faq summary::after{transition:none}
+  .chip:hover,.fp-btn:hover{transform:none}
+}
+
 </style>
 
 <!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.elvanamedia.com/#organization","name":"Elvana Media","legalName":"ELEVANA MEDIA PRIVATE LIMITED","url":"https://www.elvanamedia.com/","email":"info@elvanamedia.com","telephone":"+91 89283 39531","foundingDate":"2026-06-04","slogan":"Ideas that create impact.","description":"Digital marketing, media & AI-powered growth.","image":"https://www.elvanamedia.com/assets/og-default.png","parentOrganization":{"@type":"Organization","name":"BeyondSure Private Limited"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}],"address":{"@id":"https://www.elvanamedia.com/#registered-office"}},{"@type":"LocalBusiness","@id":"https://www.elvanamedia.com/#mumbai","name":"Elvana Media","url":"https://www.elvanamedia.com/","image":"https://www.elvanamedia.com/assets/og-default.png","email":"info@elvanamedia.com","telephone":"+91 89283 39531","parentOrganization":{"@id":"https://www.elvanamedia.com/#organization"},"address":{"@type":"PostalAddress","@id":"https://www.elvanamedia.com/#registered-office","streetAddress":"203, Shivam Square, Building No. 4, Sahar Road, Andheri East","addressLocality":"Mumbai","addressRegion":"Maharashtra","postalCode":"400069","addressCountry":"IN"}},{"@type":"WebSite","@id":"https://www.elvanamedia.com/#website","url":"https://www.elvanamedia.com/","name":"Elvana Media","publisher":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN"},{"@type":"WebPage","@id":"https://www.elvanamedia.com/services/#webpage","url":"https://www.elvanamedia.com/services/","name":"Services: Create. Connect. Grow. | Elvana Media","description":"Eight core services and six beyond digital: websites, SEO and SEM, WhatsApp, SMS, AI calling, content, PR, video, branding, events and outdoor.","isPartOf":{"@id":"https://www.elvanamedia.com/#website"},"about":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.elvanamedia.com/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://www.elvanamedia.com/services/"}]}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Elvana Media services","itemListElement":[{"@type":"ListItem","position":1,"name":"Website Development","url":"https://www.elvanamedia.com/services/website-development/"},{"@type":"ListItem","position":2,"name":"SEO & SEM","url":"https://www.elvanamedia.com/services/seo-sem/"},{"@type":"ListItem","position":3,"name":"SMS Blasting","url":"https://www.elvanamedia.com/services/sms-blasting/"},{"@type":"ListItem","position":4,"name":"WhatsApp Blasting","url":"https://www.elvanamedia.com/services/whatsapp-blasting/"},{"@type":"ListItem","position":5,"name":"WhatsApp Chat Bot","url":"https://www.elvanamedia.com/services/whatsapp-chat-bot/"},{"@type":"ListItem","position":6,"name":"AI Calling","url":"https://www.elvanamedia.com/services/ai-calling/"},{"@type":"ListItem","position":7,"name":"Post Creation & Content","url":"https://www.elvanamedia.com/services/post-creation-content/"},{"@type":"ListItem","position":8,"name":"PR & Media Relations","url":"https://www.elvanamedia.com/services/pr-media-relations/"},{"@type":"ListItem","position":9,"name":"Content & Video Production","url":"https://www.elvanamedia.com/services/content-video-production/"},{"@type":"ListItem","position":10,"name":"Social Media Management","url":"https://www.elvanamedia.com/services/social-media-management/"},{"@type":"ListItem","position":11,"name":"Branding & Identity","url":"https://www.elvanamedia.com/services/branding-identity/"},{"@type":"ListItem","position":12,"name":"Events & Activations","url":"https://www.elvanamedia.com/services/events-activations/"},{"@type":"ListItem","position":13,"name":"Outdoor, Hoardings & Signage","url":"https://www.elvanamedia.com/services/outdoor-hoardings-signage/"},{"@type":"ListItem","position":14,"name":"Print & Digital Publishing","url":"https://www.elvanamedia.com/services/print-digital-publishing/"}]}</script>
 </head>
 <body class="page-services" id="top">
 <a class="skip" href="#main">Skip to content</a>
@@ -677,39 +915,195 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
 </header>
 
 <main id="main">
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
+<!-- Services overview. Signature: the fly-poster wall (#wall). All 14 services are pasted as one wall;
+     choosing Create, Connect or Grow tears the other posters down and slaps the matching ones into place
+     (an interruptible FLIP with a squeegee; services.js). Without JS or with reduced motion the wall is
+     simply all 14 posters (no JS) or filters without motion (reduced motion).
+     Pillar membership follows the deck's pillar lines (Create: content, video, design, branding; Connect:
+     social, WhatsApp, SMS, AI calling, PR; Grow: SEO, SEM, performance ads, automation, reporting). -->
 <section class="page-hero" aria-labelledby="page-h">
   <div class="page-hero__main g-yellow">
     <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li aria-current="page">Services</li></ol></nav>
     <h1 id="page-h">Services</h1>
   </div>
   <div class="page-hero__side g-ink">
-    <p class="page-hero__line">Create. Connect. Grow.</p>
-    <p class="page-hero__sign"><span class="d">Elvana Media</span>Mumbai, Delhi, Gurgaon and Noida</p>
+    <p class="page-hero__line">Eight core services. Six beyond digital.</p>
+    <p class="page-hero__sign"><span class="d hi-ink">Create. Connect. Grow.</span>Digital marketing, media &amp; AI-powered growth</p>
   </div>
 </section>
 
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
-    </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>Create, Connect, Grow: the three pillars</li><li>The 8 core services</li><li>The 6 services beyond digital</li><li>How any service runs as a retainer, a campaign or a project</li></ul>
+<section class="poster svc-pillars" id="pillars" aria-labelledby="pillars-h" style="--under:var(--ink)">
+  <div class="paste flush">
+    <h2 class="sr" id="pillars-h">Create. Connect. Grow.</h2>
+    <div class="pillars">
+      <div class="pillar g-red">
+        <h3>Create.</h3>
+        <div class="pillar__foot">
+          <p>Content, video, design, branding and campaign ideas that people stop for.</p>
+          <a class="tag" href="#wall" data-filter="create">Show the Create services</a>
+        </div>
+      </div>
+      <div class="pillar g-blue">
+        <h3>Connect.</h3>
+        <div class="pillar__foot">
+          <p>Social, WhatsApp, SMS, AI calling and PR that reach the right audience at the right time.</p>
+          <a class="tag" href="#wall" data-filter="connect">Show the Connect services</a>
+        </div>
+      </div>
+      <div class="pillar g-yellow">
+        <h3>Grow.</h3>
+        <div class="pillar__foot">
+          <p>SEO, SEM, performance ads, automation and reporting that turn attention into revenue.</p>
+          <a class="tag tag-ink" href="#wall" data-filter="grow">Show the Grow services</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Closing CTA poster: every page ends here, always to /contact/. -->
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+<section class="poster svc-wall" id="wall" aria-labelledby="wall-h" style="--under:var(--yellow)">
+  <div class="paste g-ink">
+    <div class="head-split">
+      <h2 class="d1" id="wall-h">Every service, on one wall</h2>
+      <p class="lede">Fourteen posters, one for each service. <span class="js-only">Pick a pillar: the posters that don't belong come down, and the ones that do are pasted into place.</span></p>
+    </div>
+    <div class="fp-bar g-ink js-only" role="group" aria-labelledby="fp-bar-h">
+      <p class="fp-bar__h" id="fp-bar-h">Show</p>
+      <div class="fp-bar__btns">
+          <button class="fp-btn" type="button" data-filter="all" aria-pressed="true">All 14</button>
+          <button class="fp-btn" type="button" data-filter="create" aria-pressed="false">Create</button>
+          <button class="fp-btn" type="button" data-filter="connect" aria-pressed="false">Connect</button>
+          <button class="fp-btn" type="button" data-filter="grow" aria-pressed="false">Grow</button>
+      </div>
+      <p class="fp-bar__note" aria-hidden="true"><span data-note="all">Every service we run, pasted edge to edge.</span><span data-note="create" hidden>Content, video, design, branding and campaign ideas that people stop for.</span><span data-note="connect" hidden>Social, WhatsApp, SMS, AI calling and PR that reach the right audience at the right time.</span><span data-note="grow" hidden>SEO, SEM, performance ads, automation and reporting that turn attention into revenue.</span></p>
+    </div>
+    <div class="fp-wall" data-wall>
+      <article class="flyer fp g-yellow" data-pillars="create grow" style="--s:5;--st:7;--sp:12">
+        <p class="fam">Core service</p>
+        <h3><a href="website-development/index.html">Website Development</a></h3>
+        <p class="fp-line">Fast, mobile-first sites and landing pages built to convert.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Create</li><li>Grow</li></ul>
+      </article>
+      <article class="flyer fp g-ink" data-pillars="grow" style="--s:3;--st:5;--sp:6">
+        <p class="fam">Core service</p>
+        <h3><a href="seo-sem/index.html">SEO &amp; SEM</a></h3>
+        <p class="fp-line">Rank higher on Google and run search ads that pay back.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Grow</li></ul>
+      </article>
+      <article class="flyer fp g-red" data-pillars="connect" style="--s:4;--st:5;--sp:6">
+        <p class="fam">Core service</p>
+        <h3><a href="sms-blasting/index.html">SMS Blasting</a></h3>
+        <p class="fp-line">Bulk SMS campaigns on DLT-registered templates.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li></ul>
+      </article>
+      <article class="flyer fp g-blue" data-pillars="connect" style="--s:5;--st:7;--sp:12">
+        <p class="fam">Core service</p>
+        <h3><a href="whatsapp-blasting/index.html">WhatsApp Blasting</a></h3>
+        <p class="fp-line">Broadcast offers and updates where customers actually read.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li></ul>
+      </article>
+      <article class="flyer fp g-paper" data-pillars="connect grow" style="--s:4;--st:7;--sp:12">
+        <p class="fam">Core service</p>
+        <h3><a href="whatsapp-chat-bot/index.html">WhatsApp Chat Bot</a></h3>
+        <p class="fp-line">24×7 automated replies, lead capture and support.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li><li>Grow</li></ul>
+      </article>
+      <article class="flyer fp g-yellow" data-pillars="connect grow" style="--s:3;--st:5;--sp:12">
+        <p class="fam">Core service</p>
+        <h3><a href="ai-calling/index.html">AI Calling</a></h3>
+        <p class="fp-line">AI voice agents for follow-ups, reminders and qualification.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li><li>Grow</li></ul>
+      </article>
+      <article class="flyer fp g-ink" data-pillars="create" style="--s:4;--st:7;--sp:12">
+        <p class="fam">Core service</p>
+        <h3><a href="post-creation-content/index.html">Post Creation &amp; Content</a></h3>
+        <p class="fp-line">Scroll-stopping posts, reels, carousels and copy.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Create</li></ul>
+      </article>
+      <article class="flyer fp g-blue" data-pillars="connect" style="--s:3;--st:5;--sp:12">
+        <p class="fam">Core service</p>
+        <h3><a href="pr-media-relations/index.html">PR &amp; Media Relations</a></h3>
+        <p class="fp-line">Stories placed with the press and the people who matter.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li></ul>
+      </article>
+      <article class="flyer fp g-yellow" data-pillars="create" style="--s:5;--st:7;--sp:12">
+        <p class="fam">Beyond digital</p>
+        <h3><a href="content-video-production/index.html">Content &amp; Video Production</a></h3>
+        <p class="fp-line">Ad films, brand films, animation, graphics and sound, from pre- to post-production.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Create</li></ul>
+      </article>
+      <article class="flyer fp g-red" data-pillars="connect grow" style="--s:5;--st:5;--sp:12">
+        <p class="fam">Beyond digital</p>
+        <h3><a href="social-media-management/index.html">Social Media Management</a></h3>
+        <p class="fp-line">Always-on calendars, community management and paid social campaigns.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li><li>Grow</li></ul>
+      </article>
+      <article class="flyer fp g-blue" data-pillars="create" style="--s:3;--st:5;--sp:12">
+        <p class="fam">Beyond digital</p>
+        <h3><a href="branding-identity/index.html">Branding &amp; Identity</a></h3>
+        <p class="fp-line">Logos, brand books, packaging and a voice that stays consistent everywhere.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Create</li></ul>
+      </article>
+      <article class="flyer fp g-ink" data-pillars="connect" style="--s:4;--st:7;--sp:12">
+        <p class="fam">Beyond digital</p>
+        <h3><a href="events-activations/index.html">Events &amp; Activations</a></h3>
+        <p class="fp-line">Pan-India event management, launches and on-ground brand experiences.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li></ul>
+      </article>
+      <article class="flyer fp g-yellow" data-pillars="connect" style="--s:7;--st:7;--sp:12">
+        <p class="fam">Beyond digital</p>
+        <h3><a href="outdoor-hoardings-signage/index.html">Outdoor, Hoardings &amp; Signage</a></h3>
+        <p class="fp-line">High-visibility outdoor media planned around your audience.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li></ul>
+      </article>
+      <article class="flyer fp g-paper" data-pillars="create" style="--s:5;--st:5;--sp:12">
+        <p class="fam">Beyond digital</p>
+        <h3><a href="print-digital-publishing/index.html">Print &amp; Digital Publishing</a></h3>
+        <p class="fp-line">Magazines, brochures and regional-language content in print and online.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Create</li></ul>
+      </article>
+      <i class="fp-blade" aria-hidden="true"></i>
+    </div>
+  </div>
+</section>
+
+<section class="poster" id="beyond-digital" aria-labelledby="beyond-h" style="--under:var(--ink)">
+  <div class="paste bill g-paper">
+    <div class="bill-head">
+      <h2 class="d1" id="beyond-h">Beyond digital</h2>
+      <p class="d2">Media, production &amp; brand building</p>
+    </div>
+    <ul class="bill-list">
+      <li><h3><a href="content-video-production/index.html">Content &amp; Video Production</a></h3><p>Ad films, brand films, animation, graphics and sound, from pre- to post-production.</p><p class="bill-good"><b>Good for</b> launches, brand films, explainers, ad campaigns and social video.</p></li>
+      <li><h3><a href="social-media-management/index.html">Social Media Management</a></h3><p>Always-on calendars, community management and paid social campaigns.</p><p class="bill-good"><b>Good for</b> brands that need to be present every day, not just at launches.</p></li>
+      <li><h3><a href="branding-identity/index.html">Branding &amp; Identity</a></h3><p>Logos, brand books, packaging and a voice that stays consistent everywhere.</p><p class="bill-good"><b>Good for</b> new businesses, rebrands and companies whose brand has drifted across teams and agencies.</p></li>
+      <li><h3><a href="events-activations/index.html">Events &amp; Activations</a></h3><p>Pan-India event management, launches and on-ground brand experiences.</p><p class="bill-good"><b>Good for</b> launches, seasonal campaigns and community and trade events.</p></li>
+      <li><h3><a href="outdoor-hoardings-signage/index.html">Outdoor, Hoardings &amp; Signage</a></h3><p>High-visibility outdoor media planned around your audience.</p><p class="bill-good"><b>Good for</b> launches, local businesses, real estate, retail and events.</p></li>
+      <li><h3><a href="print-digital-publishing/index.html">Print &amp; Digital Publishing</a></h3><p>Magazines, brochures and regional-language content in print and online.</p><p class="bill-good"><b>Good for</b> education, real estate, healthcare and corporate communications.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="poster svc-models" id="engagement" aria-labelledby="models-h" style="--under:var(--paper)">
+  <div class="paste g-blue">
+    <div class="head-split">
+      <h2 class="d1" id="models-h">Any service, three ways to work</h2>
+      <p class="lede">Any service can be part of a Monthly Retainer, a Campaign SOW or a Project. Every one runs through the same five steps and reports into the same live dashboard.</p>
+    </div>
+    <ul class="models">
+      <li><h3>Monthly Retainer</h3><p class="models__best">Always-on growth</p><p>Social media, content, SEO, ads management and monthly reporting.</p></li>
+      <li><h3>Campaign SOW</h3><p class="models__best">Launches &amp; seasons</p><p>Product launches, festive pushes, events and PR bursts, scoped per campaign.</p></li>
+      <li><h3>Project-based</h3><p class="models__best">Build once, use daily</p><p>Websites, WhatsApp bots, AI calling set-up and brand identity.</p></li>
+    </ul>
+    <p class="poster-foot tags"><a class="tag" href="../engagement-models/index.html">Compare engagement models</a><a class="tag tag-line" href="../how-we-work/index.html">How we work</a></p>
+  </div>
+</section>
+
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--blue)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>
-      <p class="lede">Write to info@elvanamedia.com or call +91 89283 39531. Offices in Mumbai, Delhi, Gurgaon and Noida.</p>
+      <p class="lede">Not sure which service you need? Tell us the problem and we will start from there. Write to info@elvanamedia.com or call +91 89283 39531.</p>
       <div class="tags"><a class="tag tag-ink" href="../contact/index.html">Let's talk</a><a class="tag tag-line" href="tel:+918928339531">Call +91 89283 39531</a></div>
     </div>
   </div>
@@ -810,12 +1204,10 @@ const motionOK = root.classList.contains('motion');
 /* 1. MOTION ---------------------------------------------------------------
    Springs: k = stiffness, c = damping, mass 1. zeta = c / (2 * sqrt(k)).   */
 const MOTION = {
+  // The tear and peel physics (material constants, springs, roll timing) live in tear.js's MATERIAL / MOTION blocks.
   paste: bezier(.2, .7, .1, 1),     // paste: cubic-bezier(.2,.7,.1,1). Squeegee settle; every entrance eases out.
   tug: bezier(.55, 0, .75, .2),     // tug: cubic-bezier(.55,0,.75,.2). Gravity: a sheet letting go of the wall.
   lift: 'cubic-bezier(.3,1.3,.5,1)',// lift: a corner lifting, one tiny overshoot (CSS only)
-  flap: { k: 260, c: 26 },          // flap: a torn strip's free end follows the hand (zeta .81)   [tear.js]
-  roll: { k: 120, c: 19 },          // roll: a released strip curls up into a roll (zeta .87)     [tear.js]
-  peek: { k: 300, c: 30 },          // peek: the poster edge lifts toward a hovering pointer      [tear.js]
   ms: { press: 120, lift: 220, paste: 320, pasteIn: 900, letGo: 900, pasteBack: 1100, fallLife: 950, chatGap: 650, cellStagger: 40, barStagger: 120 }
 };
 let timeScale = 1;                  // 0.1 while slow-motion review is on
@@ -1045,6 +1437,189 @@ if (hero && tearClip && 'MutationObserver' in window) {
 }
 
 window.Elvana = { MOTION, announce, setSlow, feedback, setSound, get timeScale() { return timeScale; }, get sound() { return soundOn; } };
+})();
+
+</script>
+<script>
+/* =========================================================================
+   Elvana Media: pages/services.js
+   1. ElvanaSpec: the small kit every service specimen uses (motion gate,
+      time-scaled timers and Web Animations, sleep when off-screen, announce,
+      paper sounds). Specimen scripts load after this file.
+   2. The fly-poster wall (/services/ only, the page's one signature).
+      Choosing Create, Connect or Grow tears the other posters off the wall
+      and slaps the matching ones into place: an interruptible FLIP (each
+      poster starts from wherever it is on screen, even mid-move), then one
+      squeegee pass that pastes any poster coming back. Reduced motion: the
+      wall re-lays itself without motion. No JS: all 14 posters, no filter.
+   ========================================================================= */
+(() => {
+'use strict';
+const root = document.documentElement;
+const E = () => window.Elvana || {};
+const motion = () => root.classList.contains('motion');
+const ts = () => E().timeScale || 1;
+// Named curves (mirrors of base.css): paste = every entrance and the squeegee settle,
+// tug = gravity (a sheet letting go), lift = a corner lifting with one tiny overshoot.
+const EASE = { paste: 'cubic-bezier(.2,.7,.1,1)', tug: 'cubic-bezier(.55,0,.75,.2)', lift: 'cubic-bezier(.3,1.3,.5,1)' };
+const live = new Set();
+document.addEventListener('elvana:timescale', () => live.forEach(a => { a.playbackRate = ts(); }));
+/** Web Animation that honours reduced motion (returns null) and the slow-motion switch. */
+function anim(el, kf, opt) {
+  if (!motion() || !el || !el.animate) return null;
+  const a = el.animate(kf, opt); a.id = 'svc'; a.playbackRate = ts(); live.add(a);
+  const done = () => live.delete(a); a.finished.then(done, done);
+  return a;
+}
+const after = (ms, fn) => setTimeout(fn, ms / ts());
+/** Calls wake() when el comes near the viewport and sleep() when it leaves. */
+function sleeper(el, wake, sleep, margin) {
+  const st = { awake: false };
+  if (!('IntersectionObserver' in window)) { st.awake = true; if (wake) wake(); return st; }
+  new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting === st.awake) return;
+    st.awake = e.isIntersecting; const f = st.awake ? wake : sleep; if (f) f();
+  }), { rootMargin: margin || '120px 0px' }).observe(el);
+  return st;
+}
+window.ElvanaSpec = { motion, EASE, anim, after, sleeper, say: t => E().announce && E().announce(t), fx: n => E().feedback && E().feedback(n), get ts() { return ts(); } };
+
+/* ---------- 2. The fly-poster wall ---------- */
+const wall = document.querySelector('[data-wall]');
+if (!wall) return;
+const posters = [...wall.querySelectorAll('.fp')];
+const blade = wall.querySelector('.fp-blade');
+const bar = document.querySelector('.fp-bar');
+const ctrls = [...document.querySelectorAll('[data-filter]')];
+const notes = [...document.querySelectorAll('[data-note]')];
+const NAMES = { all: 'all', create: 'Create', connect: 'Connect', grow: 'Grow' };
+const lenOf = p => p.querySelector('h3').textContent.trim().length;
+let current = 'all';
+
+// Spans on the 12-column wall for desktop, tablet and phone, so every row is pasted edge to edge.
+// Desktop: rows of three (5/4/3 by name length), the last rows in twos (7/5). Tablet: twos.
+// Phone: two short names share a row, anything longer gets the full width.
+function spans(L) {
+  const n = L.length, d = [], t = [], p = [], rows = [];
+  for (let left = n; left > 0;) {
+    if (n <= 3) { rows.push(left); left = 0; }
+    else if (left === 4) { rows.push(2, 2); left = 0; }
+    else if (left <= 2) { rows.push(left); left = 0; }
+    else { rows.push(3); left -= 3; }
+  }
+  let i = 0;
+  for (const r of rows) {
+    if (r === 1) d.push(12);
+    else if (r === 2) d.push(...(L[i] >= L[i + 1] ? [7, 5] : [5, 7]));
+    else { const ix = [i, i + 1, i + 2], rk = ix.slice().sort((a, b) => L[b] - L[a]), sz = {}; sz[rk[0]] = 5; sz[rk[1]] = 4; sz[rk[2]] = 3; ix.forEach(j => d.push(sz[j])); }
+    i += r;
+  }
+  for (let k = 0; k < n; k += 2) t.push(...(k + 1 < n ? (L[k] >= L[k + 1] ? [7, 5] : [5, 7]) : [12]));
+  for (let k = 0; k < n;) { if (k + 1 < n && L[k] <= 13 && L[k + 1] <= 13) { p.push(6, 6); k += 2; } else { p.push(12); k++; } }
+  return [d, t, p];
+}
+function relayout() {
+  const vis = posters.filter(p => !p.hidden), [d, t, p] = spans(vis.map(lenOf));
+  vis.forEach((el, i) => { el.style.setProperty('--s', d[i]); el.style.setProperty('--st', t[i]); el.style.setProperty('--sp', p[i]); });
+}
+// Where a poster is on screen right now (mid-animation included), relative to the wall
+function box(p, wr) {
+  const r = p.getBoundingClientRect();
+  let h = r.height;
+  const m = /inset\(([^)]*)\)/.exec(getComputedStyle(p).clipPath || '');
+  if (m) { const v = m[1].trim().split(/\s+/).map(parseFloat); const b = v.length < 3 ? v[0] : v[2]; h -= (b || 0) * (r.width / (p.offsetWidth || r.width)); }
+  return { x: r.left - wr.left, y: r.top - wr.top, w: r.width, h: Math.max(1, h) };
+}
+function stop() {
+  posters.forEach(p => { p.getAnimations().forEach(a => { if (a.id === 'svc') a.cancel(); }); p.classList.remove('is-moving'); });
+  blade.getAnimations().forEach(a => a.cancel());
+}
+function scrap(p, F, i, wr) {
+  const c = p.cloneNode(true);
+  c.hidden = false; c.removeAttribute('style'); c.classList.remove('is-moving'); c.classList.add('fp-scrap');
+  c.setAttribute('aria-hidden', 'true'); c.inert = true;
+  c.querySelectorAll('a').forEach(a => { a.removeAttribute('href'); a.tabIndex = -1; });
+  const dir = i % 2 ? 1 : -1, fall = Math.max(260, Math.min(innerHeight, wr.height - F.y + 80));
+  Object.assign(c.style, { left: F.x + 'px', top: F.y + 'px', width: F.w + 'px', height: F.h + 'px', transformOrigin: dir > 0 ? '0 0' : '100% 0' });
+  wall.insertBefore(c, blade);
+  // the far top corner lets go first and the poster swings on the other; then gravity takes it
+  const a = anim(c, [
+    { transform: 'translate(0,0) rotate(0deg)', opacity: 1, easing: EASE.lift },
+    { transform: `translate(0,4px) rotate(${dir * 6}deg)`, opacity: 1, offset: .24, easing: EASE.tug },
+    { transform: `translate(${-dir * 6}%,${fall}px) rotate(${dir * 22}deg)`, opacity: 1, offset: .86 },
+    { transform: `translate(${-dir * 7}%,${fall * 1.12}px) rotate(${dir * 25}deg)`, opacity: 0 }
+  ], { duration: 860, delay: i * 34, fill: 'backwards' });
+  const gone = () => c.remove();
+  if (a) a.finished.then(gone, gone); else gone();
+}
+function apply(f) {
+  if (!NAMES[f]) return;
+  ctrls.forEach(c => { if (c.tagName === 'BUTTON') c.setAttribute('aria-pressed', String(c.dataset.filter === f)); });
+  notes.forEach(n => { n.hidden = n.dataset.note !== f; });
+  if (f === current) return;
+  current = f;
+  const want = p => f === 'all' || p.dataset.pillars.split(' ').includes(f);
+  const moving = motion() && !!wall.animate;
+  // inside the wall? bring its top up under the sticky bar first, so the result is seen from the top
+  const hdr = parseFloat(getComputedStyle(root).getPropertyValue('--hdr')) || 64;
+  const top0 = wall.getBoundingClientRect().top, under = hdr + (bar ? bar.offsetHeight : 0);
+  if (top0 < under - 2) scrollTo({ top: scrollY + top0 - under, behavior: 'instant' });
+  else if (top0 > innerHeight * .5) scrollTo({ top: scrollY + top0 - under, behavior: moving ? 'smooth' : 'instant' });
+  const wr = wall.getBoundingClientRect();
+  const first = new Map();
+  if (moving) posters.forEach(p => { if (!p.hidden) first.set(p, box(p, wr)); });
+  stop();
+  const leaving = [], entering = [], staying = [];
+  posters.forEach(p => {
+    const w = want(p);
+    if (w) (p.hidden ? entering : staying).push(p); else if (!p.hidden) leaving.push(p);
+    p.hidden = !w;
+  });
+  relayout();
+  const n = posters.filter(p => !p.hidden).length;
+  ElvanaSpec.say(f === 'all' ? `Showing all ${n} services.` : `Showing the ${n} ${NAMES[f]} services. The others are torn down.`);
+  if (!moving) return;
+  if (leaving.length) ElvanaSpec.fx('rip');
+  leaving.forEach((p, i) => scrap(p, first.get(p), i, wr));
+  const wr2 = wall.getBoundingClientRect();
+  staying.forEach((p, i) => {
+    const F = first.get(p), r = p.getBoundingClientRect();
+    const L = { x: r.left - wr2.left, y: r.top - wr2.top, w: r.width, h: r.height };
+    const s = F.w / L.w, tx = F.x - L.x, ty = F.y - L.y;
+    if (Math.abs(tx) < 1 && Math.abs(ty) < 1 && Math.abs(s - 1) < .005 && Math.abs(F.h - L.h) < 1) return;
+    const b = Math.max(0, L.h - F.h / s);           // keep its visible height; never squash the print
+    p.classList.add('is-moving');
+    const a = anim(p, [
+      { transform: `translate(${tx}px,${ty}px) scale(${s})`, clipPath: `inset(0px 0px ${b}px 0px)` },
+      { transform: 'translate(0px,0px) scale(1)', clipPath: 'inset(0px 0px 0px 0px)' }
+    ], { duration: 500, delay: 80 + i * 24, easing: EASE.paste, fill: 'backwards' });
+    if (a) a.finished.then(() => p.classList.remove('is-moving'), () => {});
+  });
+  // one squeegee pass; posters coming back are pasted on as its wet edge crosses them
+  const W = wr2.width, BW = 180, D = 680, T0 = 200;
+  const b = anim(blade, [{ transform: `translateX(${-BW}px)`, opacity: 1 }, { transform: `translateX(${W}px)`, opacity: 1 }], { duration: D, delay: T0, easing: 'linear' });
+  if (b) b.finished.then(() => ElvanaSpec.fx('paste'), () => {});
+  entering.forEach(p => {
+    const r = p.getBoundingClientRect(), x0 = r.left - wr2.left;
+    anim(p, [{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)' }],
+      { duration: D * r.width / (W + BW), delay: T0 + D * x0 / (W + BW), easing: 'linear', fill: 'backwards' });
+  });
+}
+ctrls.forEach(c => c.addEventListener('click', e => {
+  const f = c.dataset.filter;
+  if (c.tagName !== 'A') { apply(f); return; }
+  // a pillar's link: travel to the wall, then filter it where it can be seen
+  e.preventDefault();
+  const target = bar || wall, hdr = parseFloat(getComputedStyle(root).getPropertyValue('--hdr')) || 64;
+  const y = scrollY + target.getBoundingClientRect().top - hdr;
+  const btn = bar && bar.querySelector(`[data-filter="${f}"]`);
+  let done = false;
+  const go = () => { if (done) return; done = true; if (btn) btn.focus({ preventScroll: true }); apply(f); };
+  if (Math.abs(y - scrollY) < 8) { go(); return; }
+  scrollTo({ top: y, behavior: motion() ? 'smooth' : 'instant' });
+  if (motion() && 'onscrollend' in window) addEventListener('scrollend', go, { once: true });
+  setTimeout(go, motion() ? 900 : 0);
+}));
 })();
 
 </script>

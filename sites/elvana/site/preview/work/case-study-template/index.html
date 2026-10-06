@@ -81,8 +81,8 @@
 
   /* Type. Display: Yatra One (Latin + Devanagari, one brush). Text: Mukta 400/600/800.
      Devanagari inside body text falls back to Yatra One (Mukta ships Latin only). */
-  --display:'Yatra One','Mukta',sans-serif;
-  --text:'Mukta','Yatra One',sans-serif;
+  --display:'Yatra One','Yatra One fb','Mukta',sans-serif;
+  --text:'Mukta','Mukta fb','Yatra One',sans-serif;
   --fs-d1:clamp(48px,8.2vw,124px);
   --fs-d2:clamp(34px,4.2vw,64px);
   --fs-d3:clamp(26px,2.6vw,38px);
@@ -144,6 +144,14 @@ img,svg{max-width:100%}
 .no-js .js-only,.js:not(.motion) .motion-only{display:none!important}
 .skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--yellow);color:var(--ink);padding:12px 18px;font-weight:800;text-decoration:none}
 .skip:focus{top:12px}
+
+/* Metric-matched fallbacks: while the embedded fonts decode, text is laid out in Arial / Liberation Sans
+   scaled to the real fonts' average width and vertical metrics, so nothing reflows when they arrive.
+   Values measured with fontTools against Liberation Sans (metric-compatible with Arial) on a mixed sample. */
+@font-face{font-family:'Yatra One fb';font-weight:400;src:local('Arial'),local('ArialMT'),local('Liberation Sans'),local('Helvetica'),local('Roboto');size-adjust:110.3%;ascent-override:89.9%;descent-override:44.2%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:400;src:local('Arial'),local('ArialMT'),local('Liberation Sans'),local('Helvetica'),local('Roboto');size-adjust:94.2%;ascent-override:120%;descent-override:56.5%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:600;src:local('Arial Bold'),local('Arial-BoldMT'),local('Liberation Sans Bold'),local('Helvetica Bold'),local('Roboto Bold');size-adjust:91.3%;ascent-override:123.8%;descent-override:58.3%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:800;src:local('Arial Bold'),local('Arial-BoldMT'),local('Liberation Sans Bold'),local('Helvetica Bold'),local('Roboto Bold');size-adjust:94.2%;ascent-override:119.9%;descent-override:56.4%;line-gap-override:0%}
 
 /* components.css */
 /* =========================================================================
@@ -545,7 +553,7 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
 
 /* ---------- Footer: the promise, the site map, contact, the legal line ---------- */
 .foot{position:relative;z-index:1;margin-top:-10px;padding:clamp(56px,7vw,104px) var(--pad-x) 28px}
-.foot .d1{color:var(--yellow);font-size:clamp(56px,10.6vw,180px);line-height:.88}
+.foot .d1{color:var(--yellow);font-size:clamp(36px,10.6vw,180px);line-height:.88}
 .foot .tagline{margin-top:clamp(18px,2.4vw,32px);font-size:var(--fs-lede);max-width:40ch}
 .foot-map{display:grid;grid-template-columns:3fr 3fr 3fr 4fr;gap:36px clamp(24px,3vw,48px);margin-top:clamp(48px,6vw,88px);padding-top:28px;border-top:6px solid var(--yellow)}
 .foot-h{font-family:var(--display);font-weight:400;font-size:clamp(24px,2vw,30px);line-height:1.05;color:var(--yellow);margin:0 0 12px}
@@ -641,6 +649,83 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
   .flyer:hover{transform:none}
 }
 
+/* pages/case-study.css */
+/* =========================================================================
+   Elvana Media: pages/case-study.css
+   The case-study template (noindex). A finished layout whose every slot is a
+   "Coming soon" strip, with editor notes, so it is obviously a template.
+   Plain: no page script, no signature.
+   ========================================================================= */
+
+/* the flag across the title sheet: this is a template */
+.tpl-flag{display:inline-block;margin-bottom:clamp(14px,2vw,24px);padding:8px 12px 6px;background:var(--ink);color:var(--yellow);font-weight:800;font-size:15px;transform:rotate(-1.5deg)}
+.page-case .page-hero__main{justify-content:space-between}
+
+/* notes for whoever fills the template in: a pencilled sticker, dashed */
+.tnote{max-width:44ch;padding:12px 14px 10px;border:2px dashed currentColor;font-size:var(--fs-small);line-height:1.45}
+.tnote b{display:block;font-weight:800;margin-bottom:2px}
+.tnote--dark{border-color:rgba(242,243,239,.7)}
+
+/* at a glance */
+.glance{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 clamp(24px,3vw,48px);margin-top:clamp(32px,4vw,56px);border-top:10px solid var(--ink)}
+.glance>div{display:grid;gap:10px;align-content:start;padding:18px 0 22px;border-bottom:3px solid var(--ink)}
+.glance dt{font-family:var(--display);font-size:var(--fs-d3);line-height:1}
+.glance dd{justify-self:start}
+
+/* an empty frame waiting for real content */
+.slot{position:relative;margin:0;min-height:clamp(180px,20vw,300px);border:3px dashed currentColor;display:grid;place-items:end start;padding:12px 14px}
+.slot.has-strip{overflow:hidden}
+.slot--text{margin-top:clamp(28px,3.6vw,52px);min-height:clamp(160px,16vw,240px);border-color:rgba(242,243,239,.7)}
+.slot figcaption{position:relative;z-index:4;font-weight:800;font-size:14px;background:var(--paper);padding:4px 8px 2px}
+.slot .coming-soon--over{--strip-top:46%;--strip-angle:-7deg}
+.slot--text .coming-soon--over,.slot--quote .coming-soon--over{--strip-angle:-2.6deg;left:-4%;right:-4%}
+.slot--wide .coming-soon--over{--strip-angle:-5deg}
+/* each step's slot: a sticker, then ruled lines where the text will go */
+.page-case .steps p::after{content:"";display:block;height:52px;margin-top:12px;background:repeating-linear-gradient(to bottom,transparent 0 15px,rgba(26,24,20,.32) 15px 17px)}
+
+/* channels */
+.channels{display:flex;flex-wrap:wrap;gap:16px 20px;margin-top:clamp(28px,3.6vw,52px)}
+.channels .coming-soon{font-size:17px}
+
+/* the work */
+.shots{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(12px,1.4vw,20px);margin-top:clamp(32px,4vw,56px)}
+.slot--wide{grid-column:span 8;aspect-ratio:16 / 9;min-height:0;background:radial-gradient(circle,rgba(31,63,180,.22) 30%,transparent 33%) 0 0/11px 11px}
+.slot--tall{grid-column:span 4;grid-row:span 2;aspect-ratio:auto;background:radial-gradient(circle,rgba(200,32,26,.18) 30%,transparent 33%) 0 0/11px 11px}
+.slot--sq{grid-column:span 4;aspect-ratio:1;min-height:0;background:radial-gradient(circle,rgba(26,24,20,.14) 30%,transparent 33%) 0 0/11px 11px}
+.shots .slot--sq:last-child{grid-column:5 / span 4}
+.shots .slot--sq:nth-child(3){grid-column:1 / span 4}
+
+/* results */
+.outcomes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:clamp(36px,5vw,72px) calc(var(--pad-x) * -1) 0;border-top:6px solid var(--yellow)}
+.outcomes li{display:grid;gap:14px;align-content:start;padding:28px var(--pad-x) 10px}
+.outcomes li+li{box-shadow:inset 3px 0 0 rgba(242,243,239,.25)}
+.outcomes .coming-soon{justify-self:start;font-size:clamp(17px,1.5vw,22px)}
+.outcomes .what{font-size:var(--fs-lede);font-weight:600;line-height:1.3;max-width:22ch}
+
+/* the quote */
+.pull{margin:0;display:grid;grid-template-columns:auto 1fr;gap:0 clamp(16px,2vw,32px);align-items:start}
+.pull__mark{font-family:var(--display);font-size:clamp(120px,16vw,240px);line-height:.7;color:var(--yellow)}
+.slot--quote{margin:0;min-height:clamp(180px,18vw,280px);border-color:rgba(242,243,239,.7)}
+.pull figcaption{grid-column:2;margin-top:18px}
+#quote .tnote{margin-top:clamp(28px,3.4vw,48px)}
+
+@media (max-width:1099px){
+  .glance{grid-template-columns:1fr 1fr}
+  .slot--wide{grid-column:span 12}
+  .slot--tall{grid-column:span 6;grid-row:span 2}
+  .shots .slot--sq:nth-child(3),.shots .slot--sq:last-child{grid-column:span 6}
+  .outcomes{grid-template-columns:1fr}
+  .outcomes li+li{box-shadow:inset 0 3px 0 rgba(242,243,239,.25)}
+}
+@media (max-width:699px){
+  .glance{grid-template-columns:1fr}
+  .slot--tall{grid-column:span 12;grid-row:auto;aspect-ratio:4 / 5}
+  .shots .slot--sq:nth-child(3),.shots .slot--sq:last-child{grid-column:span 6}
+  .pull{grid-template-columns:1fr}
+  .pull__mark{font-size:120px;line-height:.6}
+  .pull figcaption{grid-column:1}
+}
+
 </style>
 
 <!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
@@ -680,55 +765,130 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
 <main id="main">
 <!-- CASE STUDY TEMPLATE (noindex, not linked from the site).
      Use: copy to src/pages/work/<client-slug>.html, set path: /work/<client-slug>/, remove `noindex`,
-     add the page to the footer only if it should be there, link it from /work/.
+     link it from /work/ (and the footer only if it should be there).
      Rules: real, client-approved facts only. No borrowed logos, no invented numbers or quotes.
-     Every TODO sticker below must be gone before a case study is published. -->
+     Every "Coming soon" strip and every .tnote below must be gone before a case study is published:
+       grep -n 'data-todo\|class="tnote' src/pages/work/<client-slug>.html
+     Plain interactions only: no page script. -->
 <section class="page-hero" aria-labelledby="page-h">
   <div class="page-hero__main g-yellow">
     <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">Home</a></li><li><a href="../index.html">Work</a></li><li aria-current="page">Case study template</li></ol></nav>
-    <h1 id="page-h" class="is-long">Case study template</h1>
+    <div>
+      <p class="tpl-flag">Template: nothing on this page is a real project</p>
+      <h1 id="page-h" class="is-long">Case study template</h1>
+    </div>
   </div>
   <div class="page-hero__side g-blue">
-    <p class="page-hero__line"><span class="todo">TODO: client, sector and city</span></p>
-    <p class="page-hero__sign"><span class="d">Services used</span><span class="todo">TODO: link each service page</span></p>
+    <p class="page-hero__line">The headline: what changed for the client, in one line.</p>
+    <p class="page-hero__sign"><span class="coming-soon coming-soon--inline coming-soon--yellow" data-todo="case study headline">Headline coming soon</span></p>
   </div>
 </section>
 
-<section class="poster" aria-labelledby="brief-h" style="--under:var(--ink)">
+<!-- At a glance -->
+<section class="poster" id="glance" aria-labelledby="glance-h" style="--under:var(--ink)">
   <div class="paste g-paper">
     <div class="head-split">
-      <h2 class="d1" id="brief-h">The brief</h2>
-      <p class="lede"><span class="todo">TODO: what the client needed, approved by them</span></p>
+      <h2 class="d2" id="glance-h">At a glance</h2>
+      <p class="tnote"><b>For the editor</b>Every line here comes from the signed brief. Link each service to its page.</p>
+    </div>
+    <dl class="glance">
+      <div><dt>Client</dt><dd><span class="coming-soon coming-soon--inline" data-todo="client name">Client coming soon</span></dd></div>
+      <div><dt>Sector</dt><dd><span class="coming-soon coming-soon--inline" data-todo="sector">Sector coming soon</span></dd></div>
+      <div><dt>City</dt><dd><span class="coming-soon coming-soon--inline" data-todo="city">City coming soon</span></dd></div>
+      <div><dt>Engagement</dt><dd><span class="coming-soon coming-soon--inline" data-todo="engagement model">Model coming soon</span></dd></div>
+      <div><dt>Period</dt><dd><span class="coming-soon coming-soon--inline" data-todo="dates the work ran">Dates coming soon</span></dd></div>
+      <div><dt>Services</dt><dd><span class="coming-soon coming-soon--inline" data-todo="services used, linked">Services coming soon</span></dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- The challenge -->
+<section class="poster" id="challenge" aria-labelledby="challenge-h" style="--under:var(--paper)">
+  <div class="paste g-ink">
+    <div class="head-split">
+      <h2 class="d1" id="challenge-h">The challenge</h2>
+      <p class="tnote tnote--dark"><b>For the editor</b>Two or three sentences, approved by the client: who they are, what was in the way, what they needed to change.</p>
+    </div>
+    <div class="slot slot--text has-strip">
+      <p class="coming-soon coming-soon--over" data-todo="the challenge, in the client's words"><b>Coming soon</b>The challenge, in the client's words</p>
     </div>
   </div>
 </section>
 
-<section class="poster" aria-labelledby="did-h" style="--under:var(--paper)">
+<!-- What we did: the real five-step process, so it is numbered -->
+<section class="poster" id="did" aria-labelledby="did-h" style="--under:var(--ink)">
   <div class="paste g-yellow">
     <h2 class="d2" id="did-h">What we did, in five steps</h2>
     <ol class="steps">
-      <li><span class="n" aria-hidden="true">1</span><h3>Discover</h3><p><span class="todo">TODO</span></p></li>
-      <li><span class="n" aria-hidden="true">2</span><h3>Strategise</h3><p><span class="todo">TODO</span></p></li>
-      <li><span class="n" aria-hidden="true">3</span><h3>Create</h3><p><span class="todo">TODO</span></p></li>
-      <li><span class="n" aria-hidden="true">4</span><h3>Launch</h3><p><span class="todo">TODO</span></p></li>
-      <li><span class="n" aria-hidden="true">5</span><h3>Optimise</h3><p><span class="todo">TODO</span></p></li>
+      <li><span class="n" aria-hidden="true">1</span><h3>Discover</h3><p><span class="coming-soon coming-soon--inline" data-todo="what Discover found">Coming soon</span></p></li>
+      <li><span class="n" aria-hidden="true">2</span><h3>Strategise</h3><p><span class="coming-soon coming-soon--inline" data-todo="the plan we agreed">Coming soon</span></p></li>
+      <li><span class="n" aria-hidden="true">3</span><h3>Create</h3><p><span class="coming-soon coming-soon--inline" data-todo="what we made">Coming soon</span></p></li>
+      <li><span class="n" aria-hidden="true">4</span><h3>Launch</h3><p><span class="coming-soon coming-soon--inline" data-todo="where and when it went live">Coming soon</span></p></li>
+      <li><span class="n" aria-hidden="true">5</span><h3>Optimise</h3><p><span class="coming-soon coming-soon--inline" data-todo="what we tuned">Coming soon</span></p></li>
     </ol>
   </div>
 </section>
 
-<section class="poster" aria-labelledby="moved-h" style="--under:var(--yellow)">
+<!-- Channels used -->
+<section class="poster" id="channels" aria-labelledby="channels-h" style="--under:var(--yellow)">
   <div class="paste g-blue">
-    <h2 class="d1" id="moved-h">What it moved</h2>
-    <ul class="facts">
-      <li><span class="todo">TODO: real result</span><span>What the number measures</span></li>
-      <li><span class="todo">TODO: real result</span><span>What the number measures</span></li>
-      <li><span class="todo">TODO: real result</span><span>What the number measures</span></li>
+    <div class="head-split">
+      <h2 class="d2" id="channels-h">Channels used</h2>
+      <p class="tnote tnote--dark"><b>For the editor</b>Only the channels this project used, each linked to its service page.</p>
+    </div>
+    <ul class="channels">
+      <li><span class="coming-soon coming-soon--inline coming-soon--yellow" data-todo="channel 1">Channel coming soon</span></li>
+      <li><span class="coming-soon coming-soon--inline coming-soon--yellow" data-todo="channel 2">Channel coming soon</span></li>
+      <li><span class="coming-soon coming-soon--inline coming-soon--yellow" data-todo="channel 3">Channel coming soon</span></li>
+      <li><span class="coming-soon coming-soon--inline coming-soon--yellow" data-todo="channel 4">Channel coming soon</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- The work: image slots -->
+<section class="poster" id="the-work" aria-labelledby="work-h" style="--under:var(--blue)">
+  <div class="paste g-paper">
+    <div class="head-split">
+      <h2 class="d1" id="work-h">The work</h2>
+      <p class="tnote"><b>For the editor</b>Real work only, cleared by the client. Give every image alt text that says what it shows.</p>
+    </div>
+    <div class="shots">
+      <figure class="slot slot--wide has-strip"><p class="coming-soon coming-soon--over" data-todo="hero image of the campaign"><b>Coming soon</b>Campaign image</p><figcaption>Hero image, 16 by 9</figcaption></figure>
+      <figure class="slot slot--tall has-strip"><p class="coming-soon coming-soon--over" data-todo="vertical image or reel still"><b>Coming soon</b>Reel still</p><figcaption>Vertical</figcaption></figure>
+      <figure class="slot slot--sq has-strip"><p class="coming-soon coming-soon--over" data-todo="square image"><b>Coming soon</b>Post</p><figcaption>Square</figcaption></figure>
+      <figure class="slot slot--sq has-strip"><p class="coming-soon coming-soon--over" data-todo="image in the wild: hoarding, shopfront or screen"><b>Coming soon</b>In the wild</p><figcaption>Square</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- Results -->
+<section class="poster" id="results" aria-labelledby="results-h" style="--under:var(--paper)">
+  <div class="paste g-red">
+    <h2 class="d1" id="results-h">What it moved</h2>
+    <ul class="outcomes">
+      <li><span class="coming-soon coming-soon--inline coming-soon--yellow" data-todo="result 1, once measured">Result goes here once measured</span><span class="what">What the number measures, and over what period</span></li>
+      <li><span class="coming-soon coming-soon--inline coming-soon--yellow" data-todo="result 2, once measured">Result goes here once measured</span><span class="what">What the number measures, and over what period</span></li>
+      <li><span class="coming-soon coming-soon--inline coming-soon--yellow" data-todo="result 3, once measured">Result goes here once measured</span><span class="what">What the number measures, and over what period</span></li>
     </ul>
     <p class="strip-note">Only numbers the client has approved, with the period they cover. No rounding up.</p>
   </div>
 </section>
 
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--blue)">
+<!-- The client, in their words -->
+<section class="poster" id="quote" aria-labelledby="quote-h" style="--under:var(--red)">
+  <div class="paste g-ink">
+    <h2 class="sr" id="quote-h">In the client's words</h2>
+    <figure class="pull">
+      <span class="pull__mark" aria-hidden="true">&ldquo;</span>
+      <blockquote class="slot slot--quote has-strip"><p class="coming-soon coming-soon--over coming-soon--yellow" data-todo="client quote, published with written permission"><b>Coming soon</b>Quote with permission</p></blockquote>
+      <figcaption><span class="coming-soon coming-soon--inline" data-todo="name, role and company of the person quoted">Name, role, company coming soon</span></figcaption>
+    </figure>
+    <p class="tnote tnote--dark"><b>For the editor</b>A real quote, in the client's own words, published with their written permission. If there is none, delete this poster.</p>
+  </div>
+</section>
+
+<!-- Closing CTA poster: every page ends here, always to /contact/. -->
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--ink)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>
@@ -833,12 +993,10 @@ const motionOK = root.classList.contains('motion');
 /* 1. MOTION ---------------------------------------------------------------
    Springs: k = stiffness, c = damping, mass 1. zeta = c / (2 * sqrt(k)).   */
 const MOTION = {
+  // The tear and peel physics (material constants, springs, roll timing) live in tear.js's MATERIAL / MOTION blocks.
   paste: bezier(.2, .7, .1, 1),     // paste: cubic-bezier(.2,.7,.1,1). Squeegee settle; every entrance eases out.
   tug: bezier(.55, 0, .75, .2),     // tug: cubic-bezier(.55,0,.75,.2). Gravity: a sheet letting go of the wall.
   lift: 'cubic-bezier(.3,1.3,.5,1)',// lift: a corner lifting, one tiny overshoot (CSS only)
-  flap: { k: 260, c: 26 },          // flap: a torn strip's free end follows the hand (zeta .81)   [tear.js]
-  roll: { k: 120, c: 19 },          // roll: a released strip curls up into a roll (zeta .87)     [tear.js]
-  peek: { k: 300, c: 30 },          // peek: the poster edge lifts toward a hovering pointer      [tear.js]
   ms: { press: 120, lift: 220, paste: 320, pasteIn: 900, letGo: 900, pasteBack: 1100, fallLife: 950, chatGap: 650, cellStagger: 40, barStagger: 120 }
 };
 let timeScale = 1;                  // 0.1 while slow-motion review is on

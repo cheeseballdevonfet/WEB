@@ -1,0 +1,44 @@
+/* Specimen: Print & Digital Publishing. A sample magazine page you turn by its corner: a 2D
+   fold (the page is clipped along the fold line and the folded part is drawn as the paper's
+   back, reflected). JS moves the clip-paths only. No JS: both pages side by side, the first
+   with a still dog-ear. Reduced motion: the page turns at once. */
+.spec-mag{display:grid;gap:16px}
+.mag{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mag-page{position:relative;display:flex;flex-direction:column;gap:12px;aspect-ratio:3 / 4;padding:clamp(16px,2.2vw,28px);box-shadow:inset 0 0 0 1px rgba(26,24,20,.12);overflow:hidden;container-type:inline-size}
+.mag-mast{display:flex;justify-content:space-between;gap:10px;padding-bottom:8px;border-bottom:4px solid var(--ink);font-weight:800;font-size:14px;line-height:1.2}
+.mag-mast span:first-child{font-family:var(--display);font-weight:400;font-size:clamp(18px,7cqw,26px);line-height:1}
+.mag-head{font-family:var(--display);font-size:clamp(34px,15cqw,72px);line-height:.92;color:var(--red);margin-top:4px}
+.mag-head.deva{line-height:1.2;font-size:clamp(30px,12cqw,60px)}
+.mag-stand{font-weight:600;font-size:clamp(16px,4.6cqw,19px);line-height:1.35}
+.mag-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;font-size:clamp(14px,3.6cqw,15px);line-height:1.45;margin-top:auto}
+.mag-cols p:first-child::first-letter{font-family:var(--display);font-size:2.8em;float:left;line-height:.8;margin:3px 4px 0 0;color:var(--ink)}
+.mag-folio{font-weight:800;font-size:14px;padding-top:8px;border-top:2px solid var(--ink)}
+.mag-dl{display:grid;gap:8px;justify-items:start;margin-top:auto;padding:16px;background:var(--blue);color:var(--paper)}
+.mag-dl__h{font-family:var(--display);font-size:clamp(20px,6cqw,26px);line-height:1;color:var(--yellow)}
+.mag-dl p{font-size:15px;line-height:1.4}
+.mag-dl__btn{padding:8px 12px 6px;background:var(--yellow);color:var(--ink);font-weight:800;font-size:15px}
+/* the still dog-ear (no JS, and the live page at rest is drawn by JS the same way) */
+.mag-p1{clip-path:polygon(0 0,100% 0,100% calc(100% - 44px),calc(100% - 44px) 100%,0 100%)}
+.mag-flapwrap{display:none}
+.mag-p1::after{content:"";position:absolute;right:0;bottom:0;width:44px;height:44px;background:linear-gradient(to top left,transparent 50%,#B9B7B0 50%,var(--back) 64%,#F7F7F3 100%)}
+.mag-grip{display:none}
+.mag-ctl{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px}
+.mag-hint{font-weight:800;font-size:15px}
+/* live: one page over the other, the fold drawn on top */
+.spec-mag.is-live .mag{display:block;max-width:440px;overflow:hidden;filter:drop-shadow(10px 10px 0 rgba(0,0,0,.25))}
+.spec-mag.is-live .mag-page{position:relative}
+.spec-mag.is-live .mag-p2{position:absolute;inset:0}
+.spec-mag.is-live .mag-p1{z-index:1;clip-path:none}
+.spec-mag.is-live .mag-p1::after{display:none}
+.spec-mag.is-live .mag-flapwrap{display:block;position:absolute;inset:0;z-index:2;pointer-events:none;filter:drop-shadow(-6px -4px 8px rgba(0,0,0,.28))}
+.spec-mag.is-live .mag-flap{position:absolute;inset:0;background:linear-gradient(calc(var(--fa,135) * 1deg),#F7F7F3,var(--back) 45%,#B9B7B0);clip-path:polygon(0 0,0 0,0 0)}
+.spec-mag.is-live .mag-grip{display:block;position:absolute;right:0;bottom:0;width:42%;height:34%;z-index:3;touch-action:none;cursor:grab}
+.spec-mag.is-live.is-turned .mag-grip{display:none}
+.spec-mag.is-live .mag.is-held .mag-grip{cursor:grabbing}
+.spec-mag.is-live.is-turned .mag-p1{visibility:hidden}
+@media (max-width:699px){
+  .mag{grid-template-columns:1fr}
+  .spec-mag.is-live .mag{max-width:none}
+  .mag-cols{grid-template-columns:1fr}
+  .mag-cols p:last-child{display:none}
+}

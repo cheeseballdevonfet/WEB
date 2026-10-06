@@ -43,8 +43,8 @@
 
   /* Type. Display: Yatra One (Latin + Devanagari, one brush). Text: Mukta 400/600/800.
      Devanagari inside body text falls back to Yatra One (Mukta ships Latin only). */
-  --display:'Yatra One','Mukta',sans-serif;
-  --text:'Mukta','Yatra One',sans-serif;
+  --display:'Yatra One','Yatra One fb','Mukta',sans-serif;
+  --text:'Mukta','Mukta fb','Yatra One',sans-serif;
   --fs-d1:clamp(48px,8.2vw,124px);
   --fs-d2:clamp(34px,4.2vw,64px);
   --fs-d3:clamp(26px,2.6vw,38px);
@@ -106,3 +106,11 @@ img,svg{max-width:100%}
 .no-js .js-only,.js:not(.motion) .motion-only{display:none!important}
 .skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--yellow);color:var(--ink);padding:12px 18px;font-weight:800;text-decoration:none}
 .skip:focus{top:12px}
+
+/* Metric-matched fallbacks: while the embedded fonts decode, text is laid out in Arial / Liberation Sans
+   scaled to the real fonts' average width and vertical metrics, so nothing reflows when they arrive.
+   Values measured with fontTools against Liberation Sans (metric-compatible with Arial) on a mixed sample. */
+@font-face{font-family:'Yatra One fb';font-weight:400;src:local('Arial'),local('ArialMT'),local('Liberation Sans'),local('Helvetica'),local('Roboto');size-adjust:110.3%;ascent-override:89.9%;descent-override:44.2%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:400;src:local('Arial'),local('ArialMT'),local('Liberation Sans'),local('Helvetica'),local('Roboto');size-adjust:94.2%;ascent-override:120%;descent-override:56.5%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:600;src:local('Arial Bold'),local('Arial-BoldMT'),local('Liberation Sans Bold'),local('Helvetica Bold'),local('Roboto Bold');size-adjust:91.3%;ascent-override:123.8%;descent-override:58.3%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:800;src:local('Arial Bold'),local('Arial-BoldMT'),local('Liberation Sans Bold'),local('Helvetica Bold'),local('Roboto Bold');size-adjust:94.2%;ascent-override:119.9%;descent-override:56.4%;line-gap-override:0%}

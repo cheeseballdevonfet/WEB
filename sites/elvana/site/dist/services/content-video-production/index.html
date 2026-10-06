@@ -33,11 +33,18 @@
 <script>if(location.protocol!=='file:')['../../assets/fonts/yatra-one-latin.woff2','../../assets/fonts/mukta-400-latin.woff2','../../assets/fonts/mukta-800-latin.woff2'].forEach(function(h){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href=h;document.head.appendChild(l)})</script>
 <link rel="stylesheet" href="../../assets/css/base.css">
 <link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/tear.css">
+<link rel="stylesheet" href="../../assets/css/pages/services.css">
+<link rel="stylesheet" href="../../assets/css/pages/specimens/content-video-production.css">
+<script defer src="../../assets/js/tear.js"></script>
 <script defer src="../../assets/js/core.js"></script>
+<script defer src="../../assets/js/pages/services.js"></script>
+<script defer src="../../assets/js/pages/specimens/content-video-production.js"></script>
 <!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.elvanamedia.com/#organization","name":"Elvana Media","legalName":"ELEVANA MEDIA PRIVATE LIMITED","url":"https://www.elvanamedia.com/","email":"info@elvanamedia.com","telephone":"+91 89283 39531","foundingDate":"2026-06-04","slogan":"Ideas that create impact.","description":"Digital marketing, media & AI-powered growth.","image":"https://www.elvanamedia.com/assets/og-default.png","parentOrganization":{"@type":"Organization","name":"BeyondSure Private Limited"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}],"address":{"@id":"https://www.elvanamedia.com/#registered-office"}},{"@type":"LocalBusiness","@id":"https://www.elvanamedia.com/#mumbai","name":"Elvana Media","url":"https://www.elvanamedia.com/","image":"https://www.elvanamedia.com/assets/og-default.png","email":"info@elvanamedia.com","telephone":"+91 89283 39531","parentOrganization":{"@id":"https://www.elvanamedia.com/#organization"},"address":{"@type":"PostalAddress","@id":"https://www.elvanamedia.com/#registered-office","streetAddress":"203, Shivam Square, Building No. 4, Sahar Road, Andheri East","addressLocality":"Mumbai","addressRegion":"Maharashtra","postalCode":"400069","addressCountry":"IN"}},{"@type":"WebSite","@id":"https://www.elvanamedia.com/#website","url":"https://www.elvanamedia.com/","name":"Elvana Media","publisher":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN"},{"@type":"WebPage","@id":"https://www.elvanamedia.com/services/content-video-production/#webpage","url":"https://www.elvanamedia.com/services/content-video-production/","name":"Content & Video Production | Elvana Media","description":"Ad films, brand films, animation, graphics and sound, from pre- to post-production. Content & Video Production by Elvana Media in Mumbai, Delhi, Gurgaon and Noida.","isPartOf":{"@id":"https://www.elvanamedia.com/#website"},"about":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.elvanamedia.com/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://www.elvanamedia.com/services/"},{"@type":"ListItem","position":3,"name":"Content & Video Production","item":"https://www.elvanamedia.com/services/content-video-production/"}]}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","@id":"https://www.elvanamedia.com/services/content-video-production/#service","name":"Content & Video Production","serviceType":"Content & Video Production","description":"Ad films, brand films, animation, graphics and sound, from pre- to post-production.","url":"https://www.elvanamedia.com/services/content-video-production/","provider":{"@id":"https://www.elvanamedia.com/#organization"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}]}</script>
 </head>
-<body class="page-service" id="top">
+<body class="page-service svc-content-video-production" id="top">
 <a class="skip" href="#main">Skip to content</a>
 <header class="hdr">
   <a class="wordmark" href="../../index.html" aria-label="Elvana Media, home"><!-- Official Elvana Media logo SVG goes here once supplied. Until then this is a typographic wordmark set in the display face. Never redraw or trace the raster logo. -->Elvana</a>
@@ -69,40 +76,154 @@
 </header>
 
 <main id="main">
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
-<section class="page-hero" aria-labelledby="page-h">
-  <div class="page-hero__main g-yellow">
-    <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">Home</a></li><li><a href="../index.html">Services</a></li><li aria-current="page">Content &amp; Video Production</li></ol></nav>
-    <h1 id="page-h" class="is-long">Content &amp; Video Production</h1>
+<!-- Content & Video Production. Service page from the shared template (SYSTEM.md, services.css). Signature: the corner peel in the hero
+     (the yellow title poster peels back to show the promise underneath; tear.js owns the peel), then the
+     "Mock-up" specimen (pages/specimens/content-video-production.css + .js). Copy: CONTENT.md and CONTENT-PAGES.md. -->
+<section class="page-hero svc-hero" aria-labelledby="page-h">
+  <div class="peel svc-peel" data-peel data-peel-corner="br" data-peel-label="Peel back the poster" data-peel-label-back="Paste it back">
+    <div class="peel__under page-hero__main g-red svc-under" aria-hidden="true">
+      <p class="svc-under__k">The promise</p>
+      <p class="svc-under__line">Ad films, brand films, animation, graphics and sound, from pre- to post-production.</p>
+    </div>
+    <div class="peel__over page-hero__main g-yellow">
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">Home</a></li><li><a href="../index.html">Services</a></li><li aria-current="page">Content &amp; Video Production</li></ol></nav>
+      <h1 id="page-h" class="is-long">Content &amp; Video Production</h1>
+    </div>
   </div>
-  <div class="page-hero__side g-blue">
-    <p class="page-hero__line">Ad films, brand films, animation, graphics and sound, from pre- to post-production.</p>
+  <div class="page-hero__side g-blue svc-side">
     <p class="page-hero__sign"><span class="d">Beyond digital</span>Elvana Media</p>
+    <div class="svc-side__pillar">
+      <p class="svc-side__w">Create.</p>
+      <p class="svc-side__t">Content, video, design, branding and campaign ideas that people stop for.</p>
+    </div>
+    <p class="svc-side__hint js-only motion-only">Peel the yellow poster's corner to read the promise.</p>
   </div>
 </section>
-
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
-    </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>What we do</li><li>How it runs, through our five steps</li><li>Who it suits</li><li>Services it works with</li><li>Questions people ask</li></ul>
+<section class="poster svc-spec svc-spec--wide" id="mock-up" aria-labelledby="spec-h" style="--under:var(--ink)">
+  <div class="paste g-paper">
+    <div class="spec-grid">
+      <div class="spec-head">
+        <p class="mockup">Mock-up</p>
+        <h2 class="d2" id="spec-h">From storyboard to finished frame</h2>
+        <p class="lede">Scrub the film strip to take a sample ad from pencil sketch to a graded, subtitled frame.</p>
+      </div>
+      <figure class="spec spec-vid" data-spec="vid" style="--p:1">
+        <div class="vid-ctl js-only">
+          <label for="vid-p">Storyboard to finished frame</label>
+          <input id="vid-p" type="range" min="0" max="100" step="1" value="100">
+          <span class="vid-stage" aria-hidden="true">Finished</span>
+        </div>
+        <div class="vid-strip">
+          <ol class="vid-frames">
+            <li class="vid-f" style="--i:0">
+              <div class="vid-sk" aria-hidden="true"><svg viewBox="0 0 160 90"><path d="M8 82h144M14 82V52h16v30M34 82V38h14v44M52 82V58h18v24M74 82V30h12v52M90 82V48h20v34M114 82V40h14v42M132 82V56h16v26"/><circle cx="118" cy="22" r="10"/></svg><span class="vid-note">Wide: the city wakes up</span></div>
+              <div class="vid-fin"><svg viewBox="0 0 160 90" aria-hidden="true"><rect width="160" height="90" fill="#FFD000"/><circle cx="118" cy="24" r="12" fill="#C8201A"/><path d="M14 90V52h16v38zM34 90V38h14v52zM52 90V58h18v32zM74 90V30h12v60zM90 90V48h20v42zM114 90V40h14v50zM132 90V56h16v34z" fill="#1A1814"/><path d="M0 82h160v8H0z" fill="#1F3FB4"/></svg><p class="vid-sub">Made for the city.</p></div>
+            </li>
+            <li class="vid-f" style="--i:1">
+              <div class="vid-sk" aria-hidden="true"><svg viewBox="0 0 160 90"><path d="M10 74h140M48 40h64v34H48zM48 40l10-12h44l10 12M80 28v46M48 56h64"/></svg><span class="vid-note">Close-up: the box</span></div>
+              <div class="vid-fin"><svg viewBox="0 0 160 90" aria-hidden="true"><rect width="160" height="90" fill="#1F3FB4"/><path d="M0 74h160v16H0z" fill="#1A1814"/><path d="M48 40h64v34H48z" fill="#C8201A"/><path d="M48 40l10-12h44l10 12z" fill="#E2E1DB"/><path d="M77 28h6v46h-6zM48 53h64v6H48z" fill="#FFD000"/></svg><p class="vid-sub">Packed with care.</p></div>
+            </li>
+            <li class="vid-f" style="--i:2">
+              <div class="vid-sk" aria-hidden="true"><svg viewBox="0 0 160 90"><path d="M62 10h36v72H62zM68 22h24M68 30h18M72 44h20v10H72z"/><path d="M40 70c10-6 18-8 24-4"/></svg><span class="vid-note">Insert: the order</span></div>
+              <div class="vid-fin"><svg viewBox="0 0 160 90" aria-hidden="true"><rect width="160" height="90" fill="#F2F3EF"/><path d="M62 10h36v72H62z" fill="#1A1814"/><path d="M66 16h28v58H66z" fill="#D9DAD5"/><path d="M68 24h22v8H68z" fill="#FFFFFF"/><path d="M72 44h20v10H72z" fill="#1F3FB4"/><path d="M30 90c6-14 18-22 34-22v22z" fill="#C8201A"/></svg><p class="vid-sub">Ordered in a tap.</p></div>
+            </li>
+            <li class="vid-f" style="--i:3">
+              <div class="vid-sk" aria-hidden="true"><svg viewBox="0 0 160 90"><path d="M30 40h100M30 56h60"/><rect x="24" y="26" width="112" height="40"/></svg><span class="vid-note">End card: the brand</span></div>
+              <div class="vid-fin"><svg viewBox="0 0 160 90" aria-hidden="true"><rect width="160" height="90" fill="#1A1814"/><rect x="24" y="62" width="40" height="5" fill="#C8201A"/></svg><p class="vid-end">Your brand</p><p class="vid-sub">Your brand. Your city.</p></div>
+            </li>
+          </ol>
+          <i class="vid-head" aria-hidden="true"></i>
+        </div>
+        <ol class="sr">
+          <li>Shot one, wide: the city wakes up. Subtitle: Made for the city.</li>
+          <li>Shot two, close-up: the box. Subtitle: Packed with care.</li>
+          <li>Shot three, insert: the order on a phone. Subtitle: Ordered in a tap.</li>
+          <li>Shot four, end card: the brand. Subtitle: Your brand. Your city.</li>
+        </ol>
+        <figcaption class="spec-cap">Mock-up: four frames of a sample ad for a sample brand, drawn here rather than shot. Real films are cut down for vertical, square and widescreen, with subtitles.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
-
-<!-- Closing CTA poster: every page ends here, always to /contact/. -->
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+<section class="poster svc-what svc-what--split" id="what-we-do" aria-labelledby="what-h" style="--under:var(--paper)">
+  <div class="paste g-ink">
+    <div class="head-split">
+      <h2 class="d1" id="what-h">What we do</h2>
+      <p class="lede">Ad films, brand films, animation, graphics and sound, from pre- to post-production.</p>
+    </div>
+    <ul class="what-list">
+      <li>Scripts and storyboards that start from the one thing the film must say.</li>
+      <li>Shoots planned and directed: crew, casting and locations.</li>
+      <li>Animation and motion graphics for explainers, social and product films.</li>
+      <li>Editing, colour, sound design and music.</li>
+      <li>Cut-downs for every channel: vertical, square and widescreen, with subtitles.</li>
+    </ul>
+  </div>
+</section>
+<section class="poster svc-fit svc-fit--pair" id="good-for" aria-labelledby="good-h" style="--under:var(--ink)">
+  <div class="paste g-red">
+    <div class="fit-grid">
+      <div class="fit-good">
+        <h2 class="d2" id="good-h">Good for</h2>
+        <ul class="cast fit-cast"><li>Launches</li><li>Brand films</li><li>Explainers</li><li>Ad campaigns</li><li>Social video</li></ul>
+        <h3 class="fit-sub" id="sectors-h">Sectors where it often fits</h3>
+        <ul class="tags fit-sectors" aria-labelledby="sectors-h">
+          <li><a class="tag tag-line" href="../../industries/index.html">Corporate &amp; B2B</a></li>
+        </ul>
+      </div>
+      <div class="fit-works">
+        <h2 class="d2" id="works-h">Works with</h2>
+        <div class="works">
+          <article class="flyer works__p g-ink"><p class="fam">Core service</p><h3><a href="../post-creation-content/index.html">Post Creation &amp; Content</a></h3><p>Scroll-stopping posts, reels, carousels and copy.</p></article>
+          <article class="flyer works__p g-red"><p class="fam">Beyond digital</p><h3><a href="../social-media-management/index.html">Social Media Management</a></h3><p>Always-on calendars, community management and paid social campaigns.</p></article>
+          <article class="flyer works__p g-ink"><p class="fam">Beyond digital</p><h3><a href="../events-activations/index.html">Events &amp; Activations</a></h3><p>Pan-India event management, launches and on-ground brand experiences.</p></article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="poster svc-runs" id="how-it-runs" aria-labelledby="runs-h" style="--under:var(--red)">
+  <div class="paste g-blue">
+    <div class="head-split runs-head">
+      <h2 class="d1" id="runs-h">How it runs</h2>
+      <p class="lede">Like every Elvana service, through the same five steps, from brief to impact.</p>
+    </div>
+    <ol class="runs-steps">
+      <li><span aria-hidden="true">1</span>Discover</li>
+      <li><span aria-hidden="true">2</span>Strategise</li>
+      <li><span aria-hidden="true">3</span>Create</li>
+      <li><span aria-hidden="true">4</span>Launch</li>
+      <li><span aria-hidden="true">5</span>Optimise</li>
+    </ol>
+    <div class="runs-grid">
+      <div class="runs">
+        <p>It can be part of a Monthly Retainer, a Campaign SOW or a Project, and it reports into the same live dashboard and monthly report as every other service.</p>
+        <p class="tags runs-tags"><a class="tag tag-line" href="../../how-we-work/index.html">How we work</a><a class="tag tag-line" href="../../engagement-models/index.html">Engagement models</a></p>
+      </div>
+      <div class="faq">
+        <h2 class="d2" id="faq-h">Questions</h2>
+        <details class="q">
+          <summary>Do you work with our existing footage?</summary>
+          <p>Yes. We can edit, re-cut and subtitle what you already have.</p>
+        </details>
+        <details class="q">
+          <summary>Can this be a retainer, a campaign or a project?</summary>
+          <p>Yes. Any service can be part of a Monthly Retainer, a Campaign SOW or a Project.</p>
+        </details>
+        <details class="q">
+          <summary>What does it cost?</summary>
+          <p>Prices are shared after Discover, based on scope.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--blue)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>
-      <p class="lede">Write to info@elvanamedia.com or call +91 89283 39531. Offices in Mumbai, Delhi, Gurgaon and Noida.</p>
-      <div class="tags"><a class="tag tag-ink" href="../../contact/index.html">Let's talk</a><a class="tag tag-line" href="tel:+918928339531">Call +91 89283 39531</a></div>
+      <p class="lede">Tell us what you want Content &amp; Video Production to do for you. Write to info@elvanamedia.com or call +91 89283 39531.</p>
+      <div class="tags"><a class="tag tag-ink" href="../../contact/index.html">Let's talk</a><a class="tag tag-line" href="../index.html">All 14 services</a></div>
     </div>
   </div>
 </section>

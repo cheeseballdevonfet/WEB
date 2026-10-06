@@ -80,8 +80,8 @@
 
   /* Type. Display: Yatra One (Latin + Devanagari, one brush). Text: Mukta 400/600/800.
      Devanagari inside body text falls back to Yatra One (Mukta ships Latin only). */
-  --display:'Yatra One','Mukta',sans-serif;
-  --text:'Mukta','Yatra One',sans-serif;
+  --display:'Yatra One','Yatra One fb','Mukta',sans-serif;
+  --text:'Mukta','Mukta fb','Yatra One',sans-serif;
   --fs-d1:clamp(48px,8.2vw,124px);
   --fs-d2:clamp(34px,4.2vw,64px);
   --fs-d3:clamp(26px,2.6vw,38px);
@@ -143,6 +143,14 @@ img,svg{max-width:100%}
 .no-js .js-only,.js:not(.motion) .motion-only{display:none!important}
 .skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--yellow);color:var(--ink);padding:12px 18px;font-weight:800;text-decoration:none}
 .skip:focus{top:12px}
+
+/* Metric-matched fallbacks: while the embedded fonts decode, text is laid out in Arial / Liberation Sans
+   scaled to the real fonts' average width and vertical metrics, so nothing reflows when they arrive.
+   Values measured with fontTools against Liberation Sans (metric-compatible with Arial) on a mixed sample. */
+@font-face{font-family:'Yatra One fb';font-weight:400;src:local('Arial'),local('ArialMT'),local('Liberation Sans'),local('Helvetica'),local('Roboto');size-adjust:110.3%;ascent-override:89.9%;descent-override:44.2%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:400;src:local('Arial'),local('ArialMT'),local('Liberation Sans'),local('Helvetica'),local('Roboto');size-adjust:94.2%;ascent-override:120%;descent-override:56.5%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:600;src:local('Arial Bold'),local('Arial-BoldMT'),local('Liberation Sans Bold'),local('Helvetica Bold'),local('Roboto Bold');size-adjust:91.3%;ascent-override:123.8%;descent-override:58.3%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:800;src:local('Arial Bold'),local('Arial-BoldMT'),local('Liberation Sans Bold'),local('Helvetica Bold'),local('Roboto Bold');size-adjust:94.2%;ascent-override:119.9%;descent-override:56.4%;line-gap-override:0%}
 
 /* components.css */
 /* =========================================================================
@@ -544,7 +552,7 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
 
 /* ---------- Footer: the promise, the site map, contact, the legal line ---------- */
 .foot{position:relative;z-index:1;margin-top:-10px;padding:clamp(56px,7vw,104px) var(--pad-x) 28px}
-.foot .d1{color:var(--yellow);font-size:clamp(56px,10.6vw,180px);line-height:.88}
+.foot .d1{color:var(--yellow);font-size:clamp(36px,10.6vw,180px);line-height:.88}
 .foot .tagline{margin-top:clamp(18px,2.4vw,32px);font-size:var(--fs-lede);max-width:40ch}
 .foot-map{display:grid;grid-template-columns:3fr 3fr 3fr 4fr;gap:36px clamp(24px,3vw,48px);margin-top:clamp(48px,6vw,88px);padding-top:28px;border-top:6px solid var(--yellow)}
 .foot-h{font-family:var(--display);font-weight:400;font-size:clamp(24px,2vw,30px);line-height:1.05;color:var(--yellow);margin:0 0 12px}
@@ -640,6 +648,137 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
   .flyer:hover{transform:none}
 }
 
+/* pages/industries.css */
+/* =========================================================================
+   Elvana Media: pages/industries.css
+   Industries only. The signature, "The tri-vision hoarding"
+   (INTERACTIONS.md): a highway billboard of vertical triangular slats.
+   - At rest the board is real HTML (.tv__flat, the tab panel), with seams
+     drawn where the slats meet, so it reads the same as the slats.
+   - While it turns (.tv.is-turning), pages/industries.js shows the slats:
+     each a 3-faced prism (preserve-3d), each face holding a copy of a
+     sector's board offset to its own strip. Only transform and opacity
+     change per frame.
+   - Board layout is in container units (container "tv"), so every face
+     copy and the flat board line up to the pixel at any width.
+   No JS and reduced motion: the flat board only (the picker needs JS; the
+   plain list below carries every sector).
+   ========================================================================= */
+
+#board-h{max-width:12ch}
+.tv-wrap{margin-top:clamp(40px,5vw,72px);display:grid;gap:clamp(16px,1.6vw,22px)}
+
+/* ---------- The hoarding: lamps, steel frame, slats, legs ---------- */
+.tv{position:relative;margin:0;display:grid}
+.tv__lamps{display:flex;justify-content:space-around;height:26px;padding:0 9%}
+.tv__lamps i{position:relative;width:52px}
+.tv__lamps i::before{content:"";position:absolute;left:calc(50% - 2px);top:8px;bottom:0;width:4px;background:var(--post)}
+.tv__lamps i::after{content:"";position:absolute;left:0;right:0;top:0;height:10px;background:var(--post);box-shadow:inset 0 -3px 0 var(--paper-dim)}
+.tv__frame{position:relative;padding:clamp(8px,1vw,14px);background:var(--post);box-shadow:inset 0 0 0 2px rgba(0,0,0,.35),inset 0 3px 0 rgba(255,255,255,.12),0 10px 0 rgba(0,0,0,.32)}
+.tv__screen{position:relative;aspect-ratio:5/2;overflow:hidden;background:var(--ink);container:tv / inline-size;--n:20;touch-action:pan-y}
+.tv__plate{position:absolute;left:50%;bottom:0;transform:translate(-50%,55%);padding:5px 14px 2px;background:var(--yellow);color:var(--ink);font:400 18px/1 var(--display);box-shadow:2px 3px 0 rgba(0,0,0,.35);white-space:nowrap}
+.tv__legs{display:flex;justify-content:space-around;height:clamp(24px,2.4vw,34px);padding:0 20%}
+.tv__legs i{width:clamp(10px,1vw,16px);background:linear-gradient(to right,rgba(0,0,0,.25),transparent 40%),var(--post)}
+.tv__cap{margin-top:10px;font-size:var(--fs-small);font-weight:600;color:var(--paper-dim)}
+
+/* The flat board (rest) and its seams */
+.tv__flat{position:absolute;inset:0}
+.tv__seams{position:absolute;inset:0;pointer-events:none;z-index:2;
+  background-image:linear-gradient(to right,transparent calc(100% - 2px),rgba(26,24,20,.5) calc(100% - 2px)),linear-gradient(to bottom,rgba(255,255,255,.07),transparent 18%,transparent 82%,rgba(0,0,0,.12));
+  background-size:calc(100% / var(--n)) 100%,100% 100%}
+
+/* The slats (turning) */
+.tv__slats{position:absolute;inset:0;z-index:1;perspective:1700px;visibility:hidden}
+.tv.is-turning .tv__slats{visibility:visible}
+.tv.is-turning .tv__flat{visibility:hidden}
+.tv-slat{position:absolute;top:0;bottom:0;left:calc(var(--i) * 100% / var(--n));width:calc(100% / var(--n))}
+.tv-prism{position:absolute;inset:0;transform-style:preserve-3d}
+.tv-f{position:absolute;inset:0;overflow:hidden;backface-visibility:hidden;transform:rotateY(calc(var(--f) * 120deg)) translateZ(var(--r,0px))}
+.tv-f>.tv-art{left:calc(var(--i) * -100%);width:calc(var(--n) * 100%)}
+.tv-f::after{content:"";position:absolute;top:0;bottom:0;right:0;width:2px;background:rgba(26,24,20,.5);z-index:3}
+.tv-sh{position:absolute;inset:0;z-index:2;background:var(--ink);opacity:0;pointer-events:none}
+
+/* ---------- One sector's board (flat, and every face copy) ---------- */
+.tv-art{position:absolute;top:0;bottom:0;left:0;width:100%;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:4cqw;padding:3.8cqw 4cqw 3.6cqw}
+.tv-name{grid-column:1;font:400 6.3cqw/.9 var(--display);max-width:12ch}
+.tv-need{grid-column:1;align-self:end;max-width:30ch;font:600 max(15px,1.8cqw)/1.34 var(--text)}
+.tv-fit{grid-column:2;grid-row:1 / 3;display:flex;flex-direction:column;padding-left:2.4cqw;border-left:max(4px,.5cqw) solid var(--hi)}
+.tv-fit__l{margin-bottom:1.2cqw;font:800 max(14px,1.3cqw)/1.2 var(--text)}
+.tv-fit ul{display:grid;gap:.7cqw}
+.tv-fit li{font:400 max(19px,2.25cqw)/1.08 var(--display)}
+.tv-fit a{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.16em}
+.tv-fit a:hover{text-decoration-thickness:5px}
+.tv-fit span{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.16em}
+.tv-fit a:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.tv-roots{position:absolute;right:3cqw;bottom:3.4cqw;padding:.8cqw 1.4cqw .5cqw;background:var(--hi);color:var(--paper);font:800 max(14px,1.3cqw)/1.2 var(--text);transform:rotate(-3deg);box-shadow:3px 4px 0 rgba(0,0,0,.22)}
+.tv-art.g-blue .tv-roots,.tv-art.g-ink .tv-roots,.tv-art.g-red .tv-roots{color:var(--ink)}
+@container tv (max-width:940px){
+  .tv-art{column-gap:3.4cqw;padding:4.4cqw 4.4cqw 4cqw}
+  .tv-name{font-size:7.6cqw}
+  .tv-need{font-size:max(15px,2.5cqw)}
+  .tv-fit__l{font-size:max(14px,1.9cqw)}
+  .tv-fit li{font-size:max(18px,3.1cqw)}
+  .tv-roots{font-size:max(14px,1.9cqw);padding:1cqw 1.8cqw .7cqw}
+}
+@container tv (max-width:600px){
+  .tv-art{grid-template-columns:1fr;grid-template-rows:auto auto auto 1fr;padding:6cqw 6cqw 6cqw;row-gap:4cqw}
+  .tv-name{font-size:10.6cqw;max-width:none}
+  .tv-need{align-self:start;font-size:max(15px,4.3cqw)}
+  .tv-fit{grid-column:1;grid-row:auto;align-self:end;padding:3cqw 0 0;border-left:0;border-top:max(4px,1.2cqw) solid var(--hi)}
+  .tv-fit__l{font-size:max(14px,3.9cqw);margin-bottom:2cqw}
+  .tv-fit ul{gap:1.4cqw}
+  .tv-fit li{font-size:max(18px,5.5cqw)}
+  .tv-fit{grid-row:4}
+  .tv-roots{position:relative;inset:auto;grid-row:3;justify-self:start;font-size:max(14px,3.7cqw);padding:1.6cqw 2.6cqw 1cqw}
+}
+
+/* ---------- The picker: eight sector plates ---------- */
+.tv-pick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.tv-pick button{position:relative;min-height:58px;padding:12px 14px 9px 16px;border:0;border-radius:0;background:transparent;color:var(--paper);box-shadow:inset 0 0 0 2px rgba(242,243,239,.55);
+  font:800 16px/1.2 var(--text);text-align:left;cursor:pointer;transform-origin:0 0;
+  transition:transform calc(220ms * var(--slow)) var(--ease-lift),background-color calc(160ms * var(--slow)) linear,color calc(160ms * var(--slow)) linear}
+.tv-pick button:hover{background:var(--paper);color:var(--ink);box-shadow:none;transform:rotate(-1.2deg)}
+.tv-pick button:active{transform:translateY(1px) scale(.98)}
+.tv-pick button[aria-selected="true"]{background:var(--yellow);color:var(--ink);box-shadow:none}
+/* each plate carries a chip of its board's ink, so the picker is a key to the hoarding */
+.tv-pick button{padding-left:46px}
+.tv-pick button::before{content:"";position:absolute;left:14px;top:50%;width:20px;height:20px;margin-top:-11px;background:var(--chip);box-shadow:0 0 0 2px var(--paper);transform:rotate(-4deg)}
+.tv-pick button[aria-selected="true"]::before,.tv-pick button:hover::before{box-shadow:0 0 0 2px var(--ink)}
+#tvt-0,#tvt-5{--chip:var(--blue)}
+#tvt-1,#tvt-7{--chip:var(--paper)}
+#tvt-2,#tvt-6{--chip:var(--yellow)}
+#tvt-3{--chip:var(--ink)}
+#tvt-4{--chip:var(--red)}
+.tv-pick button:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.tv-pick button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ---------- Plain list ---------- */
+.sector-list li{align-content:start}
+.often{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 0;margin-top:4px}
+.often li{display:inline;padding:0;border:0;font-weight:800;font-size:var(--fs-body)}
+.often li:not(:last-child)::after{content:"/";padding:0 .45em;color:var(--red);font-weight:400}
+.often a{text-decoration-thickness:2px}
+
+/* ---------- Tablet and phone ---------- */
+@media (max-width:1099px){
+  .tv__screen{aspect-ratio:8/5;--n:14}
+  .tv-pick{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:699px){
+  .tv__screen{aspect-ratio:4/5;--n:9}
+  .tv__lamps{height:22px;padding:0 6%}
+  .tv__lamps i{width:36px}
+  .tv__legs{height:24px}
+  .tv__plate{font-size:16px}
+  .tv-pick{gap:8px}
+  .tv-pick button{min-height:54px;padding:11px 10px 8px 38px;font-size:15px}
+  .tv-pick button::before{left:10px;width:17px;height:17px;margin-top:-9px}
+}
+@media (prefers-reduced-motion:reduce){
+  .tv-pick button{transition:none}
+  .tv-pick button:hover{transform:none}
+}
+
 </style>
 
 <!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
@@ -677,8 +816,16 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
 </header>
 
 <main id="main">
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
+<!-- =====================================================================
+     Industries. Signature: "The tri-vision hoarding" (INTERACTIONS.md), the
+     rotating-prism slat billboard of Indian highways. Pick a sector and the
+     slats turn one by one (a damped spring per slat, staggered, with a
+     slight overshoot) to show what that sector needs and the services that
+     fit. At rest the board is real HTML (the tab panel, with real links);
+     the slats exist only while it turns. Every sector is also listed in
+     plain words below (#sectors), which is what the board reads from, and
+     what no JS gets. These are typical needs, not past work.
+     ===================================================================== -->
 <section class="page-hero" aria-labelledby="page-h">
   <div class="page-hero__main g-yellow">
     <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li aria-current="page">Industries</li></ol></nav>
@@ -690,17 +837,98 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
   </div>
 </section>
 
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
+<!-- 1. The signature: the tri-vision hoarding -->
+<section class="poster" id="board" aria-labelledby="board-h" style="--under:var(--ink)">
+  <div class="paste g-ink">
+    <div class="head-split">
+      <h2 class="d1" id="board-h">What your sector needs</h2>
+      <p class="lede">Pick a sector and the hoarding turns to show what it usually needs and the services that fit. These are typical needs, not past work.</p>
     </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>Insurance &amp; Financial Services</li><li>Healthcare &amp; Wellness</li><li>Education &amp; EdTech</li><li>Real Estate &amp; Infrastructure</li><li>Retail, D2C &amp; E-commerce</li><li>Hospitality &amp; Events</li><li>Startups &amp; SMEs</li><li>Corporate &amp; B2B</li></ul>
+
+    <div class="tv-wrap" data-tv>
+      <figure class="tv">
+        <div class="tv__lamps" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div class="tv__frame">
+          <div class="tv__screen">
+            <div class="tv__slats" aria-hidden="true"></div>
+            <div class="tv__flat tv-art g-blue" id="tv-panel">
+              <p class="tv-name">Insurance &amp; Financial Services</p>
+              <p class="tv-need">Trust and clarity first; every message planned for your category's rules from the start.</p>
+              <div class="tv-fit"><p class="tv-fit__l">Services that often fit</p><ul><li><a href="../services/ai-calling/index.html">AI Calling</a></li><li><a href="../services/whatsapp-chat-bot/index.html">WhatsApp Chat Bot</a></li><li><a href="../services/seo-sem/index.html">SEO &amp; SEM</a></li><li><a href="../services/pr-media-relations/index.html">PR &amp; Media Relations</a></li></ul></div>
+              <p class="tv-roots">Group roots: a head start here</p>
+            </div>
+            <div class="tv__seams" aria-hidden="true"></div>
+          </div>
+          <p class="tv__plate" aria-hidden="true">Elvana Media</p>
+        </div>
+        <div class="tv__legs" aria-hidden="true"><i></i><i></i></div>
+        <figcaption class="tv__cap js-only">Pick a sector below, or swipe the board.</figcaption>
+      </figure>
+      <div class="tv-pick js-only" aria-label="Sectors">
+        <button type="button" id="tvt-0" data-i="0">Insurance &amp; Financial Services</button>
+        <button type="button" id="tvt-1" data-i="1">Healthcare &amp; Wellness</button>
+        <button type="button" id="tvt-2" data-i="2">Education &amp; EdTech</button>
+        <button type="button" id="tvt-3" data-i="3">Real Estate &amp; Infrastructure</button>
+        <button type="button" id="tvt-4" data-i="4">Retail, D2C &amp; E-commerce</button>
+        <button type="button" id="tvt-5" data-i="5">Hospitality &amp; Events</button>
+        <button type="button" id="tvt-6" data-i="6">Startups &amp; SMEs</button>
+        <button type="button" id="tvt-7" data-i="7">Corporate &amp; B2B</button>
+      </div>
     </div>
+    <p class="strip-note">Group roots in insurance, healthcare and education give us a head start in regulated, trust-driven categories.</p>
+  </div>
+</section>
+
+<!-- 2. Every sector in plain words (SEO, no JS, and the board's source) -->
+<section class="poster" id="sectors" aria-labelledby="sectors-h" style="--under:var(--ink)">
+  <div class="paste bill g-paper">
+    <div class="bill-head">
+      <h2 class="d1" id="sectors-h">Every sector, in plain words</h2>
+      <p class="d2">What each one needs, and the services that often fit</p>
+    </div>
+    <ul class="bill-list sector-list">
+      <li id="insurance" data-ground="g-blue" data-roots>
+        <h3>Insurance &amp; Financial Services</h3>
+        <p>Trust and clarity first; every message planned for your category's rules from the start.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/ai-calling/index.html">AI Calling</a></li><li><a href="../services/whatsapp-chat-bot/index.html">WhatsApp Chat Bot</a></li><li><a href="../services/seo-sem/index.html">SEO &amp; SEM</a></li><li><a href="../services/pr-media-relations/index.html">PR &amp; Media Relations</a></li></ul>
+      </li>
+      <li id="healthcare" data-ground="g-paper" data-roots>
+        <h3>Healthcare &amp; Wellness</h3>
+        <p>Patients need clear, careful information and easy booking.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/whatsapp-chat-bot/index.html">WhatsApp Chat Bot</a></li><li><a href="../services/sms-blasting/index.html">SMS Blasting</a></li><li><a href="../services/ai-calling/index.html">AI Calling</a></li><li><a href="../services/seo-sem/index.html">SEO &amp; SEM</a></li><li><a href="../services/post-creation-content/index.html">Post Creation &amp; Content</a></li></ul>
+      </li>
+      <li id="education" data-ground="g-yellow" data-roots>
+        <h3>Education &amp; EdTech</h3>
+        <p>Admissions seasons, parents and students on different channels.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/whatsapp-blasting/index.html">WhatsApp Blasting</a></li><li><a href="../services/ai-calling/index.html">AI Calling</a></li><li><a href="../services/website-development/index.html">Website Development</a></li><li><a href="../services/post-creation-content/index.html">Post Creation &amp; Content</a></li></ul>
+      </li>
+      <li id="real-estate" data-ground="g-ink">
+        <h3>Real Estate &amp; Infrastructure</h3>
+        <p>Long decisions, site visits and many enquiries to qualify.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/outdoor-hoardings-signage/index.html">Outdoor, Hoardings &amp; Signage</a></li><li><a href="../services/website-development/index.html">Website Development</a></li><li><a href="../services/ai-calling/index.html">AI Calling</a></li><li><a href="../services/whatsapp-chat-bot/index.html">WhatsApp Chat Bot</a></li></ul>
+      </li>
+      <li id="retail" data-ground="g-red">
+        <h3>Retail, D2C &amp; E-commerce</h3>
+        <p>Launches, seasons and repeat purchases.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/social-media-management/index.html">Social Media Management</a></li><li><a href="../services/post-creation-content/index.html">Post Creation &amp; Content</a></li><li><a href="../services/whatsapp-blasting/index.html">WhatsApp Blasting</a></li><li><a href="../services/seo-sem/index.html">SEO &amp; SEM</a></li></ul>
+      </li>
+      <li id="hospitality" data-ground="g-blue">
+        <h3>Hospitality &amp; Events</h3>
+        <p>Bookings, seasons and experiences.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/events-activations/index.html">Events &amp; Activations</a></li><li><a href="../services/post-creation-content/index.html">Post Creation &amp; Content</a></li><li><a href="../services/whatsapp-chat-bot/index.html">WhatsApp Chat Bot</a></li></ul>
+      </li>
+      <li id="startups" data-ground="g-yellow">
+        <h3>Startups &amp; SMEs</h3>
+        <p>One partner instead of many vendors, scaled to stage.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/website-development/index.html">Website Development</a></li><li><a href="../services/branding-identity/index.html">Branding &amp; Identity</a></li><li><a href="../services/social-media-management/index.html">Social Media Management</a></li><li><a href="../services/seo-sem/index.html">SEO &amp; SEM</a></li></ul>
+      </li>
+      <li id="corporate" data-ground="g-paper">
+        <h3>Corporate &amp; B2B</h3>
+        <p>Reputation, long sales cycles and many stakeholders.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/pr-media-relations/index.html">PR &amp; Media Relations</a></li><li><a href="../services/print-digital-publishing/index.html">Print &amp; Digital Publishing</a></li><li><a href="../services/content-video-production/index.html">Content &amp; Video Production</a></li><li><a href="../services/events-activations/index.html">Events &amp; Activations</a></li></ul>
+      </li>
+    </ul>
+    <p class="poster-foot"><a class="tag tag-ink" href="../services/index.html">All 14 services</a></p>
   </div>
 </section>
 
@@ -810,12 +1038,10 @@ const motionOK = root.classList.contains('motion');
 /* 1. MOTION ---------------------------------------------------------------
    Springs: k = stiffness, c = damping, mass 1. zeta = c / (2 * sqrt(k)).   */
 const MOTION = {
+  // The tear and peel physics (material constants, springs, roll timing) live in tear.js's MATERIAL / MOTION blocks.
   paste: bezier(.2, .7, .1, 1),     // paste: cubic-bezier(.2,.7,.1,1). Squeegee settle; every entrance eases out.
   tug: bezier(.55, 0, .75, .2),     // tug: cubic-bezier(.55,0,.75,.2). Gravity: a sheet letting go of the wall.
   lift: 'cubic-bezier(.3,1.3,.5,1)',// lift: a corner lifting, one tiny overshoot (CSS only)
-  flap: { k: 260, c: 26 },          // flap: a torn strip's free end follows the hand (zeta .81)   [tear.js]
-  roll: { k: 120, c: 19 },          // roll: a released strip curls up into a roll (zeta .87)     [tear.js]
-  peek: { k: 300, c: 30 },          // peek: the poster edge lifts toward a hovering pointer      [tear.js]
   ms: { press: 120, lift: 220, paste: 320, pasteIn: 900, letGo: 900, pasteBack: 1100, fallLife: 950, chatGap: 650, cellStagger: 40, barStagger: 120 }
 };
 let timeScale = 1;                  // 0.1 while slow-motion review is on
@@ -1045,6 +1271,215 @@ if (hero && tearClip && 'MutationObserver' in window) {
 }
 
 window.Elvana = { MOTION, announce, setSlow, feedback, setSound, get timeScale() { return timeScale; }, get sound() { return soundOn; } };
+})();
+
+</script>
+<script>
+/* =========================================================================
+   Elvana Media: pages/industries.js
+   "The tri-vision hoarding" (INTERACTIONS.md). Pick a sector (tabs, arrow
+   keys, or a swipe across the board) and the slats turn one by one.
+   - Each slat is a triangular prism with a damped spring
+       turn: k 190, c 20 (zeta .73, a few degrees of overshoot), mass 1
+     and starts 34-60 ms after its left neighbour (the stagger).
+   - Physically honest: a sector is only ever painted on a face that is
+     turned away from you at that moment, and each pick turns the slats
+     forward to the next hidden face. A pick mid-turn retargets the springs
+     from wherever they are, at the speed they have: fully interruptible.
+   - At rest the slats hide and the board is real HTML again (the tab
+     panel, with real links). The loop only runs while turning, and snaps
+     to rest if the board leaves the screen.
+   Sector content is read from the plain list (#sectors), so there is one
+   source. Reduced motion: no slats, the board changes in place.
+   ========================================================================= */
+(() => {
+'use strict';
+const wrap = document.querySelector('[data-tv]');
+if (!wrap) return;
+const root = document.documentElement;
+const E = window.Elvana || { announce() {}, feedback() {}, timeScale: 1 };
+const motionOK = root.classList.contains('motion');
+const slow = () => E.timeScale || 1;
+const TURN = { k: 190, c: 20 };      // turn: zeta = 20 / (2 * sqrt(190)) = .73
+const tv = wrap.querySelector('.tv');
+const screen = tv.querySelector('.tv__screen');
+const flat = tv.querySelector('.tv__flat');
+const slatsEl = tv.querySelector('.tv__slats');
+const pick = wrap.querySelector('.tv-pick');
+const tabs = [...pick.querySelectorAll('button')];
+
+/* ---- sectors, from the plain list ---- */
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const sectors = [...document.querySelectorAll('.sector-list > li')].map(li => ({
+  ground: li.dataset.ground || 'g-paper',
+  roots: li.hasAttribute('data-roots'),
+  name: li.querySelector('h3').textContent.trim(),
+  need: li.querySelector(':scope > p').textContent.trim(),
+  services: [...li.querySelectorAll('.often a')].map(a => ({ text: a.textContent.trim(), href: a.getAttribute('href') })),
+}));
+if (!sectors.length) return;
+const board = (s, links) =>
+  `<p class="tv-name">${esc(s.name)}</p><p class="tv-need">${esc(s.need)}</p>` +
+  `<div class="tv-fit"><p class="tv-fit__l">Services that often fit</p><ul>${s.services.map(x => `<li>${links ? `<a href="${esc(x.href)}">${esc(x.text)}</a>` : `<span>${esc(x.text)}</span>`}</li>`).join('')}</ul></div>` +
+  (s.roots ? '<p class="tv-roots">Group roots: a head start here</p>' : '');
+let current = 0;
+
+/* ---- tabs (WAI-ARIA tabs, automatic activation, roving tabindex) ---- */
+pick.setAttribute('role', 'tablist');
+flat.setAttribute('role', 'tabpanel');
+tabs.forEach((t, i) => {
+  t.setAttribute('role', 'tab');
+  t.setAttribute('aria-controls', flat.id);
+  t.addEventListener('click', () => select(i));
+  t.addEventListener('keydown', e => {
+    const n = tabs.length;
+    const to = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: n - 1 }[e.key];
+    if (to == null) return;
+    e.preventDefault();
+    const j = (to + n) % n;
+    tabs[j].focus(); select(j);
+  });
+});
+function mark(i) {
+  tabs.forEach((t, k) => { t.setAttribute('aria-selected', String(k === i)); t.tabIndex = k === i ? 0 : -1; });
+  flat.setAttribute('aria-labelledby', tabs[i].id);
+}
+mark(0);
+
+function paintFlat(i) {
+  flat.className = 'tv__flat tv-art ' + sectors[i].ground;
+  flat.innerHTML = board(sectors[i], true);
+}
+
+function select(i) {
+  if (i === current) return;
+  current = i;
+  mark(i);
+  const s = sectors[i];
+  E.announce(`${s.name}. ${s.need} Services that often fit: ${s.services.map(x => x.text).join(', ')}.`);
+  if (!motionOK) { paintFlat(i); return; }
+  if (!slats.length) build();
+  turnTo(i);
+}
+
+/* ---- slats ---- */
+let slats = [], n = 0, r = 0, raf = 0, last = 0, onScreen = true;
+const paint = (face, i) => { if (face.sector === i) return; face.sector = i; face.art.className = 'tv-art ' + sectors[i].ground; face.art.innerHTML = board(sectors[i], false); };
+function build() {
+  n = parseInt(getComputedStyle(screen).getPropertyValue('--n'), 10) || 12;
+  slatsEl.textContent = '';
+  slats = [];
+  for (let i = 0; i < n; i++) {
+    const slat = document.createElement('div'); slat.className = 'tv-slat'; slat.style.setProperty('--i', i);
+    const prism = document.createElement('div'); prism.className = 'tv-prism';
+    const faces = [0, 1, 2].map(f => {
+      const el = document.createElement('div'); el.className = 'tv-f'; el.style.setProperty('--f', f);
+      const art = document.createElement('div'); const sh = document.createElement('i'); sh.className = 'tv-sh';
+      el.append(art, sh); prism.append(el);
+      return { el, art, sh, sector: -1 };
+    });
+    slat.append(prism); slatsEl.append(slat);
+    const s = { prism, faces, angle: 0, vel: 0, target: 0, pending: null, at: 0 };
+    paint(faces[0], shown);
+    slats.push(s);
+  }
+  measure();
+  slats.forEach(apply);
+}
+function measure() {
+  const w = screen.clientWidth / (n || 1);
+  r = w / (2 * Math.sqrt(3));                 // a triangle's inradius: centre to face
+  slatsEl.style.setProperty('--r', r.toFixed(2) + 'px');
+}
+function apply(s) {
+  s.prism.style.transform = `translateZ(${(-r).toFixed(2)}px) rotateY(${(-s.angle).toFixed(3)}deg)`;
+  // light from the front-left: a face darkens as it turns away
+  for (let f = 0; f < 3; f++) {
+    let d = ((f * 120 - s.angle) % 360 + 540) % 360 - 180;           // face angle from the viewer, -180..180
+    const c = Math.cos(d * Math.PI / 180);
+    s.faces[f].sh.style.opacity = c > 0 ? ((1 - c) * (d > 0 ? .78 : .5)).toFixed(3) : '.8';
+  }
+}
+
+let shown = 0;                       // the sector the slats are turning to (or showing)
+function turnTo(i) {
+  shown = i;
+  tv.classList.add('is-turning');
+  const now = performance.now();
+  const gap = Math.max(34, Math.min(60, 560 / n));       // stagger: one slat after another, left to right
+  slats.forEach((s, k) => {
+    if (s.pending == null) s.at = now + (k * gap) / slow();
+    s.pending = i;
+  });
+  if (!onScreen) { snap(); return; }
+  if (!raf) { last = now; raf = requestAnimationFrame(frame); }
+}
+function retarget(s, i) {
+  // the next face that is turned away from the viewer (more than 90 degrees ahead)
+  const t = Math.ceil((s.angle + 90.5) / 120) * 120;
+  paint(s.faces[((t / 120) % 3 + 3) % 3], i);
+  s.target = t;
+}
+function frame(now) {
+  const dt = Math.min(.032, (now - last) / 1000) * slow();
+  last = now;
+  let busy = false;
+  for (const s of slats) {
+    if (s.pending != null) {
+      if (now >= s.at) { retarget(s, s.pending); s.pending = null; } else busy = true;
+    }
+    const x = s.target - s.angle;
+    if (Math.abs(x) < .04 && Math.abs(s.vel) < .04) { if (s.angle !== s.target) { s.angle = s.target; s.vel = 0; apply(s); } continue; }
+    s.vel += (TURN.k * x - TURN.c * s.vel) * dt;
+    s.angle += s.vel * dt;
+    apply(s);
+    busy = true;
+  }
+  if (busy) raf = requestAnimationFrame(frame);
+  else { raf = 0; rest(); }
+}
+function rest() {
+  paintFlat(shown);
+  tv.classList.remove('is-turning');
+}
+function snap() {                     // jump to the end state (off-screen, or a resize)
+  if (raf) { cancelAnimationFrame(raf); raf = 0; }
+  slats.forEach(s => { if (s.pending != null) { retarget(s, s.pending); s.pending = null; } s.angle = s.target; s.vel = 0; apply(s); });
+  rest();
+}
+
+/* ---- sleep off-screen; rebuild on a breakpoint change ---- */
+new IntersectionObserver(es => { onScreen = es[0].isIntersecting; if (!onScreen && raf) snap(); }).observe(tv);
+if (motionOK) {
+  // build the slats before they are needed, once the board is near
+  const near = new IntersectionObserver(es => { if (es[0].isIntersecting) { if (!slats.length) build(); near.disconnect(); } }, { rootMargin: '300px 0px' });
+  near.observe(tv);
+  let rt;
+  new ResizeObserver(() => {
+    clearTimeout(rt);
+    rt = setTimeout(() => {
+      if (!slats.length) return;
+      const want = parseInt(getComputedStyle(screen).getPropertyValue('--n'), 10) || 12;
+      if (raf) snap();
+      if (want !== n) build(); else { measure(); slats.forEach(apply); }
+    }, 120);
+  }).observe(screen);
+}
+
+/* ---- swipe the board: left for the next sector, right for the previous ---- */
+let sx = null, sy = 0, swiped = false;
+screen.addEventListener('pointerdown', e => { if (e.button) return; sx = e.clientX; sy = e.clientY; swiped = false; });
+screen.addEventListener('pointermove', e => {
+  if (sx == null || swiped) return;
+  const dx = e.clientX - sx, dy = e.clientY - sy;
+  if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+    swiped = true;
+    select((current + (dx < 0 ? 1 : -1) + sectors.length) % sectors.length);
+  }
+});
+['pointerup', 'pointercancel', 'pointerleave'].forEach(t => screen.addEventListener(t, () => { sx = null; }));
+// a swipe that started on a link must not also follow it
+screen.addEventListener('click', e => { if (swiped && e.target.closest('a')) { e.preventDefault(); swiped = false; } }, true);
 })();
 
 </script>

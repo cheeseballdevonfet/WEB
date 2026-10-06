@@ -33,7 +33,9 @@
 <script>if(location.protocol!=='file:')['../assets/fonts/yatra-one-latin.woff2','../assets/fonts/mukta-400-latin.woff2','../assets/fonts/mukta-800-latin.woff2'].forEach(function(h){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href=h;document.head.appendChild(l)})</script>
 <link rel="stylesheet" href="../assets/css/base.css">
 <link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/industries.css">
 <script defer src="../assets/js/core.js"></script>
+<script defer src="../assets/js/pages/industries.js"></script>
 <!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.elvanamedia.com/#organization","name":"Elvana Media","legalName":"ELEVANA MEDIA PRIVATE LIMITED","url":"https://www.elvanamedia.com/","email":"info@elvanamedia.com","telephone":"+91 89283 39531","foundingDate":"2026-06-04","slogan":"Ideas that create impact.","description":"Digital marketing, media & AI-powered growth.","image":"https://www.elvanamedia.com/assets/og-default.png","parentOrganization":{"@type":"Organization","name":"BeyondSure Private Limited"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}],"address":{"@id":"https://www.elvanamedia.com/#registered-office"}},{"@type":"LocalBusiness","@id":"https://www.elvanamedia.com/#mumbai","name":"Elvana Media","url":"https://www.elvanamedia.com/","image":"https://www.elvanamedia.com/assets/og-default.png","email":"info@elvanamedia.com","telephone":"+91 89283 39531","parentOrganization":{"@id":"https://www.elvanamedia.com/#organization"},"address":{"@type":"PostalAddress","@id":"https://www.elvanamedia.com/#registered-office","streetAddress":"203, Shivam Square, Building No. 4, Sahar Road, Andheri East","addressLocality":"Mumbai","addressRegion":"Maharashtra","postalCode":"400069","addressCountry":"IN"}},{"@type":"WebSite","@id":"https://www.elvanamedia.com/#website","url":"https://www.elvanamedia.com/","name":"Elvana Media","publisher":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN"},{"@type":"WebPage","@id":"https://www.elvanamedia.com/industries/#webpage","url":"https://www.elvanamedia.com/industries/","name":"Industries we serve | Elvana Media","description":"Built for brands of every size, from insurance, healthcare and education to real estate, retail and D2C, hospitality, startups and B2B.","isPartOf":{"@id":"https://www.elvanamedia.com/#website"},"about":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.elvanamedia.com/"},{"@type":"ListItem","position":2,"name":"Industries","item":"https://www.elvanamedia.com/industries/"}]}}]}</script>
 </head>
@@ -69,8 +71,16 @@
 </header>
 
 <main id="main">
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
+<!-- =====================================================================
+     Industries. Signature: "The tri-vision hoarding" (INTERACTIONS.md), the
+     rotating-prism slat billboard of Indian highways. Pick a sector and the
+     slats turn one by one (a damped spring per slat, staggered, with a
+     slight overshoot) to show what that sector needs and the services that
+     fit. At rest the board is real HTML (the tab panel, with real links);
+     the slats exist only while it turns. Every sector is also listed in
+     plain words below (#sectors), which is what the board reads from, and
+     what no JS gets. These are typical needs, not past work.
+     ===================================================================== -->
 <section class="page-hero" aria-labelledby="page-h">
   <div class="page-hero__main g-yellow">
     <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li aria-current="page">Industries</li></ol></nav>
@@ -82,17 +92,98 @@
   </div>
 </section>
 
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
+<!-- 1. The signature: the tri-vision hoarding -->
+<section class="poster" id="board" aria-labelledby="board-h" style="--under:var(--ink)">
+  <div class="paste g-ink">
+    <div class="head-split">
+      <h2 class="d1" id="board-h">What your sector needs</h2>
+      <p class="lede">Pick a sector and the hoarding turns to show what it usually needs and the services that fit. These are typical needs, not past work.</p>
     </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>Insurance &amp; Financial Services</li><li>Healthcare &amp; Wellness</li><li>Education &amp; EdTech</li><li>Real Estate &amp; Infrastructure</li><li>Retail, D2C &amp; E-commerce</li><li>Hospitality &amp; Events</li><li>Startups &amp; SMEs</li><li>Corporate &amp; B2B</li></ul>
+
+    <div class="tv-wrap" data-tv>
+      <figure class="tv">
+        <div class="tv__lamps" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div class="tv__frame">
+          <div class="tv__screen">
+            <div class="tv__slats" aria-hidden="true"></div>
+            <div class="tv__flat tv-art g-blue" id="tv-panel">
+              <p class="tv-name">Insurance &amp; Financial Services</p>
+              <p class="tv-need">Trust and clarity first; every message planned for your category's rules from the start.</p>
+              <div class="tv-fit"><p class="tv-fit__l">Services that often fit</p><ul><li><a href="../services/ai-calling/index.html">AI Calling</a></li><li><a href="../services/whatsapp-chat-bot/index.html">WhatsApp Chat Bot</a></li><li><a href="../services/seo-sem/index.html">SEO &amp; SEM</a></li><li><a href="../services/pr-media-relations/index.html">PR &amp; Media Relations</a></li></ul></div>
+              <p class="tv-roots">Group roots: a head start here</p>
+            </div>
+            <div class="tv__seams" aria-hidden="true"></div>
+          </div>
+          <p class="tv__plate" aria-hidden="true">Elvana Media</p>
+        </div>
+        <div class="tv__legs" aria-hidden="true"><i></i><i></i></div>
+        <figcaption class="tv__cap js-only">Pick a sector below, or swipe the board.</figcaption>
+      </figure>
+      <div class="tv-pick js-only" aria-label="Sectors">
+        <button type="button" id="tvt-0" data-i="0">Insurance &amp; Financial Services</button>
+        <button type="button" id="tvt-1" data-i="1">Healthcare &amp; Wellness</button>
+        <button type="button" id="tvt-2" data-i="2">Education &amp; EdTech</button>
+        <button type="button" id="tvt-3" data-i="3">Real Estate &amp; Infrastructure</button>
+        <button type="button" id="tvt-4" data-i="4">Retail, D2C &amp; E-commerce</button>
+        <button type="button" id="tvt-5" data-i="5">Hospitality &amp; Events</button>
+        <button type="button" id="tvt-6" data-i="6">Startups &amp; SMEs</button>
+        <button type="button" id="tvt-7" data-i="7">Corporate &amp; B2B</button>
+      </div>
     </div>
+    <p class="strip-note">Group roots in insurance, healthcare and education give us a head start in regulated, trust-driven categories.</p>
+  </div>
+</section>
+
+<!-- 2. Every sector in plain words (SEO, no JS, and the board's source) -->
+<section class="poster" id="sectors" aria-labelledby="sectors-h" style="--under:var(--ink)">
+  <div class="paste bill g-paper">
+    <div class="bill-head">
+      <h2 class="d1" id="sectors-h">Every sector, in plain words</h2>
+      <p class="d2">What each one needs, and the services that often fit</p>
+    </div>
+    <ul class="bill-list sector-list">
+      <li id="insurance" data-ground="g-blue" data-roots>
+        <h3>Insurance &amp; Financial Services</h3>
+        <p>Trust and clarity first; every message planned for your category's rules from the start.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/ai-calling/index.html">AI Calling</a></li><li><a href="../services/whatsapp-chat-bot/index.html">WhatsApp Chat Bot</a></li><li><a href="../services/seo-sem/index.html">SEO &amp; SEM</a></li><li><a href="../services/pr-media-relations/index.html">PR &amp; Media Relations</a></li></ul>
+      </li>
+      <li id="healthcare" data-ground="g-paper" data-roots>
+        <h3>Healthcare &amp; Wellness</h3>
+        <p>Patients need clear, careful information and easy booking.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/whatsapp-chat-bot/index.html">WhatsApp Chat Bot</a></li><li><a href="../services/sms-blasting/index.html">SMS Blasting</a></li><li><a href="../services/ai-calling/index.html">AI Calling</a></li><li><a href="../services/seo-sem/index.html">SEO &amp; SEM</a></li><li><a href="../services/post-creation-content/index.html">Post Creation &amp; Content</a></li></ul>
+      </li>
+      <li id="education" data-ground="g-yellow" data-roots>
+        <h3>Education &amp; EdTech</h3>
+        <p>Admissions seasons, parents and students on different channels.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/whatsapp-blasting/index.html">WhatsApp Blasting</a></li><li><a href="../services/ai-calling/index.html">AI Calling</a></li><li><a href="../services/website-development/index.html">Website Development</a></li><li><a href="../services/post-creation-content/index.html">Post Creation &amp; Content</a></li></ul>
+      </li>
+      <li id="real-estate" data-ground="g-ink">
+        <h3>Real Estate &amp; Infrastructure</h3>
+        <p>Long decisions, site visits and many enquiries to qualify.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/outdoor-hoardings-signage/index.html">Outdoor, Hoardings &amp; Signage</a></li><li><a href="../services/website-development/index.html">Website Development</a></li><li><a href="../services/ai-calling/index.html">AI Calling</a></li><li><a href="../services/whatsapp-chat-bot/index.html">WhatsApp Chat Bot</a></li></ul>
+      </li>
+      <li id="retail" data-ground="g-red">
+        <h3>Retail, D2C &amp; E-commerce</h3>
+        <p>Launches, seasons and repeat purchases.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/social-media-management/index.html">Social Media Management</a></li><li><a href="../services/post-creation-content/index.html">Post Creation &amp; Content</a></li><li><a href="../services/whatsapp-blasting/index.html">WhatsApp Blasting</a></li><li><a href="../services/seo-sem/index.html">SEO &amp; SEM</a></li></ul>
+      </li>
+      <li id="hospitality" data-ground="g-blue">
+        <h3>Hospitality &amp; Events</h3>
+        <p>Bookings, seasons and experiences.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/events-activations/index.html">Events &amp; Activations</a></li><li><a href="../services/post-creation-content/index.html">Post Creation &amp; Content</a></li><li><a href="../services/whatsapp-chat-bot/index.html">WhatsApp Chat Bot</a></li></ul>
+      </li>
+      <li id="startups" data-ground="g-yellow">
+        <h3>Startups &amp; SMEs</h3>
+        <p>One partner instead of many vendors, scaled to stage.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/website-development/index.html">Website Development</a></li><li><a href="../services/branding-identity/index.html">Branding &amp; Identity</a></li><li><a href="../services/social-media-management/index.html">Social Media Management</a></li><li><a href="../services/seo-sem/index.html">SEO &amp; SEM</a></li></ul>
+      </li>
+      <li id="corporate" data-ground="g-paper">
+        <h3>Corporate &amp; B2B</h3>
+        <p>Reputation, long sales cycles and many stakeholders.</p>
+        <ul class="often" aria-label="Services that often fit"><li><a href="../services/pr-media-relations/index.html">PR &amp; Media Relations</a></li><li><a href="../services/print-digital-publishing/index.html">Print &amp; Digital Publishing</a></li><li><a href="../services/content-video-production/index.html">Content &amp; Video Production</a></li><li><a href="../services/events-activations/index.html">Events &amp; Activations</a></li></ul>
+      </li>
+    </ul>
+    <p class="poster-foot"><a class="tag tag-ink" href="../services/index.html">All 14 services</a></p>
   </div>
 </section>
 

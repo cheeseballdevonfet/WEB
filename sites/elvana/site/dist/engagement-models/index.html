@@ -33,7 +33,9 @@
 <script>if(location.protocol!=='file:')['../assets/fonts/yatra-one-latin.woff2','../assets/fonts/mukta-400-latin.woff2','../assets/fonts/mukta-800-latin.woff2'].forEach(function(h){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href=h;document.head.appendChild(l)})</script>
 <link rel="stylesheet" href="../assets/css/base.css">
 <link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/engagement-models.css">
 <script defer src="../assets/js/core.js"></script>
+<script defer src="../assets/js/pages/engagement-models.js"></script>
 <!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.elvanamedia.com/#organization","name":"Elvana Media","legalName":"ELEVANA MEDIA PRIVATE LIMITED","url":"https://www.elvanamedia.com/","email":"info@elvanamedia.com","telephone":"+91 89283 39531","foundingDate":"2026-06-04","slogan":"Ideas that create impact.","description":"Digital marketing, media & AI-powered growth.","image":"https://www.elvanamedia.com/assets/og-default.png","parentOrganization":{"@type":"Organization","name":"BeyondSure Private Limited"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}],"address":{"@id":"https://www.elvanamedia.com/#registered-office"}},{"@type":"LocalBusiness","@id":"https://www.elvanamedia.com/#mumbai","name":"Elvana Media","url":"https://www.elvanamedia.com/","image":"https://www.elvanamedia.com/assets/og-default.png","email":"info@elvanamedia.com","telephone":"+91 89283 39531","parentOrganization":{"@id":"https://www.elvanamedia.com/#organization"},"address":{"@type":"PostalAddress","@id":"https://www.elvanamedia.com/#registered-office","streetAddress":"203, Shivam Square, Building No. 4, Sahar Road, Andheri East","addressLocality":"Mumbai","addressRegion":"Maharashtra","postalCode":"400069","addressCountry":"IN"}},{"@type":"WebSite","@id":"https://www.elvanamedia.com/#website","url":"https://www.elvanamedia.com/","name":"Elvana Media","publisher":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN"},{"@type":"WebPage","@id":"https://www.elvanamedia.com/engagement-models/#webpage","url":"https://www.elvanamedia.com/engagement-models/","name":"Engagement models | Elvana Media","description":"Three ways to work with Elvana Media: a Monthly Retainer for always-on growth, a Campaign SOW for launches and seasons, or a project.","isPartOf":{"@id":"https://www.elvanamedia.com/#website"},"about":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.elvanamedia.com/"},{"@type":"ListItem","position":2,"name":"Engagement models","item":"https://www.elvanamedia.com/engagement-models/"}]}}]}</script>
 </head>
@@ -69,8 +71,15 @@
 </header>
 
 <main id="main">
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
+<!-- =====================================================================
+     Engagement models. Signature: "The ticket counter" (INTERACTIONS.md).
+     Choose Retainer, Campaign or Project and a ticket prints from the slot.
+     Tear off its stub (drag it, or press its button) to open
+     /contact/?model=retainer|campaign|project; the contact page pre-selects
+     the model from that parameter. Each stub is a GET form, so without JS
+     the button does the same. No JS: the three tickets side by side.
+     Prices are not supplied yet: every price is a "Coming soon" snipe.
+     ===================================================================== -->
 <section class="page-hero" aria-labelledby="page-h">
   <div class="page-hero__main g-yellow">
     <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li aria-current="page">Engagement models</li></ol></nav>
@@ -82,22 +91,119 @@
   </div>
 </section>
 
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
+<!-- 1. The signature: the ticket counter -->
+<section class="poster" id="counter" aria-labelledby="counter-h" style="--under:var(--ink)">
+  <div class="paste g-red">
+    <div class="head-split">
+      <h2 class="d1" id="counter-h">Pick a model, take a ticket</h2>
+      <p class="lede">Three ways to work with Elvana. Choose one and a ticket prints with what it includes. Tear off the stub to send an enquiry with that model already chosen.</p>
     </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>Monthly Retainer: always-on growth</li><li>Campaign SOW: launches &amp; seasons</li><li>Project-based: build once, use daily</li><li>Prices (TODO: to come from Elvana)</li><li>How to start</li></ul>
+
+    <div class="counter" data-counter>
+      <fieldset class="counter__pick js-only">
+        <legend>Choose a model</legend>
+        <label class="pick pick--retainer"><input type="radio" name="model-pick" value="retainer"><span class="pick__name">Monthly Retainer</span><span class="pick__for">Always-on growth</span></label>
+        <label class="pick pick--campaign"><input type="radio" name="model-pick" value="campaign"><span class="pick__name">Campaign SOW</span><span class="pick__for">Launches &amp; seasons</span></label>
+        <label class="pick pick--project"><input type="radio" name="model-pick" value="project"><span class="pick__name">Project-based</span><span class="pick__for">Build once, use daily</span></label>
+        <p class="counter__how">The ticket prints in the window. Drag its stub to tear it off, or press Tear off the stub.</p>
+      </fieldset>
+
+      <div class="counter__window">
+        <p class="counter__sign" aria-hidden="true">Tickets</p>
+        <div class="counter__slot" aria-hidden="true"></div>
+        <div class="counter__mouth">
+          <p class="counter__idle js-only" aria-hidden="true"><b>Choose a model.</b>Your ticket prints here.</p>
+
+          <article class="ticket" id="ticket-retainer" data-model="retainer" aria-labelledby="ticket-retainer-h">
+            <div class="ticket__body has-strip">
+              <p class="ticket__top"><span>Elvana Media</span><span>Admit one brand</span></p>
+              <h3 class="ticket__name" id="ticket-retainer-h">Monthly Retainer</h3>
+              <dl class="ticket__dl">
+                <div><dt>Best for</dt><dd>Always-on growth</dd></div>
+                <div><dt>What's included</dt><dd>Social media, content, SEO, ads management and monthly reporting.</dd></div>
+                <div class="ticket__price"><dt>Price</dt><dd class="price"><span class="pl">From</span><span class="amt">₹<span class="gap" role="img" aria-label="amount to be confirmed"></span></span><span class="pl">a month</span></dd></div>
+              </dl>
+              <p class="coming-soon coming-soon--over" data-todo="price"><b>Coming soon</b>Price</p>
+            </div>
+            <form class="ticket__stub" action="../contact/index.html" method="get">
+              <input type="hidden" name="model" value="retainer">
+              <p class="stub__label"><span>Enquiry stub</span><b>Monthly Retainer</b></p>
+              <button class="stub__tear" type="submit">Tear off the stub<span class="sr">: send an enquiry about the Monthly Retainer</span></button>
+            </form>
+          </article>
+
+          <article class="ticket" id="ticket-campaign" data-model="campaign" aria-labelledby="ticket-campaign-h">
+            <div class="ticket__body has-strip">
+              <p class="ticket__top"><span>Elvana Media</span><span>Admit one brand</span></p>
+              <h3 class="ticket__name" id="ticket-campaign-h">Campaign SOW</h3>
+              <dl class="ticket__dl">
+                <div><dt>Best for</dt><dd>Launches &amp; seasons</dd></div>
+                <div><dt>What's included</dt><dd>Product launches, festive pushes, events and PR bursts, scoped per campaign.</dd></div>
+                <div class="ticket__price"><dt>Price</dt><dd class="price"><span class="pl">Per campaign</span><span class="amt">₹<span class="gap" role="img" aria-label="amount to be confirmed"></span></span></dd></div>
+              </dl>
+              <p class="coming-soon coming-soon--over" data-todo="price"><b>Coming soon</b>Price</p>
+            </div>
+            <form class="ticket__stub" action="../contact/index.html" method="get">
+              <input type="hidden" name="model" value="campaign">
+              <p class="stub__label"><span>Enquiry stub</span><b>Campaign SOW</b></p>
+              <button class="stub__tear" type="submit">Tear off the stub<span class="sr">: send an enquiry about a Campaign SOW</span></button>
+            </form>
+          </article>
+
+          <article class="ticket" id="ticket-project" data-model="project" aria-labelledby="ticket-project-h">
+            <div class="ticket__body has-strip">
+              <p class="ticket__top"><span>Elvana Media</span><span>Admit one brand</span></p>
+              <h3 class="ticket__name" id="ticket-project-h">Project-based</h3>
+              <dl class="ticket__dl">
+                <div><dt>Best for</dt><dd>Build once, use daily</dd></div>
+                <div><dt>What's included</dt><dd>Websites, WhatsApp bots, AI calling set-up and brand identity.</dd></div>
+                <div class="ticket__price"><dt>Price</dt><dd class="price"><span class="pl">Per project</span><span class="amt">₹<span class="gap" role="img" aria-label="amount to be confirmed"></span></span></dd></div>
+              </dl>
+              <p class="coming-soon coming-soon--over" data-todo="price"><b>Coming soon</b>Price</p>
+            </div>
+            <form class="ticket__stub" action="../contact/index.html" method="get">
+              <input type="hidden" name="model" value="project">
+              <p class="stub__label"><span>Enquiry stub</span><b>Project-based</b></p>
+              <button class="stub__tear" type="submit">Tear off the stub<span class="sr">: send an enquiry about a project</span></button>
+            </form>
+          </article>
+        </div>
+        <div class="counter__ledge" aria-hidden="true"></div>
+      </div>
+      <p class="counter__plain">In a hurry? <a href="../contact/index.html">Write to us without a ticket</a>.</p>
     </div>
   </div>
 </section>
 
+<!-- 2. How to start -->
+<section class="poster" id="start" aria-labelledby="start-h" style="--under:var(--red)">
+  <div class="paste g-paper">
+    <div class="head-split">
+      <h2 class="d1" id="start-h">How to start</h2>
+      <p class="lede">Any service can be part of a Monthly Retainer, a Campaign SOW or a Project. We help you choose after the first step.</p>
+    </div>
+    <ol class="start">
+      <li><span class="n" aria-hidden="true">1</span><h3>Tell us the problem</h3><p>Use the <a href="../contact/index.html">contact form</a> or call <a href="tel:+918928339531">+91 89283 39531</a>.</p></li>
+      <li><span class="n" aria-hidden="true">2</span><h3>We run Discover with you</h3><p>Your business, audience, competitors and goals. <a href="../how-we-work/index.html">How we work</a></p></li>
+      <li><span class="n" aria-hidden="true">3</span><h3>We propose the model that fits</h3><p>Retainer, campaign or project.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 3. Questions -->
+<section class="poster" id="questions" aria-labelledby="questions-h" style="--under:var(--paper)">
+  <div class="paste g-blue">
+    <h2 class="d1" id="questions-h">Questions</h2>
+    <dl class="qs">
+      <div><dt>Can we start with a project and move to a retainer?</dt><dd>Yes. You can start with a project, such as a website or a WhatsApp bot, and add always-on work later.</dd></div>
+      <div><dt>What's in the monthly report?</dt><dd>What moved, what didn't, and what we'll change next month, in plain language.</dd></div>
+      <div><dt>What does each model cost?</dt><dd>Prices are shared after Discover, based on scope. <span class="coming-soon coming-soon--inline coming-soon--yellow" data-todo="price list">Price list coming soon</span></dd></div>
+    </dl>
+  </div>
+</section>
+
 <!-- Closing CTA poster: every page ends here, always to /contact/. -->
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--blue)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>

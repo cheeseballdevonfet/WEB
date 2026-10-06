@@ -33,7 +33,9 @@
 <script>if(location.protocol!=='file:')['../assets/fonts/yatra-one-latin.woff2','../assets/fonts/mukta-400-latin.woff2','../assets/fonts/mukta-800-latin.woff2'].forEach(function(h){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href=h;document.head.appendChild(l)})</script>
 <link rel="stylesheet" href="../assets/css/base.css">
 <link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/how-we-work.css">
 <script defer src="../assets/js/core.js"></script>
+<script defer src="../assets/js/pages/how-we-work.js"></script>
 <!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.elvanamedia.com/#organization","name":"Elvana Media","legalName":"ELEVANA MEDIA PRIVATE LIMITED","url":"https://www.elvanamedia.com/","email":"info@elvanamedia.com","telephone":"+91 89283 39531","foundingDate":"2026-06-04","slogan":"Ideas that create impact.","description":"Digital marketing, media & AI-powered growth.","image":"https://www.elvanamedia.com/assets/og-default.png","parentOrganization":{"@type":"Organization","name":"BeyondSure Private Limited"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}],"address":{"@id":"https://www.elvanamedia.com/#registered-office"}},{"@type":"LocalBusiness","@id":"https://www.elvanamedia.com/#mumbai","name":"Elvana Media","url":"https://www.elvanamedia.com/","image":"https://www.elvanamedia.com/assets/og-default.png","email":"info@elvanamedia.com","telephone":"+91 89283 39531","parentOrganization":{"@id":"https://www.elvanamedia.com/#organization"},"address":{"@type":"PostalAddress","@id":"https://www.elvanamedia.com/#registered-office","streetAddress":"203, Shivam Square, Building No. 4, Sahar Road, Andheri East","addressLocality":"Mumbai","addressRegion":"Maharashtra","postalCode":"400069","addressCountry":"IN"}},{"@type":"WebSite","@id":"https://www.elvanamedia.com/#website","url":"https://www.elvanamedia.com/","name":"Elvana Media","publisher":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN"},{"@type":"WebPage","@id":"https://www.elvanamedia.com/how-we-work/#webpage","url":"https://www.elvanamedia.com/how-we-work/","name":"How we work: five steps | Elvana Media","description":"From brief to impact in five steps: Discover, Strategise, Create, Launch and Optimise, with weekly tuning and monthly reports.","isPartOf":{"@id":"https://www.elvanamedia.com/#website"},"about":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.elvanamedia.com/"},{"@type":"ListItem","position":2,"name":"How we work","item":"https://www.elvanamedia.com/how-we-work/"}]}}]}</script>
 </head>
@@ -69,12 +71,21 @@
 </header>
 
 <main id="main">
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
+<!-- =====================================================================
+     How we work. Signature: "The paste-up" (INTERACTIONS.md), on WEB.md 30,
+     "Stacking chapters". The five steps are five sheets pasted one over
+     another as you scroll (position: sticky; the sheet underneath scales
+     down a little and dims, scrubbed by the scroll timeline). Each sheet
+     carries a proof of one campaign poster at that step, and the fifth
+     sheet's proof is the finished poster. No JS, reduced motion and very
+     short screens get the same five sheets as a plain, still sequence.
+     The campaign is a mock-up for a sample institute (the same one as the
+     Our edge story), not a client.
+     ===================================================================== -->
 <section class="page-hero" aria-labelledby="page-h">
   <div class="page-hero__main g-yellow">
     <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li aria-current="page">How we work</li></ol></nav>
-    <h1 id="page-h">How we work</h1>
+    <h1 id="page-h">How we<br> work</h1>
   </div>
   <div class="page-hero__side g-red">
     <p class="page-hero__line">From brief to impact in five steps.</p>
@@ -82,16 +93,129 @@
   </div>
 </section>
 
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
+<!-- 1. The signature: five steps, pasted up -->
+<section class="poster" id="paste-up" aria-labelledby="pasteup-h" style="--under:var(--ink)">
+  <div class="paste g-blue">
+    <div class="head-split">
+      <h2 class="d1" id="pasteup-h">Five steps, pasted up</h2>
+      <p class="lede">Every campaign goes through the same five steps. Each one is pasted over the last and adds a layer, until the poster is finished.</p>
     </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>Discover</li><li>Strategise</li><li>Create</li><li>Launch</li><li>Optimise</li><li>What you get at each step</li></ul>
+
+    <ol class="pasteup" data-pasteup aria-label="The five steps">
+      <!-- 1. Discover: the brief on a blank sheet -->
+      <li class="sheet g-paper" id="discover" style="--i:0">
+        <div class="sheet__plate">
+          <p class="sheet__n" aria-hidden="true">1</p>
+          <h3>Discover</h3>
+          <p class="sheet__what">Your business, audience, competitors and goals.</p>
+          <p class="sheet__get"><b>You get</b>A short brief we agree on together.</p>
+        </div>
+        <div class="proof" aria-hidden="true">
+          <div class="pf">
+            <div class="pf-brief new"><b>Brief</b><span>Who: people who want weekend classes</span><span>Where: Andheri, and online</span><span>Goal: enquiries on WhatsApp</span></div>
+          </div>
+          <span class="pf-mock">Mock-up</span>
+        </div>
+      </li>
+      <!-- 2. Strategise: the plan drawn on the sheet -->
+      <li class="sheet g-yellow" id="strategise" style="--i:1">
+        <div class="sheet__plate">
+          <p class="sheet__n" aria-hidden="true">2</p>
+          <h3>Strategise</h3>
+          <p class="sheet__what">Channel mix, calendar, budget and KPIs.</p>
+          <p class="sheet__get"><b>You get</b>A plan with channels, a calendar, a budget split and the measures we'll report on.</p>
+        </div>
+        <div class="proof" aria-hidden="true">
+          <div class="pf">
+            <div class="pf-grid new"></div>
+            <span class="pf-zone pf-zone--h new">Headline</span>
+            <span class="pf-zone pf-zone--o new">Offer</span>
+            <span class="pf-zone pf-zone--d new">Days</span>
+            <span class="pf-zone pf-zone--a new">Action</span>
+            <div class="pf-plan new"><b>Plan</b><span>Post, WhatsApp, SMS, AI calls and a hoarding</span><span>Calendar, budget split, measures</span></div>
+          </div>
+          <span class="pf-mock">Mock-up</span>
+        </div>
+      </li>
+      <!-- 3. Create: the artwork, approved -->
+      <li class="sheet g-red" id="create" style="--i:2">
+        <div class="sheet__plate">
+          <p class="sheet__n" aria-hidden="true">3</p>
+          <h3>Create</h3>
+          <p class="sheet__what">Content, creatives, sites, bots and scripts.</p>
+          <p class="sheet__get"><b>You get</b>Everything made and approved by you before launch.</p>
+        </div>
+        <div class="proof" aria-hidden="true">
+          <div class="pf pf--art">
+            <div class="pf-art new"><p class="pf-h">Weekend batches</p><p class="pf-o">Data course. Classroom in Andheri, or online.</p><p class="pf-days"><span>Sat</span><span>Sun</span></p></div>
+            <span class="pf-stamp new">Approved</span>
+          </div>
+          <span class="pf-mock">Mock-up</span>
+        </div>
+      </li>
+      <!-- 4. Launch: the call to action, live on the chosen channels -->
+      <li class="sheet g-ink" id="launch" style="--i:3">
+        <div class="sheet__plate">
+          <p class="sheet__n" aria-hidden="true">4</p>
+          <h3>Launch</h3>
+          <p class="sheet__what">Campaigns go live across chosen channels.</p>
+          <p class="sheet__get"><b>You get</b>A launch checklist and live tracking from the first hour.</p>
+        </div>
+        <div class="proof" aria-hidden="true">
+          <div class="pf pf--art">
+            <div class="pf-art"><p class="pf-h">Weekend batches</p><p class="pf-o">Data course. Classroom in Andheri, or online.</p><p class="pf-days"><span>Sat</span><span>Sun</span></p></div>
+            <p class="pf-cta new">Chat on WhatsApp</p>
+            <p class="pf-live new"><b>Live</b><span>Post</span><span>WhatsApp</span><span>SMS</span><span>Hoarding</span></p>
+          </div>
+          <span class="pf-mock">Mock-up</span>
+        </div>
+      </li>
+      <!-- 5. Optimise: the snipe that finishes the poster -->
+      <li class="sheet g-paper" id="optimise" style="--i:4">
+        <div class="sheet__plate">
+          <p class="sheet__n" aria-hidden="true">5</p>
+          <h3>Optimise</h3>
+          <p class="sheet__what">Weekly tuning and monthly reports.</p>
+          <p class="sheet__get"><b>You get</b>Weekly changes and a monthly report in plain language.</p>
+        </div>
+        <div class="proof" aria-hidden="true">
+          <div class="pf pf--art">
+            <div class="pf-art"><p class="pf-h">Weekend batches</p><p class="pf-o">Data course. Classroom in Andheri, or online.</p><p class="pf-days"><span>Sat</span><span>Sun</span></p></div>
+            <p class="pf-cta">Chat on WhatsApp</p>
+            <p class="pf-snipe new">Now also weekday evenings</p>
+          </div>
+          <span class="pf-mock">Mock-up</span>
+        </div>
+      </li>
+    </ol>
+    <p class="pasteup-cap">Mock-up: one sample campaign for a sample institute, shown at each step. Not a client and not a result. The fifth sheet is the finished poster.</p>
+  </div>
+</section>
+
+<!-- 2. Transparency -->
+<section class="poster" id="clear" aria-labelledby="clear-h" style="--under:var(--blue)">
+  <div class="paste g-ink">
+    <div class="head-split">
+      <h2 class="d1" id="clear-h">You see the same dashboard we do</h2>
+      <p class="lede">Our mission is to make marketing smarter for every customer, delivered with speed, transparency and care.</p>
+    </div>
+    <ul class="clear-list">
+      <li><b>Every week</b>Tuning, and what changed and why.</li>
+      <li><b>Every month</b>A report in plain language: what moved, what didn't, and what we'll change.</li>
+      <li><b>All the time</b>One live dashboard across your channels.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 3. Every service runs the same way -->
+<section class="poster" id="fit" aria-labelledby="fit-h" style="--under:var(--ink)">
+  <div class="paste g-paper">
+    <div class="head-split">
+      <h2 class="d1" id="fit-h">Any service, the same five steps</h2>
+      <div>
+        <p class="lede">Every service runs through these steps, and any service can be part of a Monthly Retainer, a Campaign SOW or a Project.</p>
+        <div class="tags fit-tags"><a class="tag tag-ink" href="../services/index.html">All 14 services</a><a class="tag tag-line" href="../engagement-models/index.html">Engagement models</a><a class="tag tag-line" href="../our-edge/index.html">Our edge</a></div>
+      </div>
     </div>
   </div>
 </section>

@@ -1,0 +1,36 @@
+/* Specimen: SMS Blasting. A phone receiving a DLT-style message from a sample sender ID;
+   the chips switch the template type. No JS: all three messages and templates, stacked. */
+.spec-sms{display:grid;gap:22px}
+.sms-body{display:grid;grid-template-columns:minmax(250px,320px) 1fr;gap:clamp(24px,3vw,44px);align-items:start}
+.sms-phone{background:var(--ink);padding:12px 11px 30px;border-radius:32px;box-shadow:inset 0 0 0 2px #3D3A35;max-width:320px}
+.sms-screen{background:var(--paper);color:var(--ink);border-radius:21px;min-height:400px;padding:14px 14px 18px;display:flex;flex-direction:column;gap:16px;overflow:hidden}
+.sms-from{display:grid;justify-items:center;gap:2px;padding:6px 0 12px;border-bottom:2px solid rgba(26,24,20,.16)}
+.sms-from span{font-weight:800;font-size:14px;color:var(--ink-soft)}
+.sms-from b{font:800 21px/1.1 var(--text);letter-spacing:.06em}
+.sms-thread{display:grid;gap:12px;align-content:start}
+.sms-msg{display:grid;gap:6px;max-width:94%;padding:12px 14px 10px;background:var(--paper-dim);color:var(--ink);border-radius:4px 16px 16px 16px;font-size:17px;line-height:1.4}
+.sms-msg mark{background:var(--yellow);color:var(--ink);padding:0 3px;box-shadow:inset 0 -3px 0 var(--ink)}
+.sms-type,.sms-when{font-weight:800;font-size:14px;color:var(--ink-soft);line-height:1.2}
+.sms-when{justify-self:end}
+.sms-notes{display:grid;gap:20px}
+.sms-note{display:grid;gap:16px;padding-top:16px;border-top:3px solid currentColor}
+.sms-note dt{font-weight:800;font-size:15px;margin-bottom:4px}
+.sms-note dd{font-size:var(--fs-body);line-height:1.45}
+.sms-tpl{font-size:var(--fs-lede);line-height:1.4;font-weight:600}
+.sms-tpl i{font-style:normal;font-weight:800;font-size:.82em;background:var(--ink);color:var(--yellow);padding:1px 6px 0;white-space:nowrap}
+/* Live: one message on the phone at a time, the old one and the new one share a cell while they swap */
+.spec-sms.is-live .sms-thread{grid-template:1fr / 1fr}
+.spec-sms.is-live .sms-msg{grid-area:1 / 1;align-self:start}
+.spec-sms.is-live .sms-notes{display:grid}
+.spec-sms.is-live .sms-note{grid-area:1 / 1}
+.sms-msg[hidden],.sms-note[hidden]{display:none}
+.js.motion .spec-sms.is-armed .sms-msg{clip-path:inset(0 100% 0 0)}
+@media (max-width:860px){
+  .sms-body{grid-template-columns:1fr}
+  .sms-phone{width:100%;justify-self:start}
+}
+@media (max-width:699px){
+  .sms-pick{flex-wrap:nowrap}
+  .sms-pick .chip{flex:1 1 auto;padding:10px 8px 7px;font-size:15px}
+  .sms-screen{min-height:340px}
+}

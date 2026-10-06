@@ -1,0 +1,227 @@
+/* =========================================================================
+   Elvana Media: pages/services.css
+   The Services section. Two parts:
+   A. /services/ overview: the pillars as filters and the fly-poster wall
+      (the page's one signature; services.js runs the tear-down and paste-up).
+   B. The shared template of the 14 service pages: the hero with its corner
+      peel (tear.js owns the peel; this only places it), What we do, the
+      Mock-up specimen frame, Good for / Works with, How it runs, Questions.
+   Each specimen's own look is in pages/specimens/<slug>.css.
+   Pieces that may be worth promoting to components.css are marked PROMOTE.
+   ========================================================================= */
+
+/* ---------- PROMOTE: Mock-up sticker. A double-ruled rubber stamp on every specimen ---------- */
+.mockup{align-self:flex-start;display:inline-block;padding:9px 15px 6px;font:800 16px/1.2 var(--text);letter-spacing:.02em;color:var(--fg);
+  box-shadow:inset 0 0 0 3px currentColor,inset 0 0 0 6px var(--ground),inset 0 0 0 8px currentColor;transform:rotate(-4deg);transform-origin:0 100%}
+/* on a specimen poster it is the poster's big rubber stamp: the honest label, set loud */
+.spec-head .mockup{order:3;margin-top:clamp(16px,3vw,48px);padding:.2em .42em .06em;font:400 clamp(44px,6.2vw,104px)/1 var(--display);letter-spacing:0;color:var(--hi);
+  box-shadow:inset 0 0 0 5px currentColor,inset 0 0 0 11px var(--ground),inset 0 0 0 15px currentColor;transform:rotate(-7deg);transform-origin:0 50%}
+
+/* ---------- PROMOTE: chip. A small square-cut toggle for specimen controls (aria-pressed) ---------- */
+.chip{min-height:44px;padding:10px 15px 7px;border:0;border-radius:0;background:transparent;color:inherit;box-shadow:inset 0 0 0 2px currentColor;
+  font:800 16px/1.05 var(--text);cursor:pointer;transform-origin:0 0;transition:transform var(--t-lift) var(--ease-lift),background-color var(--t-lift) linear,color var(--t-lift) linear}
+.chip:hover{transform:rotate(-2deg)}
+.chip:active{transform:translateY(2px) scale(.97);transition-duration:var(--t-press)}
+.chip[aria-pressed="true"],.chip[aria-checked="true"],.chip.is-on{background:var(--fg);color:var(--ground);box-shadow:none}
+.chip:disabled,.chip[aria-disabled="true"]{opacity:.45;cursor:not-allowed;transform:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+
+/* =========================================================================
+   A. OVERVIEW
+   ========================================================================= */
+.page-services .page-hero h1{font-size:clamp(68px,min(14vw,25svh),230px);line-height:.86;max-width:none}
+.svc-pillars .pillar{min-height:min(30vw,460px)}
+.pillar__foot{display:grid;gap:22px;justify-items:start}
+
+/* The wall poster: heading, the sticky filter bar, then the wall bleeding to the edges */
+.svc-wall .head-split{margin-bottom:clamp(36px,4.4vw,64px)}
+.svc-wall .head-split h2{font-size:var(--fs-d2);max-width:13ch}
+.fp-bar{position:sticky;top:var(--hdr);z-index:6;margin:0 calc(var(--pad-x) * -1);padding:12px var(--pad-x) 12px;display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:8px 22px;
+  border-top:6px solid var(--yellow);box-shadow:0 6px 0 rgba(0,0,0,.18)}
+.fp-bar__h{font-family:var(--display);font-size:clamp(26px,2.2vw,34px);line-height:1;color:var(--yellow);padding-top:4px}
+.fp-bar__btns{display:flex;flex-wrap:wrap;gap:8px}
+.fp-bar__note{font-size:var(--fs-small);line-height:1.35;color:var(--paper-dim);max-width:48ch;justify-self:end;text-align:right}
+.fp-btn{min-height:46px;padding:11px 18px 8px;border:0;border-radius:0;background:transparent;color:var(--paper);box-shadow:inset 0 0 0 2px rgba(242,243,239,.75);
+  font:800 17px/1 var(--text);cursor:pointer;transform-origin:0 0;transition:transform var(--t-lift) var(--ease-lift),background-color var(--t-lift) linear,color var(--t-lift) linear}
+.fp-btn:hover{transform:rotate(-2.2deg);background:rgba(242,243,239,.12)}
+.fp-btn:active{transform:translate(-1%,2px) scale(1.02,.92);transition-duration:var(--t-press)}
+.fp-btn[aria-pressed="true"]{background:var(--yellow);color:var(--ink);box-shadow:none}
+.fp-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* The wall: concrete with old paste marks, seen only where a poster has come down */
+.fp-wall{position:relative;display:grid;grid-template-columns:repeat(12,1fr);grid-auto-flow:row;align-content:start;margin:0 calc(var(--pad-x) * -1) calc(var(--pad-y) * -1);overflow:clip;isolation:isolate;
+  background-color:var(--wall);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 600' preserveAspectRatio='none'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cpath d='M-20 120 C 220 70 420 150 660 90 S 1020 40 1240 60' stroke='%23fff' stroke-opacity='.10' stroke-width='60'/%3E%3Cpath d='M40 420 C 260 360 400 400 620 330 S 980 260 1180 230' stroke='%23000' stroke-opacity='.07' stroke-width='80'/%3E%3Cpath d='M200 600 C 420 520 640 560 860 480 S 1120 440 1260 420' stroke='%23fff' stroke-opacity='.08' stroke-width='44'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:100% 100%}
+.fp{grid-column:span var(--s,4);min-height:clamp(250px,21vw,330px);justify-content:flex-start;gap:14px}
+.fp[hidden]{display:none!important}
+.fp .fam,.works__p .fam{font-weight:800;font-size:15px;line-height:1.25}
+.fp h3{font-size:clamp(32px,min(14.5cqw,4.4vw),72px);line-height:.9}
+.fp-line{margin-top:auto;max-width:30ch}
+.fp-pills{display:flex;flex-wrap:wrap;gap:8px}
+.fp-pills li{font:800 14px/1 var(--text);padding:7px 10px 5px;box-shadow:inset 0 0 0 2px currentColor;transform:rotate(-2deg)}
+.fp-pills li:nth-child(2){transform:rotate(1.5deg)}
+/* Torn-down scraps (clones, aria-hidden) fall in front of the wall; the squeegee blade rides last */
+.fp-scrap{position:absolute;z-index:4;margin:0;pointer-events:none;clip-path:none!important;box-shadow:0 18px 28px rgba(0,0,0,.28);will-change:transform}
+.fp-blade{position:absolute;top:0;bottom:0;left:0;width:180px;z-index:5;pointer-events:none;opacity:0;transform:translateX(-200px);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.26) calc(100% - 9px),var(--ink) calc(100% - 9px),var(--ink) calc(100% - 3px),rgba(255,255,255,.5) calc(100% - 3px),transparent calc(100% - 1px))}
+.fp.is-moving{z-index:2}
+
+/* Engagement teaser */
+.models{display:grid;grid-template-columns:repeat(3,1fr);gap:0 clamp(28px,4vw,56px);margin-top:clamp(36px,4.5vw,64px);border-top:6px solid var(--yellow)}
+.models li{padding:26px 0 8px;display:grid;gap:8px;align-content:start}
+.models h3{font-size:var(--fs-d3);color:var(--yellow)}
+.models__best{font-weight:800}
+/* the beyond-digital bill also says who each service is for */
+.bill-good{font-size:var(--fs-small);line-height:1.4;color:var(--ink-soft)}
+.bill-good b{color:var(--ink);font-weight:800;margin-right:4px}
+
+/* =========================================================================
+   B. SERVICE PAGE TEMPLATE
+   ========================================================================= */
+/* Hero: the yellow title poster is the peel's over-poster; the promise is pasted underneath */
+.svc-hero .peel{grid-column:span 8}
+.svc-peel>.peel__under,.svc-peel>.peel__over{grid-area:1 / 1;height:100%}
+.svc-hero h1{font-size:clamp(56px,min(11.6vw,21svh),190px);line-height:.86;max-width:9ch}
+.svc-hero h1.is-long{font-size:clamp(48px,min(8.4vw,15.5svh),138px);line-height:.88;max-width:12ch}
+.svc-under{justify-content:flex-end}
+.svc-under__k{font-weight:800;font-size:15px;line-height:1.3;margin-bottom:auto}
+.svc-under__line{font-family:var(--display);font-size:clamp(38px,min(5.6vw,9.4svh),88px);line-height:.98;max-width:14ch;text-wrap:balance}
+.svc-side__pillar{display:grid;gap:12px;margin-top:auto}
+.svc-side__w{font-family:var(--display);font-size:clamp(40px,min(4.6vw,8.6svh),76px);line-height:.92;color:var(--hi)}
+.svc-side__t{font-size:var(--fs-body);line-height:1.4;max-width:30ch}
+.svc-side__hint{font-weight:800;font-size:15px;line-height:1.3;max-width:28ch}
+
+/* What we do: a ruled handbill list */
+.what-list{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(28px,4vw,64px);margin-top:clamp(36px,4.5vw,64px)}
+.what-list li{position:relative;padding:20px 0 24px 34px;border-top:3px solid currentColor;font-size:var(--fs-lede);line-height:1.38;font-weight:600}
+.what-list li::before{content:"";position:absolute;left:0;top:34px;width:20px;height:6px;background:var(--hi);transform:rotate(-8deg)}
+.svc-what--side .paste{display:grid;grid-template-columns:5fr 7fr;gap:28px clamp(32px,5vw,88px);align-items:start}
+.what-head{position:sticky;top:calc(var(--hdr) + 32px);display:grid;gap:22px}
+.what-head h2{max-width:8ch}
+/* side rhythm: each line is a snipe pasted across the poster, one under another */
+.svc-what--side .what-list{grid-template-columns:1fr;gap:14px;margin-top:0;--sb:var(--paper);--sf:var(--ink);--sm:var(--red)}
+.g-paper.paste .what-list,.svc-what--side .g-yellow .what-list{--sb:var(--ink);--sf:var(--paper);--sm:var(--yellow)}
+.svc-what--side .g-ink .what-list{--sb:var(--yellow);--sf:var(--ink);--sm:var(--red)}
+.svc-what--side .what-list li{padding:20px 24px 18px 58px;border:0;background:var(--sb);color:var(--sf);font-size:clamp(20px,1.8vw,27px);line-height:1.3;box-shadow:5px 6px 0 rgba(0,0,0,.22);transform:rotate(-.5deg)}
+.svc-what--side .what-list li:nth-child(even){transform:rotate(.4deg);margin-left:clamp(0px,2vw,28px)}
+.svc-what--side .what-list li::before{left:22px;top:34px;background:var(--sm)}
+
+/* Specimen frame: the head (Mock-up sticker, heading, how to use it) and the specimen */
+.spec-grid{display:grid;grid-template-columns:5fr 7fr;gap:32px clamp(32px,5vw,80px);align-items:start}
+.spec-head{display:flex;flex-direction:column;gap:18px;position:sticky;top:calc(var(--hdr) + 32px)}
+.spec-head h2{max-width:13ch}
+.svc-spec--wide .spec-grid{grid-template-columns:1fr}
+.svc-spec--wide .spec-head{position:static;display:grid;grid-template-columns:7fr 5fr;column-gap:48px;row-gap:16px;align-items:end;margin-bottom:clamp(8px,1.4vw,20px)}
+.svc-spec--wide .spec-head .lede{grid-column:1}
+.svc-spec--wide .spec-head .mockup{grid-column:2;grid-row:1 / span 2;justify-self:end;align-self:center;margin:0 clamp(8px,2vw,32px) 0 0;font-size:clamp(40px,4.6vw,76px)}
+.svc-spec--wide .spec-head h2{max-width:16ch}
+.spec{position:relative;margin:0;min-width:0}
+.spec-cap{margin-top:16px;font-size:var(--fs-small);line-height:1.4;max-width:62ch}
+.spec-todo{padding:40px;box-shadow:inset 0 0 0 3px currentColor;font-weight:800}
+
+/* Good for / Works with */
+.fit-grid{display:grid;grid-template-columns:5fr 7fr;gap:48px clamp(32px,5vw,80px);align-items:start}
+.svc-fit--stack .fit-grid{grid-template-columns:1fr}
+.svc-fit--stack .fit-good{display:grid;grid-template-columns:5fr 7fr;column-gap:clamp(32px,5vw,80px);align-items:start}
+.svc-fit--stack .fit-good>h2,.svc-fit--stack .fit-good>.fit-note{grid-column:1}
+.svc-fit--stack .fit-good>.fit-cast{grid-column:2;grid-row:1 / span 3;margin-top:0}
+.svc-fit--stack .fit-good>.fit-sub,.svc-fit--stack .fit-good>.fit-sectors{grid-column:1 / -1}
+.fit-note{margin-top:14px;font-size:var(--fs-lede);line-height:1.38;max-width:32ch}
+.fit-cast{margin-top:clamp(20px,2.4vw,32px)}
+.fit-cast li{font-size:clamp(28px,3vw,48px)}
+.fit-sub{margin-top:clamp(32px,4vw,52px);font-family:var(--text);font-weight:800;font-size:17px;line-height:1.3}
+.fit-sectors{margin-top:12px}
+.fit-sectors .tag{min-height:44px;padding:10px 16px 7px;font-size:16px}
+.works{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px;margin-top:clamp(20px,2.4vw,32px);background:var(--wall)}
+.works__p{min-height:clamp(250px,21vw,320px);justify-content:flex-start;gap:12px}
+.works__p h3{font-size:clamp(28px,min(15cqw,3.4vw),52px);line-height:.92}
+.works__p h3+p{margin-top:auto}
+.svc-fit--stack .fit-works{margin-top:clamp(8px,1vw,16px)}
+
+/* How it runs + Questions */
+.runs-head{margin-bottom:clamp(28px,3.4vw,48px)}
+.runs-steps{display:grid;grid-template-columns:repeat(5,1fr);margin:0 calc(var(--pad-x) * -1) clamp(40px,5vw,72px);border-block:6px solid var(--hi)}
+.runs-steps li{display:flex;flex-direction:column;gap:6px;padding:20px clamp(16px,2vw,32px) 18px;font-family:var(--display);font-size:clamp(24px,2.3vw,34px);line-height:1}
+.runs-steps li+li{box-shadow:inset 3px 0 0 currentColor}
+.runs-steps span{color:var(--hi);font-size:clamp(64px,7vw,112px);line-height:.82}
+.runs-grid{display:grid;grid-template-columns:5fr 7fr;gap:48px clamp(32px,5vw,80px);align-items:start}
+.runs{display:grid;gap:18px;align-content:start}
+.runs>p:not(.tags){max-width:40ch;font-size:var(--fs-lede);line-height:1.42}
+.runs-tags{margin-top:6px}
+.faq{display:grid}
+.faq h2{margin-bottom:clamp(18px,2.4vw,32px)}
+.faq .q{border-top:3px solid currentColor}
+.faq .q:last-child{border-bottom:3px solid currentColor}
+.faq summary{display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:64px;padding:16px 0 12px;font:800 var(--fs-lede)/1.28 var(--text);cursor:pointer;list-style:none;transition:transform var(--t-press) var(--ease-paste)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";flex:none;width:24px;height:24px;margin-top:-4px;background:linear-gradient(currentColor,currentColor) 50% 50%/100% 4px no-repeat,linear-gradient(currentColor,currentColor) 50% 50%/4px 100% no-repeat;
+  transition:transform var(--t-lift) var(--ease-lift)}
+.faq [open]>summary::after{transform:rotate(135deg)}
+.faq summary:hover{text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:.2em}
+.faq summary:active{transform:translateY(1px)}
+.faq summary:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+.faq .q p{padding:0 0 24px;max-width:58ch;font-size:var(--fs-body);line-height:1.5}
+@media (prefers-reduced-motion:no-preference){
+  .js.motion .faq [open]>p{animation:faq-in calc(320ms * var(--slow)) var(--ease-paste) both}
+}
+@keyframes faq-in{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+
+/* ---------- Per-page poster rhythm: a few headings sized to their page ---------- */
+.svc-what .head-split h2{max-width:8ch}
+
+/* ---------- Tablet ---------- */
+@media (max-width:1099px){
+  .fp{grid-column:span var(--st,6)}
+  .fp-bar{grid-template-columns:auto 1fr}
+  .fp-bar__note{grid-column:1 / -1;justify-self:start;text-align:left}
+  .models{grid-template-columns:1fr}
+  .models li{grid-template-columns:5fr 7fr;column-gap:32px;border-bottom:3px solid rgba(242,243,239,.3);padding-bottom:22px}
+  .models h3{grid-row:span 2}
+  .svc-hero .peel{grid-column:span 12}
+  .svc-what--side .paste{grid-template-columns:1fr}
+  .what-head{position:static}
+  .spec-grid,.svc-spec--wide .spec-head,.fit-grid,.runs-grid{grid-template-columns:1fr}
+  .svc-fit--stack .fit-good{grid-template-columns:1fr}
+  .svc-fit--stack .fit-good>.fit-cast{grid-column:1;grid-row:auto;margin-top:clamp(20px,2.4vw,32px)}
+  .spec-head h2{max-width:18ch}
+  .spec-head{position:static}
+  .svc-spec--wide .spec-head .mockup{grid-column:1;grid-row:auto;justify-self:start;margin:8px 0 0}
+  .runs-steps{grid-template-columns:repeat(5,1fr)}
+  .runs-steps li{padding:16px 12px 14px;font-size:clamp(18px,2.6vw,24px)}
+  .runs-steps span{font-size:clamp(48px,8vw,72px)}
+}
+@media (max-width:860px){
+  .what-list{grid-template-columns:1fr}
+  .what-list li:last-child{border-bottom:3px solid currentColor}
+  .svc-pillars .pillar{min-height:0}
+}
+/* ---------- Phone ---------- */
+@media (max-width:699px){
+  .fp{grid-column:span var(--sp,12);min-height:0;padding:24px 20px 26px}
+  .fp h3{font-size:clamp(28px,12cqw,44px)}
+  .fp-bar{grid-template-columns:1fr;padding:10px var(--pad-x)}
+  .fp-bar__h,.fp-bar__note{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .fp-bar__btns{gap:6px;flex-wrap:nowrap}
+  .fp-btn{flex:1 1 auto;padding:11px 8px 8px;font-size:16px}
+  .models li{grid-template-columns:1fr}
+  .models h3{grid-row:auto}
+  .what-list li{font-size:19px;padding:16px 0 18px 30px}
+  .what-list li::before{top:28px;width:16px;height:5px}
+  .svc-what--side .what-list li{font-size:19px;padding:15px 16px 13px 44px}
+  .svc-what--side .what-list li:nth-child(even){margin-left:0}
+  .svc-what--side .what-list li::before{left:16px;top:26px;width:16px;height:5px}
+  .works{grid-template-columns:1fr;gap:6px;padding:6px}
+  .works__p{min-height:0}
+  .faq summary{font-size:19px}
+  .svc-side__w{font-size:clamp(40px,13vw,60px)}
+  .spec-head .mockup{font-size:clamp(40px,13vw,56px);margin-top:4px}
+  .runs-steps{grid-template-columns:1fr}
+  .runs-steps li{flex-direction:row;align-items:baseline;gap:16px;padding:10px var(--pad-x) 8px;font-size:26px}
+  .runs-steps li+li{box-shadow:inset 0 3px 0 currentColor}
+  .runs-steps span{font-size:52px;min-width:40px}
+}
+@media (prefers-reduced-motion:reduce){
+  .chip,.fp-btn,.faq summary,.faq summary::after{transition:none}
+  .chip:hover,.fp-btn:hover{transform:none}
+}

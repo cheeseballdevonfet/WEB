@@ -80,8 +80,8 @@
 
   /* Type. Display: Yatra One (Latin + Devanagari, one brush). Text: Mukta 400/600/800.
      Devanagari inside body text falls back to Yatra One (Mukta ships Latin only). */
-  --display:'Yatra One','Mukta',sans-serif;
-  --text:'Mukta','Yatra One',sans-serif;
+  --display:'Yatra One','Yatra One fb','Mukta',sans-serif;
+  --text:'Mukta','Mukta fb','Yatra One',sans-serif;
   --fs-d1:clamp(48px,8.2vw,124px);
   --fs-d2:clamp(34px,4.2vw,64px);
   --fs-d3:clamp(26px,2.6vw,38px);
@@ -143,6 +143,14 @@ img,svg{max-width:100%}
 .no-js .js-only,.js:not(.motion) .motion-only{display:none!important}
 .skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--yellow);color:var(--ink);padding:12px 18px;font-weight:800;text-decoration:none}
 .skip:focus{top:12px}
+
+/* Metric-matched fallbacks: while the embedded fonts decode, text is laid out in Arial / Liberation Sans
+   scaled to the real fonts' average width and vertical metrics, so nothing reflows when they arrive.
+   Values measured with fontTools against Liberation Sans (metric-compatible with Arial) on a mixed sample. */
+@font-face{font-family:'Yatra One fb';font-weight:400;src:local('Arial'),local('ArialMT'),local('Liberation Sans'),local('Helvetica'),local('Roboto');size-adjust:110.3%;ascent-override:89.9%;descent-override:44.2%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:400;src:local('Arial'),local('ArialMT'),local('Liberation Sans'),local('Helvetica'),local('Roboto');size-adjust:94.2%;ascent-override:120%;descent-override:56.5%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:600;src:local('Arial Bold'),local('Arial-BoldMT'),local('Liberation Sans Bold'),local('Helvetica Bold'),local('Roboto Bold');size-adjust:91.3%;ascent-override:123.8%;descent-override:58.3%;line-gap-override:0%}
+@font-face{font-family:'Mukta fb';font-weight:800;src:local('Arial Bold'),local('Arial-BoldMT'),local('Liberation Sans Bold'),local('Helvetica Bold'),local('Roboto Bold');size-adjust:94.2%;ascent-override:119.9%;descent-override:56.4%;line-gap-override:0%}
 
 /* components.css */
 /* =========================================================================
@@ -544,7 +552,7 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
 
 /* ---------- Footer: the promise, the site map, contact, the legal line ---------- */
 .foot{position:relative;z-index:1;margin-top:-10px;padding:clamp(56px,7vw,104px) var(--pad-x) 28px}
-.foot .d1{color:var(--yellow);font-size:clamp(56px,10.6vw,180px);line-height:.88}
+.foot .d1{color:var(--yellow);font-size:clamp(36px,10.6vw,180px);line-height:.88}
 .foot .tagline{margin-top:clamp(18px,2.4vw,32px);font-size:var(--fs-lede);max-width:40ch}
 .foot-map{display:grid;grid-template-columns:3fr 3fr 3fr 4fr;gap:36px clamp(24px,3vw,48px);margin-top:clamp(48px,6vw,88px);padding-top:28px;border-top:6px solid var(--yellow)}
 .foot-h{font-family:var(--display);font-weight:400;font-size:clamp(24px,2vw,30px);line-height:1.05;color:var(--yellow);margin:0 0 12px}
@@ -640,6 +648,271 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
   .flyer:hover{transform:none}
 }
 
+/* pages/our-edge.css */
+/* =========================================================================
+   Elvana Media: pages/our-edge.css
+   Our edge only. The signature, "Follow one lead" (INTERACTIONS.md): a
+   pinned scroll story on WEB.md 26, "Pinned chapters with one changing figure".
+
+   Two layouts from one source order (chapter text, its mock-up, its line
+   in the live report):
+   - SEQUENCE (default): no JS, reduced motion, tablets and phones. Each
+     chapter shows its mock-up and its report line, still and complete. With
+     JS, the route (a local-train line map) sticks under the header.
+   - PINNED (1100px+, 700px+ tall, html.motion): the .ch wrappers become
+     display:contents, so every figure joins one sticky stage beside the
+     text without leaving source order. JS marks the active chapter; the
+     stage wipes its mock-up in and stamps its report line. Layout is fixed
+     by CSS before first paint, so nothing shifts when JS arrives.
+   Motion: every duration multiplies by var(--slow); curves from base.css.
+   ========================================================================= */
+
+.follow-intro{display:grid;gap:18px}
+.follow-intro p:not(.lede){max-width:44ch;color:var(--paper-dim);font-size:var(--fs-body)}
+#follow-h{max-width:9ch}
+
+/* ---------- Story: the sequence (default) ---------- */
+.story{position:relative;margin-top:clamp(40px,5.5vw,80px)}
+.stage{position:relative}
+.ledger,.squeegee{display:none}
+.story-note{margin-top:clamp(28px,3vw,44px);font-size:var(--fs-small);font-weight:600;color:var(--paper-dim);max-width:60ch}
+
+/* Route: the lead's line, like a local-train line map. Stations are links
+   (they work without JS); JS marks the current one and fills the rail. */
+.route{position:relative;padding-top:4px}
+.route ol{position:relative;z-index:1;display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
+.route li{display:flex;justify-content:center}
+.route a{display:grid;justify-items:center;align-content:start;gap:8px;min-width:48px;padding:0 2px 6px;text-decoration:none;text-align:center;font-weight:800;font-size:15px;line-height:1.15;color:var(--paper)}
+.route__n{display:grid;place-items:center;width:44px;height:44px;padding-top:5px;font:400 24px/1 var(--display);background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 3px rgba(242,243,239,.6);
+  transition:background-color calc(320ms * var(--slow)) linear,color calc(320ms * var(--slow)) linear,box-shadow calc(320ms * var(--slow)) linear,transform calc(220ms * var(--slow)) var(--ease-lift)}
+.route li.is-past .route__n{background:var(--paper);color:var(--ink);box-shadow:none}
+.route a[aria-current] .route__n{background:var(--yellow);color:var(--ink);box-shadow:none;transform:scale(1.14) rotate(-3deg)}
+.route a[aria-current]{color:var(--yellow)}
+.route a:hover .route__n{transform:rotate(-4deg)}
+.route a[aria-current]:hover .route__n{transform:scale(1.14) rotate(-6deg)}
+.route a:hover .route__name,.route a:hover .route__short{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.2em}
+.route a:active .route__n{transform:translateY(1px) scale(.96)}
+.route a:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.route__short{display:none}
+.route__rail{position:absolute;left:calc(100% / 12);right:calc(100% / 12);top:24px;height:4px;
+  background:repeating-linear-gradient(90deg,rgba(242,243,239,.45) 0 10px,transparent 10px 18px)}
+.route__rail i{position:absolute;inset:0;background:var(--yellow);transform-origin:0 50%;transform:scaleX(var(--p,0));transition:transform calc(560ms * var(--slow)) var(--ease-paste)}
+
+/* Chapters */
+.ch{display:grid;gap:clamp(24px,3vw,44px);padding:clamp(48px,6vw,84px) 0 clamp(12px,1.5vw,20px);border-top:3px solid rgba(242,243,239,.16)}
+.stage+.ch{border-top:0}
+.ch-text{scroll-margin-top:calc(var(--hdr) + 88px)}
+.ch-n{font:400 clamp(84px,9.4vw,144px)/.8 var(--display);color:var(--yellow)}
+.ch-text h3{font-size:var(--fs-d2);margin-top:16px;max-width:12ch}
+.ch-text p:not(.ch-n){font-size:var(--fs-lede);line-height:1.42;max-width:34ch;margin-top:18px}
+.ch-text p.ch-try{font-size:var(--fs-body);font-weight:800;color:var(--yellow);margin-top:14px}
+.ch-fig{margin:0;display:grid;gap:18px;align-content:start;justify-items:start;min-width:0}
+
+/* ---------- Mock-ups (one per chapter) ---------- */
+.scr{position:relative;width:100%;max-width:420px;display:flex;flex-direction:column;gap:14px;padding:14px clamp(14px,1.5vw,20px) 20px;box-shadow:7px 8px 0 rgba(0,0,0,.42);overflow:hidden}
+.scr__bar{display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:800;font-size:14px;line-height:1.2;padding-bottom:10px;border-bottom:2px solid currentColor}
+.mock{flex:none;display:inline-block;padding:5px 8px 3px;font-weight:800;font-size:14px;line-height:1.1;transform:rotate(-2deg)}
+.g-paper .mock,.g-yellow .mock{background:var(--ink);color:var(--yellow)}
+.g-blue .mock,.g-red .mock{background:var(--yellow);color:var(--ink)}
+/* each mock-up's parts appear in turn once (JS); without JS or motion they are simply there */
+.bit{transition:opacity calc(320ms * var(--slow)) linear,transform calc(460ms * var(--slow)) var(--ease-paste)}
+.js.motion .scr[data-armed]:not(.is-done) .bit:not(.in){opacity:0;transform:translateY(12px)}
+
+/* 1. The post */
+.post{display:grid;gap:10px}
+.post__from{display:flex;gap:10px;align-items:center;font-size:14px;font-weight:600;line-height:1.2}
+.post__from b{display:block;font-size:16px;font-weight:800}
+.post__ava{flex:none;display:grid;place-items:center;width:42px;height:42px;padding-top:4px;background:var(--blue);color:var(--paper);font:400 19px/1 var(--display)}
+.post__art{position:relative;aspect-ratio:1/1;padding:20px;display:flex;flex-direction:column;gap:10px;overflow:hidden;container-type:inline-size}
+.post__h{font:400 min(21cqw,72px)/.88 var(--display);max-width:6ch}
+.post__s{font-size:16px;font-weight:600;line-height:1.3;max-width:17ch}
+.post__days{position:absolute;right:-4%;bottom:-3%;display:flex;gap:6px;transform:rotate(-7deg);transform-origin:100% 100%}
+.post__days span{display:grid;place-items:center;width:31cqw;aspect-ratio:1/1;padding-top:3cqw;background:var(--red);color:var(--paper);font:400 14cqw/1 var(--display);box-shadow:3px 4px 0 rgba(0,0,0,.25)}
+.post__days span+span{background:var(--blue);transform:translateY(-14%)}
+.post__cta{position:relative;display:flex;align-items:center;justify-content:center;min-height:50px;background:var(--ink);color:var(--yellow);font-weight:800;font-size:17px}
+.post__cta::after{content:"";position:absolute;inset:-4px;border:3px solid var(--red);opacity:0;pointer-events:none}
+.js.motion .scr--post.is-done .post__cta{animation:edge-tap calc(520ms * var(--slow)) var(--ease-paste) 1}
+.js.motion .scr--post.is-done .post__cta::after{animation:stamp-ring calc(520ms * var(--slow)) var(--ease-paste) 1}
+@keyframes edge-tap{0%{transform:none}30%{transform:scale(.95,.9)}100%{transform:none}}
+
+/* 2. The bot */
+.scr--chat{gap:10px}
+.chat-head{display:flex;flex-direction:column;font-size:14px;font-weight:600;line-height:1.3}
+.chat-head b{font:400 24px/1.05 var(--display)}
+.thread{display:flex;flex-direction:column;gap:9px;height:330px;overflow-y:auto;padding:4px 4px 8px 0;scrollbar-width:thin;scrollbar-color:rgba(242,243,239,.5) transparent}
+.thread .when{align-self:center;padding:2px 0;font-size:14px;font-weight:800}
+.msg{max-width:86%;flex:none;padding:9px 12px 7px;font-size:16px;line-height:1.35}
+.msg.them{align-self:flex-start;background:var(--paper);color:var(--ink);box-shadow:3px 3px 0 rgba(0,0,0,.26)}
+.msg.bot{align-self:flex-end;background:var(--yellow);color:var(--ink);box-shadow:3px 3px 0 rgba(0,0,0,.3)}
+.msg.typing{font-weight:800;font-size:14px}
+.ask{display:grid;gap:10px;margin-top:auto;padding-top:8px;border-top:2px solid rgba(242,243,239,.35)}
+.ask__chips{display:flex;flex-wrap:wrap;gap:8px}
+.ask__chips button{min-height:44px;padding:10px 12px 7px;border:0;background:transparent;color:var(--paper);box-shadow:inset 0 0 0 2px currentColor;font:800 15px/1 var(--text);cursor:pointer;transition:transform calc(220ms * var(--slow)) var(--ease-lift)}
+.ask__chips button:hover{background:var(--paper);color:var(--blue);transform:rotate(-2deg)}
+.ask__chips button:active{transform:translateY(1px) scale(.97)}
+.ask__chips button:focus-visible,.ask__send:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.ask__chips button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.ask__row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.ask input{width:100%;min-width:0;min-height:50px;padding:12px 12px 9px;border:0;border-radius:0;background:var(--paper);color:var(--ink);font:400 17px/1.3 var(--text)}
+.ask input::placeholder{color:var(--ink-soft);opacity:1}
+.ask input:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.ask__send{min-height:50px;padding:12px 16px 9px;border:0;background:var(--yellow);color:var(--ink);font:800 16px/1 var(--text);cursor:pointer;transition:transform calc(220ms * var(--slow)) var(--ease-lift)}
+.ask__send:hover{transform:rotate(-2deg)}
+.ask__send:active{transform:translate(-1%,2px) scale(1.02,.92)}
+.ask__send:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* 3. The reminder SMS */
+.sms{display:grid;gap:10px;padding:14px 14px 12px;background:var(--paper);box-shadow:inset 0 0 0 3px var(--ink),5px 5px 0 rgba(26,24,20,.18)}
+.sms__from{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding-bottom:8px;border-bottom:2px dashed rgba(26,24,20,.4)}
+.sms__from b{font:400 28px/1 var(--display);letter-spacing:.04em}
+.sms__from span{font-size:14px;font-weight:800}
+.sms__text{font-size:17px;line-height:1.42}
+.sms__meta{display:flex;flex-wrap:wrap;gap:8px 10px}
+.sms__meta li{display:inline-flex;align-items:center;gap:8px;padding:7px 10px 5px;font-weight:800;font-size:14px;line-height:1.15;color:var(--blue);box-shadow:inset 0 0 0 2px var(--blue)}
+.sms__meta li::before{content:"";width:12px;height:7px;margin-top:-5px;border:solid currentColor;border-width:0 0 3px 3px;transform:rotate(-45deg)}
+
+/* 4. The AI call */
+.call__who{display:flex;flex-direction:column;font-size:14px;font-weight:600;line-height:1.3}
+.call__who b{font:400 26px/1.05 var(--display)}
+.scr--call .wave{height:46px;flex:none}
+.scr--call .wave i{background:var(--yellow)}
+.call__lines{display:grid;gap:11px}
+.say{display:grid;gap:3px;font-size:16px;line-height:1.36;font-weight:600}
+.say .who{justify-self:start;font-size:14px;font-weight:800;line-height:1.2}
+.say.ai .who{background:var(--yellow);color:var(--ink);padding:3px 6px 1px}
+.say:not(.ai){padding-left:14px;box-shadow:inset 3px 0 0 rgba(242,243,239,.7)}
+
+/* 5. Your team: the warm-lead chit */
+.scr--team{gap:18px}
+.chit{position:relative;display:grid;gap:12px;margin-top:6px;padding:18px 16px 16px;background:var(--paper);color:var(--ink);box-shadow:5px 6px 0 rgba(0,0,0,.22);transform:rotate(-1deg)}
+.chit::before{content:"";position:absolute;left:0;right:0;top:-7px;height:8px;background:radial-gradient(circle at 7px 0,transparent 5px,var(--paper) 5.5px) 0 0/14px 8px}
+.chit__h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 10px;padding-bottom:9px;border-bottom:3px solid var(--ink)}
+.chit__h b{font:400 32px/1 var(--display)}
+.chit__h span{font-weight:800;font-size:14px}
+.chit__dl{display:grid;gap:7px}
+.chit__dl div{display:grid;grid-template-columns:minmax(88px,34%) 1fr;gap:10px;padding-bottom:7px;border-bottom:2px dotted rgba(26,24,20,.35);font-size:15px;line-height:1.3}
+.chit__dl dt{font-weight:800}
+.chit__note{font-size:15px;line-height:1.38}
+.chit__note b{display:block;font-weight:800}
+.chit__stamp{position:absolute;right:20px;bottom:22px;padding:6px 12px 2px;border:4px solid var(--red);color:var(--red);font:400 34px/1 var(--display);transform:rotate(-12deg);mix-blend-mode:multiply}
+.js.motion .scr[data-armed]:not(.is-done) .chit__stamp.bit:not(.in){transform:scale(1.7) rotate(-18deg);opacity:0}
+.chit__stamp.bit{transition:opacity calc(160ms * var(--slow)) linear,transform calc(380ms * var(--slow)) var(--ease-lift)}
+
+/* 6. Your dashboard */
+.rep__h{font:400 26px/1.05 var(--display);max-width:16ch}
+.rep__path{position:relative;display:grid;padding-left:30px}
+.rep__path::before{content:"";position:absolute;left:8px;top:14px;bottom:14px;width:4px;background:var(--blue)}
+.rep__path li{position:relative;padding:6px 0 4px;font-weight:800;font-size:16px;line-height:1.25}
+.rep__path li::before{content:"";position:absolute;left:-29px;top:50%;width:18px;height:18px;margin-top:-10px;background:var(--paper);box-shadow:inset 0 0 0 4px var(--blue)}
+.rep__path li:last-child::before{background:var(--blue)}
+.rep__chan{font-size:15px;line-height:1.4;font-weight:600}
+.rep__month{padding:12px 14px 14px;background:var(--ink);color:var(--paper)}
+.rep__mh{font-weight:800;font-size:14px}
+.rep__month ul{display:grid;gap:2px;margin-top:6px}
+.rep__month li{font:400 24px/1.12 var(--display);color:var(--yellow)}
+
+/* The live-report line under each mock-up (sequence layout) */
+.ch-log{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 14px;align-items:center;width:100%;max-width:420px;padding-top:14px;border-top:2px dashed rgba(242,243,239,.32)}
+.ch-log::before{content:"Live report" / "";grid-column:1 / -1;font-weight:800;font-size:14px;color:var(--paper-dim)}
+.stamp{justify-self:start;display:inline-block;padding:6px 9px 3px;border:3px solid currentColor;color:var(--yellow);font:800 15px/1.1 var(--text);white-space:nowrap;transform:rotate(-4deg)}
+.ch-log__t{font-size:15px;line-height:1.38;color:var(--paper-dim)}
+.ch-log__t b{display:block;color:var(--paper);font-weight:800}
+
+/* With JS, the route rides under the header while the story is on screen */
+.js .stage{position:sticky;top:var(--hdr);z-index:6;margin:0 calc(var(--pad-x) * -1);padding:10px var(--pad-x) 4px;background:var(--ink);box-shadow:0 4px 0 rgba(0,0,0,.28)}
+
+@media (min-width:700px){
+  .ch{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+  .thread{height:360px}
+}
+
+/* ---------- PINNED: one stage beside the chapters (desktop, motion) ---------- */
+@media (min-width:1100px) and (min-height:700px){
+  .js.motion .story{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);grid-template-rows:repeat(6,auto);column-gap:clamp(40px,4.4vw,80px);
+    --top:calc(var(--hdr) + 22px);--stage-h:calc(100svh - var(--hdr) - 44px);--route-h:112px;--fig-h:calc(var(--stage-h) - var(--route-h));
+    --col:calc(50% - 14px);--log-top:96px;--log-row:calc((var(--fig-h) - var(--log-top)) / 6)}
+  .js.motion .ch{display:contents}
+  .js.motion .ch-text h3{font-size:clamp(52px,4.9vw,80px);max-width:9ch}
+  .js.motion .ch-text p:not(.ch-n){max-width:30ch}
+  .js.motion .ch-text{grid-column:1;min-height:88svh;display:flex;flex-direction:column;justify-content:flex-start;padding:24svh 0 4svh;scroll-margin-top:calc(var(--hdr) - 8svh)}
+  .js.motion .ch:nth-child(3) .ch-text{min-height:128svh}  /* the bot: room to stay and type */
+  .js.motion .scr--sms .sms{margin-top:auto}
+  .js.motion .scr--sms .sms__meta{margin-bottom:auto}
+  .js.motion .scr--team .chit{margin-block:auto}
+  .js.motion .stage{grid-column:2;grid-row:1 / -1;align-self:start;position:sticky;top:var(--top);height:var(--stage-h);z-index:1;margin:0;padding:0;background:none;box-shadow:none}
+  .js.motion .route{height:var(--route-h)}
+  .js.motion .ledger{display:block;position:absolute;top:var(--route-h);right:0;bottom:0;width:var(--col)}
+  .ledger__h{font:400 clamp(32px,2.7vw,42px)/1 var(--display);color:var(--yellow)}
+  .ledger__sub{margin-top:8px;font-size:14px;font-weight:600;line-height:1.3;color:var(--paper-dim);max-width:30ch}
+  .ledger__slots{position:absolute;left:0;right:0;top:var(--log-top);bottom:0;display:grid;grid-template-rows:repeat(6,1fr)}
+  .ledger__slots li{border-top:2px dashed rgba(242,243,239,.24)}
+  .js.motion .ch-fig{grid-column:2;grid-row:1 / -1;align-self:start;position:sticky;top:calc(var(--top) + var(--route-h));margin-top:var(--route-h);height:var(--fig-h);z-index:2;display:block;pointer-events:none}
+  .js.motion .ch.is-leaving .ch-fig{z-index:3}
+  .js.motion .ch.is-active .ch-fig{z-index:4}
+  .js.motion .scr{position:absolute;left:0;top:0;bottom:0;width:var(--col);max-width:none;visibility:hidden}
+  .js.motion .ch.is-active .scr,.js.motion .ch.is-leaving .scr{visibility:visible}
+  .js.motion .ch.is-active .scr{pointer-events:auto}
+  .js.motion .scr--chat .thread{height:auto;flex:1 1 0;min-height:0}
+  /* report lines: each chapter stamps its own slot in the one ledger */
+  .js.motion .ch-log{position:absolute;right:0;width:var(--col);max-width:none;height:var(--log-row);top:calc(var(--log-top) + (var(--step) - 1) * var(--log-row));
+    padding:0 0 0 2px;border:0;align-content:center;opacity:0;transform:translateX(16px);
+    transition:opacity calc(260ms * var(--slow)) linear,transform calc(420ms * var(--slow)) var(--ease-paste)}
+  .js.motion .ch-log::before{display:none}
+  .js.motion .ch-log{grid-template-columns:132px minmax(0,1fr)}
+  .js.motion .ch-log .stamp{opacity:0;transform:scale(1.6) rotate(-12deg);transition:opacity calc(140ms * var(--slow)) linear calc(160ms * var(--slow)),transform calc(400ms * var(--slow)) var(--ease-lift) calc(160ms * var(--slow)),color calc(320ms * var(--slow)) linear}
+  .js.motion .ch.is-active .ch-log,.js.motion .ch.is-past .ch-log{opacity:1;transform:none}
+  .js.motion .ch.is-active .ch-log .stamp,.js.motion .ch.is-past .ch-log .stamp{opacity:1;transform:rotate(-4deg)}
+  .js.motion .ch.is-past .ch-log .stamp{color:var(--paper-dim)}
+  .js.motion .story[data-active="6"] .ch-log .stamp{color:var(--yellow)}
+  .js.motion .ch.is-past .ch-log__t b{color:var(--paper-dim)}
+  .js.motion .story[data-active="6"] .ch-log__t b{color:var(--paper)}
+  /* the squeegee that rides the wipe's wet edge (the site's paste language) */
+  .js.motion .squeegee{display:block;grid-column:2;grid-row:1 / -1;align-self:start;position:sticky;top:calc(var(--top) + var(--route-h));margin-top:var(--route-h);height:var(--fig-h);width:var(--col);overflow:hidden;pointer-events:none;z-index:6}
+  .js.motion .squeegee i{position:absolute;top:0;bottom:0;left:0;width:150px;opacity:0;transform:translateX(-150px);
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.28) calc(100% - 9px),var(--ink) calc(100% - 9px),var(--ink) calc(100% - 3px),rgba(255,255,255,.55) calc(100% - 3px),transparent)}
+  .js.motion .ch-text .ch-n{color:rgba(242,243,239,.28);transition:color calc(320ms * var(--slow)) linear}
+  .js.motion .ch.is-active .ch-text .ch-n{color:var(--yellow)}
+}
+
+/* ---------- The pieces: services behind each step ---------- */
+.pieces-head{padding:var(--pad-y) var(--pad-x) clamp(44px,5vw,76px)}
+#pieces-h{max-width:12ch}
+.flyer--static{cursor:default}
+@media (hover:hover){.flyer.flyer--static:hover{--c:0px;--k:0;transform:none}}
+.flyer.flyer--static:active,.flyer.flyer--static:focus-within{--c:0px;--k:0}
+
+/* ---------- Rules we keep ---------- */
+.rules{display:grid;grid-template-columns:repeat(4,1fr);margin:clamp(40px,5vw,72px) calc(var(--pad-x) * -1) 0;border-top:6px solid var(--yellow)}
+.rules li{display:grid;gap:12px;align-content:start;padding:28px var(--pad-x) 8px}
+.rules li+li{box-shadow:inset 3px 0 0 rgba(242,243,239,.28)}
+.rules h3{font-size:var(--fs-d3);color:var(--yellow);max-width:11ch}
+.rules p{max-width:30ch}
+.rules-note{margin-top:clamp(40px,5vw,72px);max-width:56ch;font-size:var(--fs-lede);line-height:1.4;font-weight:600}
+
+/* ---------- Tablet ---------- */
+@media (max-width:1099px){
+  .rules{grid-template-columns:1fr 1fr}
+  .rules li:nth-child(3){box-shadow:none}
+  .rules li:nth-child(n+3){border-top:3px solid rgba(242,243,239,.28)}
+  .flyer-wall .flyer--static{grid-column:span 12}
+}
+/* ---------- Phone ---------- */
+@media (max-width:699px){
+  .route a{font-size:14px}
+  .route__name{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .route__short{display:block}
+  .route__n{width:40px;height:40px;font-size:22px}
+  .route__rail{top:22px}
+  .scr{max-width:none}
+  .ch-log{max-width:none}
+  .rules{grid-template-columns:1fr}
+  .rules li+li{box-shadow:none;border-top:3px solid rgba(242,243,239,.28)}
+  .flyer-wall .flyer--static.half{grid-column:span 2}
+}
+@media (prefers-reduced-motion:reduce){
+  .route__n,.route__rail i,.bit,.ask__chips button,.ask__send{transition:none}
+}
+
 </style>
 
 <!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
@@ -677,8 +950,16 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
 </header>
 
 <main id="main">
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
+<!-- =====================================================================
+     Our edge. Signature: "Follow one lead" (INTERACTIONS.md), a pinned
+     scroll story on WEB.md 26, "Pinned chapters with one changing figure".
+     Source order is the readable sequence: each chapter's text, then its
+     mock-up and its live-report line. That is what no JS, reduced motion,
+     tablets and phones get. At 1100px and up with motion, pages/our-edge.css
+     pins one stage beside the chapters (route, mock-up, live report) and
+     pages/our-edge.js changes it as each chapter crosses mid-screen.
+     Every mock-up is a sample institute; no client, number or result.
+     ===================================================================== -->
 <section class="page-hero" aria-labelledby="page-h">
   <div class="page-hero__main g-yellow">
     <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li aria-current="page">Our edge</li></ol></nav>
@@ -690,22 +971,240 @@ html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;anim
   </div>
 </section>
 
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
+<!-- 1. The signature: follow one lead from a post to your team -->
+<section class="poster" id="follow" aria-labelledby="follow-h" style="--under:var(--ink)">
+  <div class="paste g-ink">
+    <div class="head-split">
+      <h2 class="d1" id="follow-h">Follow one lead</h2>
+      <div class="follow-intro">
+        <p class="lede">Built inside a technology-first group, Elvana pairs creative work with automation that keeps working after the campaign goes live.</p>
+        <p>A campaign starts a conversation, and automation keeps it going. Follow one person from a post to your team, and type to the bot on the way.</p>
+      </div>
     </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>AI Calling</li><li>WhatsApp Chat Bot</li><li>WhatsApp &amp; SMS Blasting</li><li>Live reporting</li><li>How a campaign and its automation work together</li></ul>
+
+    <div class="story" data-story data-active="1">
+      <div class="stage">
+        <nav class="route" aria-label="The lead's route">
+          <span class="route__rail" aria-hidden="true"><i></i></span>
+          <ol>
+            <li><a href="#lead-1" aria-current="step"><span class="route__n" aria-hidden="true">1</span><span class="route__name">Post</span><span class="route__short" aria-hidden="true">Post</span></a></li>
+            <li><a href="#lead-2"><span class="route__n" aria-hidden="true">2</span><span class="route__name">WhatsApp bot</span><span class="route__short" aria-hidden="true">Bot</span></a></li>
+            <li><a href="#lead-3"><span class="route__n" aria-hidden="true">3</span><span class="route__name">Reminder SMS</span><span class="route__short" aria-hidden="true">SMS</span></a></li>
+            <li><a href="#lead-4"><span class="route__n" aria-hidden="true">4</span><span class="route__name">AI call</span><span class="route__short" aria-hidden="true">Call</span></a></li>
+            <li><a href="#lead-5"><span class="route__n" aria-hidden="true">5</span><span class="route__name">Your team</span><span class="route__short" aria-hidden="true">Team</span></a></li>
+            <li><a href="#lead-6"><span class="route__n" aria-hidden="true">6</span><span class="route__name">Live report</span><span class="route__short" aria-hidden="true">Report</span></a></li>
+          </ol>
+        </nav>
+        <div class="ledger" aria-hidden="true">
+          <p class="ledger__h">Live report</p>
+          <p class="ledger__sub">What each step did. Illustration only, no client data.</p>
+          <ol class="ledger__slots"><li></li><li></li><li></li><li></li><li></li><li></li></ol>
+        </div>
+      </div>
+
+      <!-- 1. The post -->
+      <div class="ch is-active" style="--step:1">
+        <div class="ch-text" id="lead-1">
+          <p class="ch-n" aria-hidden="true">1</p>
+          <h3>The post</h3>
+          <p>A post, ad, SMS or broadcast reaches the right person. Here it is a post for weekend classes at a sample institute, and one person taps Chat on WhatsApp.</p>
+        </div>
+        <figure class="ch-fig">
+          <div class="scr scr--post g-paper">
+            <p class="scr__bar"><span>Their phone</span><span class="mock">Mock-up</span></p>
+            <div class="post bit" data-ms="700">
+              <p class="post__from"><span class="post__ava" aria-hidden="true">SI</span><span><b>Sample Institute</b>Post</span></p>
+              <div class="post__art g-yellow">
+                <p class="post__h">Weekend batches</p>
+                <p class="post__s">Data course. Classroom in Andheri, or online.</p>
+                <p class="post__days" aria-hidden="true"><span>Sat</span><span>Sun</span></p>
+              </div>
+            </div>
+            <p class="post__cta bit" data-ms="900">Chat on WhatsApp</p>
+          </div>
+          <figcaption class="ch-log"><b class="stamp">Reached</b><span class="ch-log__t"><b>Post</b>Reached the right person, who tapped Chat on WhatsApp.</span></figcaption>
+        </figure>
+      </div>
+
+      <!-- 2. The WhatsApp bot (the visitor can type to it) -->
+      <div class="ch" style="--step:2">
+        <div class="ch-text" id="lead-2">
+          <p class="ch-n" aria-hidden="true">2</p>
+          <h3>The WhatsApp bot</h3>
+          <p>They reply on WhatsApp, and the chat bot answers, qualifies and offers to book. It says it is a bot, and a person is one message away.</p>
+          <p class="ch-try js-only">Type to it. The answers are scripted for this mock-up.</p>
+        </div>
+        <figure class="ch-fig">
+          <div class="scr scr--chat g-blue">
+            <p class="scr__bar"><span>Their phone, on WhatsApp</span><span class="mock">Mock-up</span></p>
+            <p class="chat-head"><b>Sample Institute</b><span>Automated assistant</span></p>
+            <ol class="thread" aria-label="Chat between the lead and the bot">
+              <li class="when" aria-hidden="true">Tonight, 10:52 pm</li>
+              <li class="msg them bit" data-ms="900"><span class="sr">They wrote: </span>Saw your post. Are weekend batches open?</li>
+              <li class="msg bot bit" data-ms="1200"><span class="sr">Bot: </span>Yes. Saturday and Sunday batches start next month. Classroom or online?</li>
+              <li class="msg them bit" data-ms="900"><span class="sr">They wrote: </span>Classroom. Which centre?</li>
+              <li class="msg bot bit" data-ms="1300"><span class="sr">Bot: </span>Andheri. Want a free counselling call to pick a batch? Saturday 11 am or Sunday 4 pm.</li>
+              <li class="msg them bit" data-ms="900"><span class="sr">They wrote: </span>Let me think about it.</li>
+              <li class="msg bot bit" data-ms="700"><span class="sr">Bot: </span>Sure. Your slot stays open. Message here any time.</li>
+            </ol>
+            <form class="ask js-only" data-ask autocomplete="off">
+              <div class="ask__chips">
+                <button type="button" data-say="What are the fees?">Fees?</button>
+                <button type="button" data-say="Book Saturday 11 am">Book Saturday</button>
+                <button type="button" data-say="Can I talk to a person?">Talk to a person</button>
+              </div>
+              <div class="ask__row">
+                <label class="sr" for="ask-in">Message the bot</label>
+                <input id="ask-in" name="q" maxlength="140" placeholder="Type to the bot" enterkeyhint="send">
+                <button class="ask__send" type="submit">Send</button>
+              </div>
+            </form>
+          </div>
+          <figcaption class="ch-log"><b class="stamp">Qualified</b><span class="ch-log__t"><b>WhatsApp bot</b>Answered, qualified (classroom, Andheri) and offered a call.</span></figcaption>
+        </figure>
+      </div>
+
+      <!-- 3. The reminder SMS -->
+      <div class="ch" style="--step:3">
+        <div class="ch-text" id="lead-3">
+          <p class="ch-n" aria-hidden="true">3</p>
+          <h3>The reminder SMS</h3>
+          <p>People who don't reply get a reminder. This one goes out the next day, on a DLT-registered template, at a permitted time.</p>
+        </div>
+        <figure class="ch-fig">
+          <div class="scr scr--sms g-paper">
+            <p class="scr__bar"><span>Their phone, the next day</span><span class="mock">Mock-up</span></p>
+            <div class="sms bit" data-ms="900">
+              <p class="sms__from"><b>SAMPLE</b><span>Sender ID</span></p>
+              <p class="sms__text">Hi, your free counselling slot for weekend batches is still open. Reply on WhatsApp to book, or we'll give you a quick call. Sample Institute</p>
+            </div>
+            <ul class="sms__meta">
+              <li class="bit" data-ms="420">DLT-registered template</li>
+              <li class="bit" data-ms="420">Registered sender ID</li>
+              <li class="bit" data-ms="420">Sent at a permitted time</li>
+            </ul>
+          </div>
+          <figcaption class="ch-log"><b class="stamp">Reminded</b><span class="ch-log__t"><b>Reminder SMS</b>Went out on a DLT-registered template when the chat went quiet.</span></figcaption>
+        </figure>
+      </div>
+
+      <!-- 4. The AI call -->
+      <div class="ch" style="--step:4">
+        <div class="ch-text" id="lead-4">
+          <p class="ch-n" aria-hidden="true">4</p>
+          <h3>The AI call</h3>
+          <p>Still no booking, so an AI voice agent calls. It says it is an automated assistant, answers the question and books the counselling call.</p>
+        </div>
+        <figure class="ch-fig">
+          <div class="scr scr--call g-red">
+            <p class="scr__bar"><span>Their phone, a call</span><span class="mock">Mock-up</span></p>
+            <p class="call__who"><b>Sample Institute</b><span>Automated assistant, calling</span></p>
+            <div class="wave" aria-hidden="true"><i style="--h:63;--d:77"></i><i style="--h:72;--d:333"></i><i style="--h:28;--d:37"></i><i style="--h:90;--d:48"></i><i style="--h:68;--d:298"></i><i style="--h:29;--d:259"></i><i style="--h:49;--d:19"></i><i style="--h:33;--d:222"></i><i style="--h:75;--d:35"></i><i style="--h:52;--d:46"></i><i style="--h:92;--d:217"></i><i style="--h:29;--d:289"></i><i style="--h:37;--d:114"></i><i style="--h:96;--d:31"></i><i style="--h:95;--d:299"></i><i style="--h:72;--d:25"></i><i style="--h:50;--d:23"></i><i style="--h:93;--d:68"></i><i style="--h:59;--d:214"></i><i style="--h:40;--d:276"></i><i style="--h:37;--d:292"></i><i style="--h:61;--d:286"></i><i style="--h:45;--d:52"></i><i style="--h:96;--d:292"></i><i style="--h:46;--d:190"></i><i style="--h:34;--d:280"></i><i style="--h:30;--d:288"></i><i style="--h:29;--d:316"></i><i style="--h:48;--d:254"></i><i style="--h:90;--d:218"></i><i style="--h:62;--d:238"></i><i style="--h:96;--d:232"></i><i style="--h:68;--d:153"></i><i style="--h:53;--d:92"></i></div>
+            <ol class="call__lines">
+              <li class="say ai bit" data-ms="2300"><span class="who">AI agent</span>Hello, I'm the institute's automated assistant. You asked about weekend batches. Is now a good time?</li>
+              <li class="say bit" data-ms="1100"><span class="who">They said</span>Yes. What are the fees?</li>
+              <li class="say ai bit" data-ms="2300"><span class="who">AI agent</span>A counsellor shares the exact fee on a free call. Shall I book Saturday at 11 am?</li>
+              <li class="say bit" data-ms="900"><span class="who">They said</span>Okay, book it.</li>
+              <li class="say ai bit" data-ms="1600"><span class="who">AI agent</span>Booked. I've sent the details on WhatsApp.</li>
+            </ol>
+          </div>
+          <figcaption class="ch-log"><b class="stamp">Booked</b><span class="ch-log__t"><b>AI call</b>Said it was automated, answered, and booked Saturday 11 am.</span></figcaption>
+        </figure>
+      </div>
+
+      <!-- 5. Your team -->
+      <div class="ch" style="--step:5">
+        <div class="ch-text" id="lead-5">
+          <p class="ch-n" aria-hidden="true">5</p>
+          <h3>Your team</h3>
+          <p>Your team gets the warm lead, with notes: what they want, what they asked and when the call is. Their time goes to people ready to talk.</p>
+        </div>
+        <figure class="ch-fig">
+          <div class="scr scr--team g-yellow">
+            <p class="scr__bar"><span>Your team</span><span class="mock">Mock-up</span></p>
+            <div class="chit bit" data-ms="900">
+              <p class="chit__h"><b>Warm lead</b><span>For the counsellor</span></p>
+              <dl class="chit__dl">
+                <div><dt>Wants</dt><dd>Weekend batch, classroom, Andheri</dd></div>
+                <div><dt>Booked</dt><dd>Counselling call, Saturday 11 am</dd></div>
+                <div><dt>Asked about</dt><dd>Fees, on the AI call</dd></div>
+                <div><dt>Prefers</dt><dd>WhatsApp</dd></div>
+                <div><dt>Came through</dt><dd>Post, bot, SMS, AI call</dd></div>
+              </dl>
+              <p class="chit__note"><b>For the call</b>Share the fee for the weekend classroom batch.</p>
+            </div>
+            <p class="chit__stamp bit" data-ms="500" aria-hidden="true">Warm</p>
+          </div>
+          <figcaption class="ch-log"><b class="stamp">Handed over</b><span class="ch-log__t"><b>Your team</b>The counsellor had the lead and the notes before the call.</span></figcaption>
+        </figure>
+      </div>
+
+      <!-- 6. Live reporting -->
+      <div class="ch" style="--step:6">
+        <div class="ch-text" id="lead-6">
+          <p class="ch-n" aria-hidden="true">6</p>
+          <h3>Live reporting</h3>
+          <p>Live reporting shows what each step did: one dashboard across channels, and a monthly report in plain language.</p>
+        </div>
+        <figure class="ch-fig">
+          <div class="scr scr--report g-paper">
+            <p class="scr__bar"><span>Your dashboard</span><span class="mock">Mock-up</span></p>
+            <p class="rep__h bit" data-ms="500">One lead, followed from first touch to conversation</p>
+            <ol class="rep__path bit" data-ms="700">
+              <li>Post</li><li>WhatsApp bot</li><li>Reminder SMS</li><li>AI call</li><li>Your team</li>
+            </ol>
+            <p class="rep__chan bit" data-ms="500">One dashboard across search, social, WhatsApp, SMS, calls and site enquiries.</p>
+            <div class="rep__month bit" data-ms="500">
+              <p class="rep__mh">Monthly report, in plain language</p>
+              <ul><li>What moved</li><li>What didn't</li><li>What we'll change</li></ul>
+            </div>
+          </div>
+          <figcaption class="ch-log"><b class="stamp">Reported</b><span class="ch-log__t"><b>Live report</b>Every step above, in one dashboard and a monthly report.</span></figcaption>
+        </figure>
+      </div>
+    </div>
+    <p class="story-note">Every mock-up on this page shows a sample institute: no client, no data and no results.</p>
+  </div>
+</section>
+
+<!-- 2. The pieces: the services behind each step -->
+<section class="poster" id="pieces" aria-labelledby="pieces-h" style="--under:var(--ink)">
+  <div class="paste flush">
+    <div class="pieces-head g-paper">
+      <div class="head-split">
+        <h2 class="d1" id="pieces-h">The pieces behind the story</h2>
+        <p class="lede">Each step is a service you can use on its own or together, with one dashboard across all of them.</p>
+      </div>
+    </div>
+    <div class="flyer-wall">
+      <article class="flyer g-yellow w4"><h3><a href="../services/ai-calling/index.html">AI Calling</a></h3><p>Voice agents in Indian languages for leads, reminders and follow-ups.</p></article>
+      <article class="flyer g-blue w4"><h3><a href="../services/whatsapp-chat-bot/index.html">WhatsApp Chat Bot</a></h3><p>Answers, qualifies and books, around the clock.</p></article>
+      <article class="flyer g-red w4"><h3><a href="../services/whatsapp-blasting/index.html">WhatsApp Blasting</a></h3><p>Targeted broadcasts, only to customers who have opted in.</p></article>
+      <article class="flyer g-paper w6 half"><h3><a href="../services/sms-blasting/index.html">SMS Blasting</a></h3><p>Bulk SMS campaigns on DLT-registered templates.</p></article>
+      <article class="flyer flyer--static g-ink w6 half"><h3 class="hi-ink">Live reporting</h3><p>Clear dashboards so you always see what is working.</p></article>
     </div>
   </div>
 </section>
 
+<!-- 3. Rules we keep -->
+<section class="poster" id="rules" aria-labelledby="rules-h" style="--under:var(--ink)">
+  <div class="paste g-red">
+    <div class="head-split">
+      <h2 class="d1" id="rules-h">Rules we keep</h2>
+      <p class="lede">Automation only works when people trust it. These hold on every campaign.</p>
+    </div>
+    <ul class="rules">
+      <li><h3>Opt-ins respected.</h3><p>WhatsApp broadcasts go only to customers who have agreed to hear from you.</p></li>
+      <li><h3>DLT registration for SMS.</h3><p>Your entity, sender IDs and templates, registered as TRAI's rules for commercial SMS require.</p></li>
+      <li><h3>Automated agents say so.</h3><p>The bot and the AI caller introduce themselves as automated.</p></li>
+      <li><h3>A human is one step away.</h3><p>Any customer can ask for a person, at any point.</p></li>
+    </ul>
+    <p class="rules-note">In-house AI expertise: automation and AI tools built by the group's own technology team, run with the discipline of a regulated-industry group.</p>
+  </div>
+</section>
+
 <!-- Closing CTA poster: every page ends here, always to /contact/. -->
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--red)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>
@@ -810,12 +1309,10 @@ const motionOK = root.classList.contains('motion');
 /* 1. MOTION ---------------------------------------------------------------
    Springs: k = stiffness, c = damping, mass 1. zeta = c / (2 * sqrt(k)).   */
 const MOTION = {
+  // The tear and peel physics (material constants, springs, roll timing) live in tear.js's MATERIAL / MOTION blocks.
   paste: bezier(.2, .7, .1, 1),     // paste: cubic-bezier(.2,.7,.1,1). Squeegee settle; every entrance eases out.
   tug: bezier(.55, 0, .75, .2),     // tug: cubic-bezier(.55,0,.75,.2). Gravity: a sheet letting go of the wall.
   lift: 'cubic-bezier(.3,1.3,.5,1)',// lift: a corner lifting, one tiny overshoot (CSS only)
-  flap: { k: 260, c: 26 },          // flap: a torn strip's free end follows the hand (zeta .81)   [tear.js]
-  roll: { k: 120, c: 19 },          // roll: a released strip curls up into a roll (zeta .87)     [tear.js]
-  peek: { k: 300, c: 30 },          // peek: the poster edge lifts toward a hovering pointer      [tear.js]
   ms: { press: 120, lift: 220, paste: 320, pasteIn: 900, letGo: 900, pasteBack: 1100, fallLife: 950, chatGap: 650, cellStagger: 40, barStagger: 120 }
 };
 let timeScale = 1;                  // 0.1 while slow-motion review is on
@@ -1045,6 +1542,202 @@ if (hero && tearClip && 'MutationObserver' in window) {
 }
 
 window.Elvana = { MOTION, announce, setSlow, feedback, setSound, get timeScale() { return timeScale; }, get sound() { return soundOn; } };
+})();
+
+</script>
+<script>
+/* =========================================================================
+   Elvana Media: pages/our-edge.js
+   "Follow one lead" (INTERACTIONS.md): the pinned scroll story, on WEB.md 26.
+   1. Chapters: the chapter crossing mid-screen is the active one
+      (IntersectionObserver, no scroll handler). Scrolling back reverses.
+      The route marks it and fills its rail; on the pinned stage (desktop,
+      motion) the chapter's mock-up wipes in over the last one, from the left
+      going forward and from the right going back, and its report line is
+      stamped. Stage changes are announced politely.
+   2. Mock-ups: each plays its short sequence once, when first shown. Leaving
+      it mid-way, or scrolling the story off-screen, finishes it at once, so
+      nothing runs off-screen and nothing is left half-drawn.
+   3. The bot (chapter 2): answers what the visitor types, from a script.
+   No JS: the plain sequence, complete. Reduced motion: the same, still; the
+   bot still answers. Timers divide by Elvana.timeScale (slow-motion review).
+   ========================================================================= */
+(() => {
+'use strict';
+const story = document.querySelector('[data-story]');
+if (!story) return;
+const root = document.documentElement;
+const E = window.Elvana || { announce() {}, feedback() {}, timeScale: 1 };
+const motionOK = root.classList.contains('motion');
+const pinMQ = matchMedia('(min-width:1100px) and (min-height:700px)');   // mirrors the PINNED block in our-edge.css
+const pinned = () => motionOK && pinMQ.matches;
+const slow = () => E.timeScale || 1;
+const PASTE = 'cubic-bezier(.2,.7,.1,1)';   // paste: base.css --ease-paste
+const WIPE_MS = 520, LEAVE_MS = 560;
+
+const chapters = [...story.querySelectorAll('.ch')];
+const texts = chapters.map(c => c.querySelector('.ch-text'));
+const screens = chapters.map(c => c.querySelector('.scr'));
+const names = chapters.map(c => c.querySelector('h3').textContent.trim());
+const route = story.querySelector('.route');
+const links = [...route.querySelectorAll('a')];
+let active = 0, inView = false;
+// the squeegee (pinned stage only; CSS hides it elsewhere)
+const sq = document.createElement('div'); sq.className = 'squeegee'; sq.setAttribute('aria-hidden', 'true');
+const sqBar = document.createElement('i'); sq.append(sqBar); story.append(sq);
+
+/* ---- 2. Mock-up sequences --------------------------------------------- */
+const timers = new Map();
+screens.forEach(s => { timers.set(s, []); if (motionOK) s.setAttribute('data-armed', ''); });
+const later = (s, fn, ms) => timers.get(s).push(setTimeout(fn, ms / slow()));
+function stop(s) { timers.get(s).forEach(clearTimeout); timers.set(s, []); }
+// keep the newest visible line of a chat thread in view (inside the thread only, never the page)
+function follow(s) {
+  const th = s.querySelector('.thread'); if (!th) return;
+  const shown = [...th.children].filter(li => !li.classList.contains('bit') || li.classList.contains('in'));
+  const last = shown[shown.length - 1]; if (!last) return;
+  th.scrollTop = Math.max(0, last.offsetTop + last.offsetHeight - th.clientHeight + 8);
+}
+function finish(s) {
+  stop(s);
+  s.querySelectorAll('.bit').forEach(b => b.classList.add('in'));
+  const w = s.querySelector('.wave'); if (w) w.classList.remove('on');
+  s.classList.add('is-done'); s.dataset.state = 'done';
+  follow(s);
+}
+function play(s) {
+  if (s.dataset.state) return;
+  if (!motionOK) { finish(s); return; }
+  s.dataset.state = 'playing';
+  const wave = s.querySelector('.wave');
+  let t = 280;
+  s.querySelectorAll('.bit').forEach(b => {
+    later(s, () => { b.classList.add('in'); if (wave) wave.classList.toggle('on', b.classList.contains('ai')); follow(s); }, t);
+    t += +b.dataset.ms || 500;
+  });
+  later(s, () => finish(s), t);
+}
+const finishPlaying = except => screens.forEach(s => { if (s !== except && s.dataset.state === 'playing') finish(s); });
+
+/* ---- 1. Chapters --------------------------------------------------------- */
+function setActive(i, quiet) {
+  if (i < 0) return;
+  const prev = active;
+  if (i === prev && !quiet) return;
+  active = i;
+  story.dataset.active = String(i + 1);
+  chapters.forEach((c, k) => { c.classList.toggle('is-active', k === i); c.classList.toggle('is-past', k < i); });
+  links.forEach((a, k) => {
+    if (k === i) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current');
+    a.parentElement.classList.toggle('is-past', k < i);
+  });
+  route.style.setProperty('--p', String(i / (chapters.length - 1)));
+  if (!pinned()) return;
+  if (!quiet && prev !== i) {
+    const old = chapters[prev], s = screens[i];
+    old.classList.add('is-leaving'); clearTimeout(old._leave);
+    old._leave = setTimeout(() => old.classList.remove('is-leaving'), LEAVE_MS / slow());
+    s.getAnimations().forEach(a => a.cancel());
+    const fwd = i > prev, opts = { duration: WIPE_MS / slow(), easing: PASTE };
+    s.animate([{ clipPath: fwd ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0% 0 0%)' }], opts);
+    // the squeegee rides the wet edge: left to right going forward, right to left going back
+    const w = sq.clientWidth;
+    sqBar.getAnimations().forEach(a => a.cancel());
+    sqBar.animate(fwd
+      ? [{ transform: 'translateX(-150px)', opacity: 1 }, { transform: `translateX(${w - 150}px)`, opacity: 1, offset: .92 }, { transform: `translateX(${w - 150}px)`, opacity: 0 }]
+      : [{ transform: `translateX(${w}px) scaleX(-1)`, opacity: 1 }, { transform: 'translateX(0) scaleX(-1)', opacity: 1, offset: .92 }, { transform: 'translateX(0) scaleX(-1)', opacity: 0 }], opts);
+    finishPlaying(s);
+    const did = chapters[i].querySelector('.ch-log__t').lastChild.textContent.trim();
+    E.announce(`Step ${i + 1} of ${chapters.length}: ${names[i]}. Live report: ${did}`);
+  }
+  if (inView) play(screens[i]);
+}
+
+// the chapter crossing a thin band is the active one: mid-screen in the sequence; on the pinned
+// stage a third of the way down, so a chapter's text is fully on screen when its mock-up arrives
+let io, targets = [];
+function observe() {
+  if (io) io.disconnect();
+  targets = pinned() ? texts : chapters;     // .ch is display:contents when pinned (no box to observe)
+  io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) setActive(targets.indexOf(e.target)); }),
+    { rootMargin: pinned() ? '-32% 0px -67% 0px' : '-49% 0px -49% 0px' });
+  targets.forEach(t => io.observe(t));
+}
+observe();
+
+// sequence layout: each mock-up plays when a third of it is on screen
+const seen = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && !pinned()) play(e.target); }), { threshold: .35 });
+screens.forEach(s => seen.observe(s));
+
+// sleep off-screen: anything mid-sequence finishes when the story leaves the viewport
+new IntersectionObserver(es => {
+  inView = es[0].isIntersecting;
+  if (inView) { if (pinned()) play(screens[active]); }
+  else finishPlaying(null);
+}).observe(story);
+
+pinMQ.addEventListener('change', () => {
+  screens.forEach(s => s.getAnimations().forEach(a => a.cancel()));
+  chapters.forEach(c => c.classList.remove('is-leaving'));
+  observe(); setActive(active, true);
+});
+setActive(0, true);
+
+/* ---- 3. The bot ----------------------------------------------------------- */
+const chat = story.querySelector('.scr--chat');
+const form = chat && chat.querySelector('[data-ask]');
+if (!form) return;
+const thread = chat.querySelector('.thread');
+const input = form.querySelector('input');
+let booked = '';
+// Scripted answers for a sample institute. Order matters: the first match answers.
+const RULES = [
+  [/\b(human|person|people|someone|counsell?or|talk to|speak to|call me|agent)\b/i, () => "Of course. I've asked a counsellor to reply here during working hours. A person can take over at any point."],
+  [/\b(bot|robot|ai|automated|machine|real person)\b/i, () => "Yes, I'm the institute's automated assistant. A person from the team can take over whenever you like."],
+  [/\b(fee|fees|price|prices|cost|costs|charges?|how much|rupees?)\b|₹/i, () => "Fees depend on the batch, so a counsellor shares the exact fee on a free call. Shall I book one? Saturday 11 am or Sunday 4 pm."],
+  [/\b(saturday|sat|11)\b/i, () => { booked = 'Saturday at 11 am'; return 'Booked: your counselling call is on Saturday at 11 am. I\'ll send a reminder before it.'; }],
+  [/\b(sunday|sun|4)\b/i, () => { booked = 'Sunday at 4 pm'; return 'Booked: your counselling call is on Sunday at 4 pm. I\'ll send a reminder before it.'; }],
+  [/\b(book|booking|slot|appointment|yes|yeah|ok|okay|sure)\b/i, () => booked ? `You're booked for ${booked}. Want a different slot? Saturday 11 am or Sunday 4 pm.` : 'Happy to book a free counselling call. Saturday 11 am or Sunday 4 pm?'],
+  [/\b(online|remote|from home|live class)\b/i, () => 'Online batches run on the same weekend schedule as the classroom ones.'],
+  [/\b(where|centre|center|address|location|andheri|classroom|branch)\b/i, () => 'The classroom batch is at the Andheri centre. Online batches are open too.'],
+  [/\b(time|timing|timings|when|weekday|evening|weekend|batch|batches|schedule|start|course)\b/i, () => 'Weekend batches run on Saturday and Sunday, and weekday evening batches are open too. Which suits you?'],
+  [/\b(hi+|hello|hey|namaste|good (morning|evening|afternoon))\b/i, () => "Hello! I'm the institute's automated assistant. Ask me about batches, fees, the centre, or booking a call."],
+  [/\b(thanks|thank you|thx|great|cool|nice)\b/i, () => "You're welcome. Message here any time."],
+];
+const FALLBACK = "I'm a scripted mock-up, so I only know a few things: batches, fees, the centre, booking a call, or handing you to a person.";
+const answer = q => { for (const [re, fn] of RULES) if (re.test(q)) return fn(); return FALLBACK; };
+
+function add(cls, label, text) {
+  const li = document.createElement('li');
+  li.className = 'msg ' + cls;
+  if (label) { const s = document.createElement('span'); s.className = 'sr'; s.textContent = label; li.append(s); }
+  li.append(document.createTextNode(text));
+  thread.append(li);
+  const extra = thread.querySelectorAll('.msg:not(.bit)');   // keep the thread short: drop the oldest typed lines
+  if (extra.length > 24) extra[0].remove();
+  follow(chat);
+  return li;
+}
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const q = input.value.trim().slice(0, 140);
+  if (!q) { input.focus(); return; }
+  finish(chat);                       // typing interrupts the scripted thread: it is shown complete
+  input.value = '';
+  add('them', 'You wrote: ', q);
+  const typing = add('bot typing', '', 'Typing');
+  typing.setAttribute('aria-hidden', 'true');
+  setTimeout(() => {
+    typing.remove();
+    const a = answer(q);
+    add('bot', 'Bot: ', a);
+    E.announce('Bot: ' + a);
+  }, (motionOK ? 720 : 320) / slow());
+});
+form.querySelectorAll('[data-say]').forEach(b => b.addEventListener('click', () => {
+  input.value = b.dataset.say;
+  if (form.requestSubmit) form.requestSubmit(); else form.dispatchEvent(new Event('submit', { cancelable: true }));
+}));
 })();
 
 </script>

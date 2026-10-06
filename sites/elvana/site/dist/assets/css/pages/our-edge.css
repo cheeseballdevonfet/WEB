@@ -1,0 +1,263 @@
+/* =========================================================================
+   Elvana Media: pages/our-edge.css
+   Our edge only. The signature, "Follow one lead" (INTERACTIONS.md): a
+   pinned scroll story on WEB.md 26, "Pinned chapters with one changing figure".
+
+   Two layouts from one source order (chapter text, its mock-up, its line
+   in the live report):
+   - SEQUENCE (default): no JS, reduced motion, tablets and phones. Each
+     chapter shows its mock-up and its report line, still and complete. With
+     JS, the route (a local-train line map) sticks under the header.
+   - PINNED (1100px+, 700px+ tall, html.motion): the .ch wrappers become
+     display:contents, so every figure joins one sticky stage beside the
+     text without leaving source order. JS marks the active chapter; the
+     stage wipes its mock-up in and stamps its report line. Layout is fixed
+     by CSS before first paint, so nothing shifts when JS arrives.
+   Motion: every duration multiplies by var(--slow); curves from base.css.
+   ========================================================================= */
+
+.follow-intro{display:grid;gap:18px}
+.follow-intro p:not(.lede){max-width:44ch;color:var(--paper-dim);font-size:var(--fs-body)}
+#follow-h{max-width:9ch}
+
+/* ---------- Story: the sequence (default) ---------- */
+.story{position:relative;margin-top:clamp(40px,5.5vw,80px)}
+.stage{position:relative}
+.ledger,.squeegee{display:none}
+.story-note{margin-top:clamp(28px,3vw,44px);font-size:var(--fs-small);font-weight:600;color:var(--paper-dim);max-width:60ch}
+
+/* Route: the lead's line, like a local-train line map. Stations are links
+   (they work without JS); JS marks the current one and fills the rail. */
+.route{position:relative;padding-top:4px}
+.route ol{position:relative;z-index:1;display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
+.route li{display:flex;justify-content:center}
+.route a{display:grid;justify-items:center;align-content:start;gap:8px;min-width:48px;padding:0 2px 6px;text-decoration:none;text-align:center;font-weight:800;font-size:15px;line-height:1.15;color:var(--paper)}
+.route__n{display:grid;place-items:center;width:44px;height:44px;padding-top:5px;font:400 24px/1 var(--display);background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 3px rgba(242,243,239,.6);
+  transition:background-color calc(320ms * var(--slow)) linear,color calc(320ms * var(--slow)) linear,box-shadow calc(320ms * var(--slow)) linear,transform calc(220ms * var(--slow)) var(--ease-lift)}
+.route li.is-past .route__n{background:var(--paper);color:var(--ink);box-shadow:none}
+.route a[aria-current] .route__n{background:var(--yellow);color:var(--ink);box-shadow:none;transform:scale(1.14) rotate(-3deg)}
+.route a[aria-current]{color:var(--yellow)}
+.route a:hover .route__n{transform:rotate(-4deg)}
+.route a[aria-current]:hover .route__n{transform:scale(1.14) rotate(-6deg)}
+.route a:hover .route__name,.route a:hover .route__short{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.2em}
+.route a:active .route__n{transform:translateY(1px) scale(.96)}
+.route a:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.route__short{display:none}
+.route__rail{position:absolute;left:calc(100% / 12);right:calc(100% / 12);top:24px;height:4px;
+  background:repeating-linear-gradient(90deg,rgba(242,243,239,.45) 0 10px,transparent 10px 18px)}
+.route__rail i{position:absolute;inset:0;background:var(--yellow);transform-origin:0 50%;transform:scaleX(var(--p,0));transition:transform calc(560ms * var(--slow)) var(--ease-paste)}
+
+/* Chapters */
+.ch{display:grid;gap:clamp(24px,3vw,44px);padding:clamp(48px,6vw,84px) 0 clamp(12px,1.5vw,20px);border-top:3px solid rgba(242,243,239,.16)}
+.stage+.ch{border-top:0}
+.ch-text{scroll-margin-top:calc(var(--hdr) + 88px)}
+.ch-n{font:400 clamp(84px,9.4vw,144px)/.8 var(--display);color:var(--yellow)}
+.ch-text h3{font-size:var(--fs-d2);margin-top:16px;max-width:12ch}
+.ch-text p:not(.ch-n){font-size:var(--fs-lede);line-height:1.42;max-width:34ch;margin-top:18px}
+.ch-text p.ch-try{font-size:var(--fs-body);font-weight:800;color:var(--yellow);margin-top:14px}
+.ch-fig{margin:0;display:grid;gap:18px;align-content:start;justify-items:start;min-width:0}
+
+/* ---------- Mock-ups (one per chapter) ---------- */
+.scr{position:relative;width:100%;max-width:420px;display:flex;flex-direction:column;gap:14px;padding:14px clamp(14px,1.5vw,20px) 20px;box-shadow:7px 8px 0 rgba(0,0,0,.42);overflow:hidden}
+.scr__bar{display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:800;font-size:14px;line-height:1.2;padding-bottom:10px;border-bottom:2px solid currentColor}
+.mock{flex:none;display:inline-block;padding:5px 8px 3px;font-weight:800;font-size:14px;line-height:1.1;transform:rotate(-2deg)}
+.g-paper .mock,.g-yellow .mock{background:var(--ink);color:var(--yellow)}
+.g-blue .mock,.g-red .mock{background:var(--yellow);color:var(--ink)}
+/* each mock-up's parts appear in turn once (JS); without JS or motion they are simply there */
+.bit{transition:opacity calc(320ms * var(--slow)) linear,transform calc(460ms * var(--slow)) var(--ease-paste)}
+.js.motion .scr[data-armed]:not(.is-done) .bit:not(.in){opacity:0;transform:translateY(12px)}
+
+/* 1. The post */
+.post{display:grid;gap:10px}
+.post__from{display:flex;gap:10px;align-items:center;font-size:14px;font-weight:600;line-height:1.2}
+.post__from b{display:block;font-size:16px;font-weight:800}
+.post__ava{flex:none;display:grid;place-items:center;width:42px;height:42px;padding-top:4px;background:var(--blue);color:var(--paper);font:400 19px/1 var(--display)}
+.post__art{position:relative;aspect-ratio:1/1;padding:20px;display:flex;flex-direction:column;gap:10px;overflow:hidden;container-type:inline-size}
+.post__h{font:400 min(21cqw,72px)/.88 var(--display);max-width:6ch}
+.post__s{font-size:16px;font-weight:600;line-height:1.3;max-width:17ch}
+.post__days{position:absolute;right:-4%;bottom:-3%;display:flex;gap:6px;transform:rotate(-7deg);transform-origin:100% 100%}
+.post__days span{display:grid;place-items:center;width:31cqw;aspect-ratio:1/1;padding-top:3cqw;background:var(--red);color:var(--paper);font:400 14cqw/1 var(--display);box-shadow:3px 4px 0 rgba(0,0,0,.25)}
+.post__days span+span{background:var(--blue);transform:translateY(-14%)}
+.post__cta{position:relative;display:flex;align-items:center;justify-content:center;min-height:50px;background:var(--ink);color:var(--yellow);font-weight:800;font-size:17px}
+.post__cta::after{content:"";position:absolute;inset:-4px;border:3px solid var(--red);opacity:0;pointer-events:none}
+.js.motion .scr--post.is-done .post__cta{animation:edge-tap calc(520ms * var(--slow)) var(--ease-paste) 1}
+.js.motion .scr--post.is-done .post__cta::after{animation:stamp-ring calc(520ms * var(--slow)) var(--ease-paste) 1}
+@keyframes edge-tap{0%{transform:none}30%{transform:scale(.95,.9)}100%{transform:none}}
+
+/* 2. The bot */
+.scr--chat{gap:10px}
+.chat-head{display:flex;flex-direction:column;font-size:14px;font-weight:600;line-height:1.3}
+.chat-head b{font:400 24px/1.05 var(--display)}
+.thread{display:flex;flex-direction:column;gap:9px;height:330px;overflow-y:auto;padding:4px 4px 8px 0;scrollbar-width:thin;scrollbar-color:rgba(242,243,239,.5) transparent}
+.thread .when{align-self:center;padding:2px 0;font-size:14px;font-weight:800}
+.msg{max-width:86%;flex:none;padding:9px 12px 7px;font-size:16px;line-height:1.35}
+.msg.them{align-self:flex-start;background:var(--paper);color:var(--ink);box-shadow:3px 3px 0 rgba(0,0,0,.26)}
+.msg.bot{align-self:flex-end;background:var(--yellow);color:var(--ink);box-shadow:3px 3px 0 rgba(0,0,0,.3)}
+.msg.typing{font-weight:800;font-size:14px}
+.ask{display:grid;gap:10px;margin-top:auto;padding-top:8px;border-top:2px solid rgba(242,243,239,.35)}
+.ask__chips{display:flex;flex-wrap:wrap;gap:8px}
+.ask__chips button{min-height:44px;padding:10px 12px 7px;border:0;background:transparent;color:var(--paper);box-shadow:inset 0 0 0 2px currentColor;font:800 15px/1 var(--text);cursor:pointer;transition:transform calc(220ms * var(--slow)) var(--ease-lift)}
+.ask__chips button:hover{background:var(--paper);color:var(--blue);transform:rotate(-2deg)}
+.ask__chips button:active{transform:translateY(1px) scale(.97)}
+.ask__chips button:focus-visible,.ask__send:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.ask__chips button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.ask__row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.ask input{width:100%;min-width:0;min-height:50px;padding:12px 12px 9px;border:0;border-radius:0;background:var(--paper);color:var(--ink);font:400 17px/1.3 var(--text)}
+.ask input::placeholder{color:var(--ink-soft);opacity:1}
+.ask input:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.ask__send{min-height:50px;padding:12px 16px 9px;border:0;background:var(--yellow);color:var(--ink);font:800 16px/1 var(--text);cursor:pointer;transition:transform calc(220ms * var(--slow)) var(--ease-lift)}
+.ask__send:hover{transform:rotate(-2deg)}
+.ask__send:active{transform:translate(-1%,2px) scale(1.02,.92)}
+.ask__send:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* 3. The reminder SMS */
+.sms{display:grid;gap:10px;padding:14px 14px 12px;background:var(--paper);box-shadow:inset 0 0 0 3px var(--ink),5px 5px 0 rgba(26,24,20,.18)}
+.sms__from{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding-bottom:8px;border-bottom:2px dashed rgba(26,24,20,.4)}
+.sms__from b{font:400 28px/1 var(--display);letter-spacing:.04em}
+.sms__from span{font-size:14px;font-weight:800}
+.sms__text{font-size:17px;line-height:1.42}
+.sms__meta{display:flex;flex-wrap:wrap;gap:8px 10px}
+.sms__meta li{display:inline-flex;align-items:center;gap:8px;padding:7px 10px 5px;font-weight:800;font-size:14px;line-height:1.15;color:var(--blue);box-shadow:inset 0 0 0 2px var(--blue)}
+.sms__meta li::before{content:"";width:12px;height:7px;margin-top:-5px;border:solid currentColor;border-width:0 0 3px 3px;transform:rotate(-45deg)}
+
+/* 4. The AI call */
+.call__who{display:flex;flex-direction:column;font-size:14px;font-weight:600;line-height:1.3}
+.call__who b{font:400 26px/1.05 var(--display)}
+.scr--call .wave{height:46px;flex:none}
+.scr--call .wave i{background:var(--yellow)}
+.call__lines{display:grid;gap:11px}
+.say{display:grid;gap:3px;font-size:16px;line-height:1.36;font-weight:600}
+.say .who{justify-self:start;font-size:14px;font-weight:800;line-height:1.2}
+.say.ai .who{background:var(--yellow);color:var(--ink);padding:3px 6px 1px}
+.say:not(.ai){padding-left:14px;box-shadow:inset 3px 0 0 rgba(242,243,239,.7)}
+
+/* 5. Your team: the warm-lead chit */
+.scr--team{gap:18px}
+.chit{position:relative;display:grid;gap:12px;margin-top:6px;padding:18px 16px 16px;background:var(--paper);color:var(--ink);box-shadow:5px 6px 0 rgba(0,0,0,.22);transform:rotate(-1deg)}
+.chit::before{content:"";position:absolute;left:0;right:0;top:-7px;height:8px;background:radial-gradient(circle at 7px 0,transparent 5px,var(--paper) 5.5px) 0 0/14px 8px}
+.chit__h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 10px;padding-bottom:9px;border-bottom:3px solid var(--ink)}
+.chit__h b{font:400 32px/1 var(--display)}
+.chit__h span{font-weight:800;font-size:14px}
+.chit__dl{display:grid;gap:7px}
+.chit__dl div{display:grid;grid-template-columns:minmax(88px,34%) 1fr;gap:10px;padding-bottom:7px;border-bottom:2px dotted rgba(26,24,20,.35);font-size:15px;line-height:1.3}
+.chit__dl dt{font-weight:800}
+.chit__note{font-size:15px;line-height:1.38}
+.chit__note b{display:block;font-weight:800}
+.chit__stamp{position:absolute;right:20px;bottom:22px;padding:6px 12px 2px;border:4px solid var(--red);color:var(--red);font:400 34px/1 var(--display);transform:rotate(-12deg);mix-blend-mode:multiply}
+.js.motion .scr[data-armed]:not(.is-done) .chit__stamp.bit:not(.in){transform:scale(1.7) rotate(-18deg);opacity:0}
+.chit__stamp.bit{transition:opacity calc(160ms * var(--slow)) linear,transform calc(380ms * var(--slow)) var(--ease-lift)}
+
+/* 6. Your dashboard */
+.rep__h{font:400 26px/1.05 var(--display);max-width:16ch}
+.rep__path{position:relative;display:grid;padding-left:30px}
+.rep__path::before{content:"";position:absolute;left:8px;top:14px;bottom:14px;width:4px;background:var(--blue)}
+.rep__path li{position:relative;padding:6px 0 4px;font-weight:800;font-size:16px;line-height:1.25}
+.rep__path li::before{content:"";position:absolute;left:-29px;top:50%;width:18px;height:18px;margin-top:-10px;background:var(--paper);box-shadow:inset 0 0 0 4px var(--blue)}
+.rep__path li:last-child::before{background:var(--blue)}
+.rep__chan{font-size:15px;line-height:1.4;font-weight:600}
+.rep__month{padding:12px 14px 14px;background:var(--ink);color:var(--paper)}
+.rep__mh{font-weight:800;font-size:14px}
+.rep__month ul{display:grid;gap:2px;margin-top:6px}
+.rep__month li{font:400 24px/1.12 var(--display);color:var(--yellow)}
+
+/* The live-report line under each mock-up (sequence layout) */
+.ch-log{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 14px;align-items:center;width:100%;max-width:420px;padding-top:14px;border-top:2px dashed rgba(242,243,239,.32)}
+.ch-log::before{content:"Live report" / "";grid-column:1 / -1;font-weight:800;font-size:14px;color:var(--paper-dim)}
+.stamp{justify-self:start;display:inline-block;padding:6px 9px 3px;border:3px solid currentColor;color:var(--yellow);font:800 15px/1.1 var(--text);white-space:nowrap;transform:rotate(-4deg)}
+.ch-log__t{font-size:15px;line-height:1.38;color:var(--paper-dim)}
+.ch-log__t b{display:block;color:var(--paper);font-weight:800}
+
+/* With JS, the route rides under the header while the story is on screen */
+.js .stage{position:sticky;top:var(--hdr);z-index:6;margin:0 calc(var(--pad-x) * -1);padding:10px var(--pad-x) 4px;background:var(--ink);box-shadow:0 4px 0 rgba(0,0,0,.28)}
+
+@media (min-width:700px){
+  .ch{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+  .thread{height:360px}
+}
+
+/* ---------- PINNED: one stage beside the chapters (desktop, motion) ---------- */
+@media (min-width:1100px) and (min-height:700px){
+  .js.motion .story{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);grid-template-rows:repeat(6,auto);column-gap:clamp(40px,4.4vw,80px);
+    --top:calc(var(--hdr) + 22px);--stage-h:calc(100svh - var(--hdr) - 44px);--route-h:112px;--fig-h:calc(var(--stage-h) - var(--route-h));
+    --col:calc(50% - 14px);--log-top:96px;--log-row:calc((var(--fig-h) - var(--log-top)) / 6)}
+  .js.motion .ch{display:contents}
+  .js.motion .ch-text h3{font-size:clamp(52px,4.9vw,80px);max-width:9ch}
+  .js.motion .ch-text p:not(.ch-n){max-width:30ch}
+  .js.motion .ch-text{grid-column:1;min-height:88svh;display:flex;flex-direction:column;justify-content:flex-start;padding:24svh 0 4svh;scroll-margin-top:calc(var(--hdr) - 8svh)}
+  .js.motion .ch:nth-child(3) .ch-text{min-height:128svh}  /* the bot: room to stay and type */
+  .js.motion .scr--sms .sms{margin-top:auto}
+  .js.motion .scr--sms .sms__meta{margin-bottom:auto}
+  .js.motion .scr--team .chit{margin-block:auto}
+  .js.motion .stage{grid-column:2;grid-row:1 / -1;align-self:start;position:sticky;top:var(--top);height:var(--stage-h);z-index:1;margin:0;padding:0;background:none;box-shadow:none}
+  .js.motion .route{height:var(--route-h)}
+  .js.motion .ledger{display:block;position:absolute;top:var(--route-h);right:0;bottom:0;width:var(--col)}
+  .ledger__h{font:400 clamp(32px,2.7vw,42px)/1 var(--display);color:var(--yellow)}
+  .ledger__sub{margin-top:8px;font-size:14px;font-weight:600;line-height:1.3;color:var(--paper-dim);max-width:30ch}
+  .ledger__slots{position:absolute;left:0;right:0;top:var(--log-top);bottom:0;display:grid;grid-template-rows:repeat(6,1fr)}
+  .ledger__slots li{border-top:2px dashed rgba(242,243,239,.24)}
+  .js.motion .ch-fig{grid-column:2;grid-row:1 / -1;align-self:start;position:sticky;top:calc(var(--top) + var(--route-h));margin-top:var(--route-h);height:var(--fig-h);z-index:2;display:block;pointer-events:none}
+  .js.motion .ch.is-leaving .ch-fig{z-index:3}
+  .js.motion .ch.is-active .ch-fig{z-index:4}
+  .js.motion .scr{position:absolute;left:0;top:0;bottom:0;width:var(--col);max-width:none;visibility:hidden}
+  .js.motion .ch.is-active .scr,.js.motion .ch.is-leaving .scr{visibility:visible}
+  .js.motion .ch.is-active .scr{pointer-events:auto}
+  .js.motion .scr--chat .thread{height:auto;flex:1 1 0;min-height:0}
+  /* report lines: each chapter stamps its own slot in the one ledger */
+  .js.motion .ch-log{position:absolute;right:0;width:var(--col);max-width:none;height:var(--log-row);top:calc(var(--log-top) + (var(--step) - 1) * var(--log-row));
+    padding:0 0 0 2px;border:0;align-content:center;opacity:0;transform:translateX(16px);
+    transition:opacity calc(260ms * var(--slow)) linear,transform calc(420ms * var(--slow)) var(--ease-paste)}
+  .js.motion .ch-log::before{display:none}
+  .js.motion .ch-log{grid-template-columns:132px minmax(0,1fr)}
+  .js.motion .ch-log .stamp{opacity:0;transform:scale(1.6) rotate(-12deg);transition:opacity calc(140ms * var(--slow)) linear calc(160ms * var(--slow)),transform calc(400ms * var(--slow)) var(--ease-lift) calc(160ms * var(--slow)),color calc(320ms * var(--slow)) linear}
+  .js.motion .ch.is-active .ch-log,.js.motion .ch.is-past .ch-log{opacity:1;transform:none}
+  .js.motion .ch.is-active .ch-log .stamp,.js.motion .ch.is-past .ch-log .stamp{opacity:1;transform:rotate(-4deg)}
+  .js.motion .ch.is-past .ch-log .stamp{color:var(--paper-dim)}
+  .js.motion .story[data-active="6"] .ch-log .stamp{color:var(--yellow)}
+  .js.motion .ch.is-past .ch-log__t b{color:var(--paper-dim)}
+  .js.motion .story[data-active="6"] .ch-log__t b{color:var(--paper)}
+  /* the squeegee that rides the wipe's wet edge (the site's paste language) */
+  .js.motion .squeegee{display:block;grid-column:2;grid-row:1 / -1;align-self:start;position:sticky;top:calc(var(--top) + var(--route-h));margin-top:var(--route-h);height:var(--fig-h);width:var(--col);overflow:hidden;pointer-events:none;z-index:6}
+  .js.motion .squeegee i{position:absolute;top:0;bottom:0;left:0;width:150px;opacity:0;transform:translateX(-150px);
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.28) calc(100% - 9px),var(--ink) calc(100% - 9px),var(--ink) calc(100% - 3px),rgba(255,255,255,.55) calc(100% - 3px),transparent)}
+  .js.motion .ch-text .ch-n{color:rgba(242,243,239,.28);transition:color calc(320ms * var(--slow)) linear}
+  .js.motion .ch.is-active .ch-text .ch-n{color:var(--yellow)}
+}
+
+/* ---------- The pieces: services behind each step ---------- */
+.pieces-head{padding:var(--pad-y) var(--pad-x) clamp(44px,5vw,76px)}
+#pieces-h{max-width:12ch}
+.flyer--static{cursor:default}
+@media (hover:hover){.flyer.flyer--static:hover{--c:0px;--k:0;transform:none}}
+.flyer.flyer--static:active,.flyer.flyer--static:focus-within{--c:0px;--k:0}
+
+/* ---------- Rules we keep ---------- */
+.rules{display:grid;grid-template-columns:repeat(4,1fr);margin:clamp(40px,5vw,72px) calc(var(--pad-x) * -1) 0;border-top:6px solid var(--yellow)}
+.rules li{display:grid;gap:12px;align-content:start;padding:28px var(--pad-x) 8px}
+.rules li+li{box-shadow:inset 3px 0 0 rgba(242,243,239,.28)}
+.rules h3{font-size:var(--fs-d3);color:var(--yellow);max-width:11ch}
+.rules p{max-width:30ch}
+.rules-note{margin-top:clamp(40px,5vw,72px);max-width:56ch;font-size:var(--fs-lede);line-height:1.4;font-weight:600}
+
+/* ---------- Tablet ---------- */
+@media (max-width:1099px){
+  .rules{grid-template-columns:1fr 1fr}
+  .rules li:nth-child(3){box-shadow:none}
+  .rules li:nth-child(n+3){border-top:3px solid rgba(242,243,239,.28)}
+  .flyer-wall .flyer--static{grid-column:span 12}
+}
+/* ---------- Phone ---------- */
+@media (max-width:699px){
+  .route a{font-size:14px}
+  .route__name{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .route__short{display:block}
+  .route__n{width:40px;height:40px;font-size:22px}
+  .route__rail{top:22px}
+  .scr{max-width:none}
+  .ch-log{max-width:none}
+  .rules{grid-template-columns:1fr}
+  .rules li+li{box-shadow:none;border-top:3px solid rgba(242,243,239,.28)}
+  .flyer-wall .flyer--static.half{grid-column:span 2}
+}
+@media (prefers-reduced-motion:reduce){
+  .route__n,.route__rail i,.bit,.ask__chips button,.ask__send{transition:none}
+}

@@ -1,0 +1,50 @@
+/* Specimen: Branding & Identity. A sample brand book. Live: a book whose leaves turn on the
+   spine (3D, transform only); drag a page, use the buttons or the arrow keys. No JS: every
+   page in a row you can swipe or scroll. Reduced motion: pages change without turning. */
+.spec-bb{display:grid;gap:16px}
+.bb{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}
+.bb-leaf{display:contents}
+.bb-face{position:relative;flex:0 0 min(270px,72%);aspect-ratio:1 / 1.3;scroll-snap-align:start;display:flex;flex-direction:column;gap:10px;padding:clamp(14px,2vw,24px);background:var(--paper);color:var(--ink);overflow:hidden;container-type:inline-size}
+.bb-t{font-weight:800;font-size:14px;line-height:1.2;padding-bottom:8px;border-bottom:2px solid var(--ink)}
+.bb-s{margin-top:auto;font-size:clamp(14px,4.6cqw,16px);line-height:1.38}
+.bb-cover{background:var(--ink);color:var(--paper);justify-content:space-between;box-shadow:inset 0 -14px 0 var(--red)}
+.bb-mark{font-family:var(--display);font-size:24cqw;line-height:.9;color:var(--paper)}
+.bb-k{font-weight:800;font-size:15px;color:var(--paper-dim)}
+.bb-end{justify-content:flex-end;gap:12px}
+.bb-big{font-family:var(--display);font-size:27cqw;line-height:.9;color:var(--red);margin:auto 0}
+.bb-clear{margin:auto 0;padding:9cqw;outline:2px dashed var(--ink-soft);outline-offset:-2px;display:grid;place-items:center;position:relative}
+.bb-clear span{font-family:var(--display);font-size:16cqw;line-height:1;color:var(--red);box-shadow:0 0 0 7cqw rgba(200,32,26,.1)}
+.bb-sw{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:auto 0}
+.bb-sw li{aspect-ratio:1 / 1.5;display:flex;align-items:flex-end;padding:6px;font-weight:800;font-size:14px;line-height:1.1}
+.sw-red{background:var(--red);color:var(--paper)}
+.sw-paper{background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.sw-ink{background:var(--ink);color:var(--paper)}
+.bb-aa{display:flex;align-items:baseline;gap:8cqw;margin:auto 0}
+.bb-aa .d{font-family:var(--display);font-size:30cqw;line-height:1}
+.bb-aa .t{font-family:var(--text);font-weight:800;font-size:24cqw;line-height:1;color:var(--ink-soft)}
+.bb-say{font-family:var(--display);font-size:clamp(17px,8.4cqw,30px);line-height:1.1;margin-top:8px}
+.bb-no{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:3px;color:var(--ink-soft)}
+.bb-box{margin:auto;width:62%;aspect-ratio:1.1;display:grid;place-items:center;background:var(--red);box-shadow:inset 0 14cqw 0 rgba(0,0,0,.18),inset -10cqw 0 0 rgba(0,0,0,.1)}
+.bb-box span,.bb-sign span{font-family:var(--display);font-size:11cqw;color:var(--paper);line-height:1}
+.bb-sign{margin:auto 0;display:grid;place-items:center;height:30%;background:var(--ink);box-shadow:0 0 0 4px var(--paper),0 0 0 7px var(--ink)}
+.bb-sign span{font-size:15cqw;color:var(--paper)}
+.bb-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:760px;width:100%;margin:0 auto}
+.bb-nav{flex-wrap:wrap}
+.bb-where{font-family:var(--display);font-size:clamp(20px,1.8vw,26px);line-height:1.1;text-align:center}
+.bb-tip{order:3;flex-basis:100%;text-align:center;font-weight:800;font-size:15px}
+/* live: the book */
+.spec-bb.is-live .bb{position:relative;display:block;overflow:visible;padding:0;width:100%;max-width:760px;margin:0 auto;aspect-ratio:2 / 1.3;perspective:2400px;touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none;
+  transform:translateX(calc(var(--shift,0) * 25%));transition:transform calc(520ms * var(--slow)) var(--ease-paste)}
+.spec-bb.is-live .bb.is-grabbing{cursor:grabbing}
+.spec-bb.is-live .bb-leaf{display:block;position:absolute;top:0;bottom:0;left:50%;width:50%;transform-origin:0 50%;transform-style:preserve-3d}
+.spec-bb.is-live .bb-face{position:absolute;inset:0;flex:none;aspect-ratio:auto;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:inset 18px 0 22px -16px rgba(0,0,0,.35)}
+.spec-bb.is-live .bb-face:nth-child(2){transform:rotateY(180deg);box-shadow:inset -18px 0 22px -16px rgba(0,0,0,.35)}
+.spec-bb.is-live .bb-cover{box-shadow:inset 0 -14px 0 var(--red)}
+.spec-bb.is-live .bb-face::after{content:"";position:absolute;inset:0;background:#000;opacity:var(--sh,0);pointer-events:none}
+@media (prefers-reduced-motion:reduce){.spec-bb.is-live .bb{transition:none}}
+@media (max-width:699px){
+  .spec-bb.is-live .bb{aspect-ratio:2 / 1.55}
+  .bb-t{font-size:14px;padding-bottom:5px}
+  .bb-s{display:none}
+  .bb-nav .chip{padding:9px 11px 6px;font-size:15px}
+}

@@ -1,0 +1,52 @@
+/* Specimen: Post Creation & Content. A carousel you swipe (native scroll-snap, so it swipes
+   without JS too) and a sample month where each marked day opens its post for approval. */
+.pc-grid{display:grid;grid-template-columns:5fr 7fr;gap:clamp(28px,4vw,64px);align-items:start}
+.pc-h{font-weight:800;font-size:16px;margin-bottom:12px}
+.pc-frame{display:grid;gap:12px;max-width:440px;padding:14px;background:var(--ink);color:var(--paper);box-shadow:8px 8px 0 rgba(0,0,0,.18)}
+.pc-acct{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.pc-acct b{font-family:var(--display);font-weight:400;font-size:22px;color:var(--yellow)}
+.pc-acct span{font-weight:800;font-size:14px;color:var(--paper-dim)}
+.pc-slides{cursor:grab;display:grid;grid-auto-flow:column;grid-auto-columns:100%;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;aspect-ratio:1;--focus:var(--yellow)}
+.pc-slides::-webkit-scrollbar{display:none}
+.pc-slides:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.pc-slide{scroll-snap-align:start;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(20px,3vw,32px);min-width:0}
+.pc-big{font-family:var(--display);font-size:clamp(38px,4.4vw,58px);line-height:.95;max-width:9ch}
+.pc-small{font-weight:600;font-size:17px;line-height:1.35;max-width:24ch}
+.pc-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--paper);--focus:var(--yellow)}
+.pc-nav .chip{--fg:var(--paper);--ground:var(--ink)}
+.pc-dots{display:flex;gap:8px}
+.pc-dots i{width:22px;height:5px;background:rgba(242,243,239,.35)}
+.pc-dots i.is-on{background:var(--yellow)}
+.pc-cap{font-size:15px;line-height:1.4;color:var(--paper-dim)}
+.pc-cap b{color:var(--paper);margin-right:6px}
+.pc-days,.pc-month{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.pc-days li{font-weight:800;font-size:14px;padding:0 0 6px 6px}
+.pc-month li{position:relative;min-height:clamp(52px,6vw,78px);padding:6px 7px;background:var(--paper-dim);font-weight:800;font-size:15px;line-height:1}
+.pc-month .pc-pad{background:transparent;box-shadow:inset 0 0 0 2px rgba(26,24,20,.12)}
+.pc-month [data-post]::after{content:"";position:absolute;left:6px;right:6px;bottom:6px;height:clamp(10px,1.3vw,16px)}
+[data-post="reel"]::after,.pc-key .k-reel::before{background:var(--red)}
+[data-post="carousel"]::after,.pc-key .k-carousel::before{background:var(--blue)}
+[data-post="static"]::after,.pc-key .k-static::before{background:var(--yellow);box-shadow:inset 0 0 0 2px var(--ink)}
+[data-post="story"]::after,.pc-key .k-story::before{background:var(--ink)}
+.pc-day{position:absolute;inset:0;display:block;width:100%;padding:6px 7px;border:0;border-radius:0;background:transparent;color:var(--ink);font:800 15px/1 var(--text);text-align:left;cursor:pointer;z-index:1;transition:transform var(--t-lift) var(--ease-lift)}
+.pc-day:hover{transform:rotate(-2deg);box-shadow:inset 0 0 0 3px var(--ink)}
+.pc-day:active{transform:translateY(1px) scale(.97)}
+.pc-day[aria-pressed="true"]{box-shadow:inset 0 0 0 4px var(--ink);background:rgba(255,208,0,.35)}
+.pc-day:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.pc-month li.is-ok::before{content:"";position:absolute;right:8px;top:7px;width:7px;height:13px;border:solid var(--ink);border-width:0 3px 3px 0;transform:rotate(40deg);z-index:2}
+.pc-key{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:12px;font-weight:800;font-size:14px}
+.pc-key span{display:inline-flex;align-items:center;gap:7px}
+.pc-key span::before{content:"";width:22px;height:12px}
+.pc-detail{position:relative;display:grid;gap:8px;justify-items:start;margin-top:18px;padding:18px 20px;min-height:178px;background:var(--yellow);color:var(--ink);box-shadow:6px 6px 0 rgba(0,0,0,.18);--focus:var(--ink)}
+.pc-detail__k{font-weight:800;font-size:15px}
+.pc-detail__t{font-family:var(--display);font-size:clamp(24px,2.2vw,32px);line-height:1.05}
+.pc-detail__s{font-size:16px;line-height:1.4}
+.pc-stamp{position:absolute;right:16px;top:-14px;padding:8px 12px 5px;font:400 26px/1 var(--display);color:var(--red);box-shadow:inset 0 0 0 3px var(--red);transform:rotate(-8deg)}
+@media (max-width:1099px){.pc-grid{grid-template-columns:1fr}.pc-frame{max-width:460px}}
+@media (max-width:699px){
+  .pc-month li{min-height:48px;padding:5px;font-size:14px}
+  .pc-day{padding:5px;font-size:14px}
+  .pc-month [data-post]::after{left:4px;right:4px;bottom:4px;height:8px}
+  .pc-days li{padding-left:3px}
+  .pc-big{font-size:clamp(34px,11vw,48px)}
+}

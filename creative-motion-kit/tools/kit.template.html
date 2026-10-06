@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Creative Motion Prompt Kit</title>
+<style>
+:root {
+  --paper: #EEF0F4;
+  --surface: #FFFFFF;
+  --ink: #16182B;
+  --muted: #5B6078;
+  --rule: #D3D7E2;
+  --accent: #2F3BDB;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E3E5FB;
+  --ph-bg: #FFE3A3;
+  --ph-ink: #5C3B00;
+  --addon-ink: #3F5C50;
+  --addon-bg: #E2ECE7;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans: "Avenir Next", "Segoe UI", "Helvetica Neue", Helvetica, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #111322; --surface: #191C30; --ink: #E7E9F3; --muted: #9AA0BA; --rule: #2C3050;
+    --accent: #8C93FF; --accent-ink: #111322; --accent-soft: #23284A;
+    --ph-bg: #4A3712; --ph-ink: #FFD57A; --addon-ink: #A9CDBE; --addon-bg: #1E2E2A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #111322; --surface: #191C30; --ink: #E7E9F3; --muted: #9AA0BA; --rule: #2C3050;
+  --accent: #8C93FF; --accent-ink: #111322; --accent-soft: #23284A;
+  --ph-bg: #4A3712; --ph-ink: #FFD57A; --addon-ink: #A9CDBE; --addon-bg: #1E2E2A;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 15px/1.55 var(--sans);
+}
+a { color: var(--accent); text-underline-offset: 2px; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.masthead { max-width: 1240px; margin: 0 auto; padding: 40px 24px 8px; display: flex; gap: 24px; align-items: end; justify-content: space-between; flex-wrap: wrap; }
+.masthead h1 { font: 600 clamp(30px, 5vw, 52px)/1.02 var(--serif); letter-spacing: -0.02em; margin: 0; }
+.masthead p { margin: 10px 0 0; color: var(--muted); max-width: 60ch; }
+.btn {
+  border: 1px solid var(--rule); background: var(--surface); border-radius: 8px;
+  padding: 8px 14px; cursor: pointer; transition: transform .15s ease, background .15s ease;
+}
+.btn:hover { background: var(--accent-soft); }
+.btn:active { transform: translateY(1px); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.small { padding: 4px 10px; font-size: 13px; }
+.btn.copied { background: var(--addon-bg); color: var(--addon-ink); border-color: var(--addon-bg); }
+
+.layout { max-width: 1240px; margin: 0 auto; padding: 24px; display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 40px; }
+aside { position: sticky; top: 16px; align-self: start; max-height: calc(100vh - 32px); overflow: auto; padding-right: 4px; }
+aside details { border-top: 1px solid var(--rule); padding: 12px 0; }
+aside summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; }
+aside summary::-webkit-details-marker { display: none; }
+aside summary::after { content: "+"; color: var(--muted); }
+aside details[open] summary::after { content: "–"; }
+aside .group { margin-top: 10px; display: grid; gap: 10px; }
+.hint { color: var(--muted); font-size: 13px; margin: 0; }
+input[type="search"], textarea, select {
+  width: 100%; border: 1px solid var(--rule); background: var(--surface); border-radius: 8px; padding: 9px 11px;
+}
+textarea { resize: vertical; min-height: 72px; font: 13px/1.5 var(--mono); }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.check { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; align-items: start; cursor: pointer; }
+.check input { margin: 4px 0 0; accent-color: var(--accent); width: 16px; height: 16px; }
+.check span { font-weight: 500; }
+.check small { grid-column: 2; color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+.roll { display: grid; gap: 6px; }
+.roll button {
+  display: grid; grid-template-columns: 84px 1fr; gap: 8px; text-align: left; width: 100%;
+  border: 1px solid var(--rule); background: var(--surface); border-radius: 8px; padding: 6px 10px; cursor: pointer;
+}
+.roll button:hover { background: var(--accent-soft); }
+.roll b { color: var(--muted); font-weight: 500; font-size: 12.5px; }
+.cats { display: flex; flex-direction: column; gap: 2px; }
+.cats button { text-align: left; border: 0; background: none; padding: 5px 8px; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; }
+.cats button:hover { background: var(--accent-soft); }
+.cats button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.cats em { font-style: normal; opacity: .7; font-variant-numeric: tabular-nums; }
+
+main { min-width: 0; }
+.status { color: var(--muted); margin: 0 0 8px; font-size: 14px; }
+.prompt { padding: 28px 0 30px; border-top: 1px solid var(--rule); scroll-margin-top: 16px; }
+.prompt header { display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: baseline; }
+.num { font: 600 40px/1 var(--serif); color: var(--accent); font-variant-numeric: lining-nums tabular-nums; }
+.prompt h3 { font: 600 22px/1.2 var(--serif); margin: 0; letter-spacing: -0.01em; }
+.meta { margin: 4px 0 0; color: var(--muted); font-size: 13.5px; }
+.meta .cat { color: var(--ink); }
+.body { margin-left: 78px; }
+pre.text {
+  margin: 14px 0 0; padding: 16px 18px; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px;
+  font: 13.5px/1.6 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere;
+}
+mark.ph { background: var(--ph-bg); color: var(--ph-ink); border-radius: 3px; padding: 0 2px; }
+.addon { display: block; color: var(--addon-ink); background: var(--addon-bg); margin: 12px -18px -16px; padding: 12px 18px 14px; border-radius: 0 0 9px 9px; }
+.addon + .addon { margin-top: 0; border-top: 1px dashed var(--rule); border-radius: 0; }
+.addon:last-child { border-radius: 0 0 9px 9px; }
+.twists { margin: 10px 0 0; font-size: 13.5px; color: var(--muted); }
+.twists strong { color: var(--ink); font-weight: 600; margin-right: 6px; }
+.actions { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+.flash pre.text { animation: flash 1.4s ease-out; }
+@keyframes flash { 0% { box-shadow: 0 0 0 4px var(--accent); } 100% { box-shadow: 0 0 0 0 transparent; } }
+.empty { padding: 40px 0; color: var(--muted); border-top: 1px solid var(--rule); }
+
+.extras { margin-top: 56px; }
+.extras h2 { font: 600 30px/1.1 var(--serif); margin: 0 0 6px; letter-spacing: -0.01em; }
+.extras > p { color: var(--muted); margin: 0 0 8px; }
+.extra { padding: 22px 0; border-top: 1px solid var(--rule); }
+.extra h3 { font: 600 19px/1.25 var(--serif); margin: 0; }
+.extra p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+.items { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; }
+.items li { display: flex; gap: 10px; align-items: start; justify-content: space-between; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 9px 12px; font: 13.5px/1.5 var(--mono); }
+footer { max-width: 1240px; margin: 0 auto; padding: 24px 24px 56px; color: var(--muted); font-size: 13px; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; gap: 8px; padding: 16px; }
+  .masthead { padding: 28px 16px 0; }
+  aside { position: static; max-height: none; overflow: visible; padding-right: 0; }
+  .body { margin-left: 0; }
+  .prompt header { grid-template-columns: 48px 1fr; }
+  .num { font-size: 32px; }
+  footer { padding: 16px 16px 48px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div>
+    <h1>Creative Motion Prompt Kit</h1>
+    <p id="tagline"></p>
+  </div>
+  <button class="btn primary" id="surprise" type="button">Surprise me</button>
+</header>
+
+<div class="layout">
+  <aside aria-label="Options">
+    <details open>
+      <summary>Search</summary>
+      <div class="group">
+        <input id="q" type="search" placeholder="Search prompts  ( / )" aria-label="Search prompts">
+      </div>
+    </details>
+    <details open>
+      <summary><span>Your brand <span class="hint">&nbsp;optional</span></span></summary>
+      <div class="group">
+        <p class="hint">Empty keeps <code>BRAND: open</code>, so Claude invents the look. Fill it in to put every prompt on-brand.</p>
+        <textarea id="brand" rows="3" placeholder="e.g. Acme Studio · colours #1B1F3B, #F2E8DA, #FF5A36 · fonts Fraunces + Satoshi · logo attached" aria-label="Your brand guidelines"></textarea>
+        <div class="row">
+          <button class="btn small" id="brand-template" type="button">Use brand template</button>
+          <button class="btn small" id="brand-clear" type="button">Clear</button>
+        </div>
+      </div>
+    </details>
+    <details open>
+      <summary>Power-ups</summary>
+      <div class="group" id="powerups"></div>
+    </details>
+    <details open>
+      <summary>Style roulette</summary>
+      <div class="group">
+        <label class="check"><input type="checkbox" id="roulette"><span>Add this combo to every prompt</span><small>Click a line to re-roll just that part.</small></label>
+        <div class="roll" id="roll"></div>
+        <div class="row"><button class="btn small" id="roll-all" type="button">Roll all four</button></div>
+      </div>
+    </details>
+    <details open>
+      <summary>Categories</summary>
+      <div class="group cats" id="cats"></div>
+    </details>
+  </aside>
+
+  <main>
+    <p class="status" id="status" aria-live="polite"></p>
+    <div id="list"></div>
+    <section class="extras" id="extras-powerups" aria-labelledby="h-powerups">
+      <h2 id="h-powerups">Power-ups</h2>
+      <p>The full text of each add-on, to paste under any prompt anywhere.</p>
+      <div id="powerup-texts"></div>
+    </section>
+    <section class="extras" aria-labelledby="h-remixes">
+      <h2 id="h-remixes">Remixes</h2>
+      <p>Follow-ups to send after any result. The best creators almost never stopped at the first try.</p>
+      <div id="remixes"></div>
+    </section>
+  </main>
+</div>
+<footer id="footer"></footer>
+
+<script id="kit-data" type="application/json">__KIT_DATA__</script>
+<script>
+(function () {
+  "use strict";
+  var KIT = JSON.parse(document.getElementById("kit-data").textContent);
+  var PU = {};
+  KIT.powerups.forEach(function (p) { PU[p.id] = p; });
+  var R = KIT.roulette;
+  var ROLL_KEYS = [["style", "Style"], ["technique", "Technique"], ["mood", "Mood"], ["constraint", "Constraint"]];
+
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem("cmk:" + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem("cmk:" + k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function rnd(n) { return Math.floor(Math.random() * n); }
+  function randomRoll() { return { style: rnd(R.style.length), technique: rnd(R.technique.length), mood: rnd(R.mood.length), constraint: rnd(R.constraint.length) }; }
+
+  var state = {
+    q: "", cat: "All",
+    brand: store.get("brand", ""),
+    allout: store.get("allout", false),
+    variety: store.get("variety", false),
+    video: store.get("video", false),
+    format: store.get("format", ""),
+    roulette: store.get("roulette", false),
+    roll: store.get("roll", null) || randomRoll()
+  };
+  function save() {
+    ["brand", "allout", "variety", "video", "format", "roulette", "roll"].forEach(function (k) { store.set(k, state[k]); });
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  // Escape text and wrap each balanced {{placeholder}} (nesting allowed) in a highlight.
+  function highlight(s) {
+    var out = "", buf = "", depth = 0, i = 0;
+    while (i < s.length) {
+      if (s.substr(i, 2) === "{{") {
+        if (depth === 0) { out += esc(buf); buf = ""; }
+        depth++; buf += "{{"; i += 2; continue;
+      }
+      if (s.substr(i, 2) === "}}" && depth > 0) {
+        buf += "}}"; i += 2; depth--;
+        if (depth === 0) { out += '<mark class="ph">' + esc(buf) + "</mark>"; buf = ""; }
+        continue;
+      }
+      buf += s[i]; i++;
+    }
+    return out + esc(buf);
+  }
+  function linkCredit(credit, sources) {
+    var html = esc(credit);
+    sources.forEach(function (src) {
+      var h = esc(src.handle);
+      html = html.replace(h, '<a href="' + esc(src.url) + '" target="_blank" rel="noopener">' + h + "</a>");
+    });
+    return html;
+  }
+
+  function rollLine() {
+    return R.template
+      .replace("{style}", R.style[state.roll.style])
+      .replace("{technique}", R.technique[state.roll.technique])
+      .replace("{mood}", R.mood[state.roll.mood])
+      .replace("{constraint}", R.constraint[state.roll.constraint]);
+  }
+  function compose(text) {
+    var base = text;
+    var brand = state.brand.trim().replace(/^BRAND:\s*/i, "");
+    if (brand) base = base.replace(/^BRAND:.*$/m, function () { return "BRAND: " + brand; });
+    var add = [];
+    if (state.format) add.push("Format: " + state.format + ".");
+    if (state.roulette) add.push(rollLine());
+    if (state.variety) add.push(PU.variety.text);
+    if (state.allout) add.push(PU.allout.text);
+    if (state.video) add.push(PU.video.text);
+    return { base: base, add: add };
+  }
+  function composedText(text) {
+    var c = compose(text);
+    return [c.base].concat(c.add).join("\n\n");
+  }
+
+  var prompts = KIT.prompts.map(function (p) {
+    p.hay = [p.title, p.category, p.prompt, p.credit, p.twists.join(" ")].join(" ").toLowerCase();
+    return p;
+  });
+  function visible() {
+    var q = state.q.trim().toLowerCase();
+    return prompts.filter(function (p) {
+      return (state.cat === "All" || p.category === state.cat) && (!q || p.hay.indexOf(q) !== -1);
+    });
+  }
+
+  function renderList() {
+    var list = visible();
+    var host = document.getElementById("list");
+    document.getElementById("status").textContent =
+      "Showing " + list.length + " of " + prompts.length + " prompts" + (state.cat !== "All" ? " in " + state.cat : "") + ".";
+    if (!list.length) { host.innerHTML = '<p class="empty">No prompts match. Try another word or category.</p>'; return; }
+    host.innerHTML = list.map(function (p) {
+      var c = compose(p.prompt);
+      var addons = c.add.map(function (a) { return '<span class="addon">' + highlight(a) + "</span>"; }).join("");
+      return '<article class="prompt" id="p-' + p.id + '">' +
+        "<header><span class=\"num\">" + String(p.id).padStart(2, "0") + "</span><div>" +
+        "<h3>" + esc(p.title) + "</h3>" +
+        '<p class="meta"><span class="cat">' + esc(p.category) + "</span> · " + linkCredit(p.credit, p.sources) + "</p>" +
+        "</div></header>" +
+        '<div class="body"><pre class="text">' + highlight(c.base) + addons + "</pre>" +
+        (p.twists.length ? '<p class="twists"><strong>Twists</strong>' + p.twists.map(esc).join(" · ") + "</p>" : "") +
+        '<div class="actions"><button class="btn primary small" type="button" data-copy-prompt="' + p.id + '">Copy prompt</button></div>' +
+        "</div></article>";
+    }).join("");
+  }
+
+  function renderCats() {
+    var counts = { All: prompts.length };
+    prompts.forEach(function (p) { counts[p.category] = (counts[p.category] || 0) + 1; });
+    var names = ["All"].concat(KIT.categories);
+    document.getElementById("cats").innerHTML = names.map(function (n) {
+      return '<button type="button" data-cat="' + esc(n) + '" aria-pressed="' + (state.cat === n) + '">' +
+        "<span>" + esc(n === "All" ? "All prompts" : n) + "</span><em>" + counts[n] + "</em></button>";
+    }).join("");
+  }
+
+  function renderPowerupControls() {
+    var html = ["allout", "variety", "video"].map(function (id) {
+      var p = PU[id];
+      return '<label class="check"><input type="checkbox" data-pu="' + id + '"' + (state[id] ? " checked" : "") + ">" +
+        "<span>" + esc(p.name) + "</span><small>" + esc(p.note) + "</small></label>";
+    }).join("");
+    var fmt = PU.format;
+    html += '<label class="hint" for="format">' + esc(fmt.name) + "</label>" +
+      '<select id="format"><option value="">Any format (as written)</option>' +
+      fmt.options.map(function (o) { return '<option value="' + esc(o) + '"' + (state.format === o ? " selected" : "") + ">" + esc(o) + "</option>"; }).join("") +
+      "</select>";
+    document.getElementById("powerups").innerHTML = html;
+  }
+
+  function renderRoll() {
+    document.getElementById("roulette").checked = state.roulette;
+    document.getElementById("roll").innerHTML = ROLL_KEYS.map(function (k) {
+      return '<button type="button" data-reroll="' + k[0] + '" title="Re-roll ' + k[1].toLowerCase() + '"><b>' + k[1] + "</b><span>" +
+        esc(R[k[0]][state.roll[k[0]]]) + "</span></button>";
+    }).join("");
+  }
+
+  function renderExtras() {
+    var pu = KIT.powerups.filter(function (p) { return p.text; }).concat([{ id: "roll", name: "Let Claude roll", note: "Have Claude pick the roulette combination itself.", text: R.letClaudeRoll }]);
+    document.getElementById("powerup-texts").innerHTML = pu.map(function (p, i) {
+      return '<div class="extra"><h3>' + esc(p.name) + "</h3>" + (p.note ? "<p>" + esc(p.note) + "</p>" : "") +
+        '<pre class="text">' + highlight(p.text) + "</pre>" +
+        '<div class="actions"><button class="btn small" type="button" data-copy-text="pu-' + i + '">Copy</button></div></div>';
+    }).join("");
+    pu.forEach(function (p, i) { copyTexts["pu-" + i] = p.text; });
+
+    document.getElementById("remixes").innerHTML = KIT.remixes.map(function (r, i) {
+      var html = '<div class="extra"><h3>' + esc(r.name) + "</h3>";
+      if (r.note) html += "<p>" + esc(r.note) + "</p>";
+      if (r.credit) html += "<p>" + linkCredit(r.credit, r.sources) + "</p>";
+      if (r.text) {
+        copyTexts["rx-" + i] = r.text;
+        html += '<pre class="text">' + highlight(r.text) + '</pre><div class="actions"><button class="btn small" type="button" data-copy-text="rx-' + i + '">Copy</button></div>';
+      }
+      if (r.items.length) {
+        html += '<ul class="items">' + r.items.map(function (it, j) {
+          copyTexts["rx-" + i + "-" + j] = it;
+          return "<li><span>" + highlight(it) + '</span><button class="btn small" type="button" data-copy-text="rx-' + i + "-" + j + '">Copy</button></li>';
+        }).join("") + "</ul>";
+      }
+      return html + "</div>";
+    }).join("");
+  }
+  var copyTexts = {};
+
+  function copy(text, btn) {
+    function done(ok) {
+      if (!btn) return;
+      var label = btn.textContent;
+      btn.textContent = ok ? "Copied" : "Press Ctrl/⌘+C";
+      btn.classList.add("copied");
+      setTimeout(function () { btn.textContent = label; btn.classList.remove("copied"); }, 1300);
+    }
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta); done(ok);
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
+    } else { fallback(); }
+  }
+
+  function rerender() { save(); renderList(); }
+
+  // Events
+  document.getElementById("q").addEventListener("input", function (e) { state.q = e.target.value; renderList(); });
+  var brandEl = document.getElementById("brand");
+  brandEl.value = state.brand;
+  brandEl.addEventListener("input", function () { state.brand = brandEl.value; rerender(); });
+  document.getElementById("brand-template").addEventListener("click", function () {
+    brandEl.value = PU.brand.text.replace(/^BRAND:\s*/, ""); state.brand = brandEl.value; rerender(); brandEl.focus();
+  });
+  document.getElementById("brand-clear").addEventListener("click", function () { brandEl.value = ""; state.brand = ""; rerender(); });
+
+  document.getElementById("powerups").addEventListener("change", function (e) {
+    if (e.target.dataset.pu) { state[e.target.dataset.pu] = e.target.checked; rerender(); }
+    if (e.target.id === "format") { state.format = e.target.value; rerender(); }
+  });
+  document.getElementById("roulette").addEventListener("change", function (e) { state.roulette = e.target.checked; rerender(); });
+  document.getElementById("roll").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-reroll]"); if (!b) return;
+    var k = b.dataset.reroll, n = R[k].length, cur = state.roll[k], next = cur;
+    while (n > 1 && next === cur) next = rnd(n);
+    state.roll[k] = next; renderRoll(); rerender();
+  });
+  document.getElementById("roll-all").addEventListener("click", function () { state.roll = randomRoll(); renderRoll(); rerender(); });
+  document.getElementById("cats").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-cat]"); if (!b) return;
+    state.cat = b.dataset.cat; renderCats(); renderList();
+  });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-copy-prompt]");
+    if (b) {
+      var id = +b.dataset.copyPrompt;
+      var p = prompts.filter(function (x) { return x.id === id; })[0];
+      copy(composedText(p.prompt), b); return;
+    }
+    var t = e.target.closest("[data-copy-text]");
+    if (t) copy(copyTexts[t.dataset.copyText], t);
+  });
+  document.getElementById("surprise").addEventListener("click", function () {
+    var pool = visible(); if (!pool.length) { state.cat = "All"; state.q = ""; document.getElementById("q").value = ""; renderCats(); pool = prompts; }
+    state.roll = randomRoll(); renderRoll(); rerender();
+    var pick = pool[rnd(pool.length)];
+    var el = document.getElementById("p-" + pick.id);
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    el.classList.add("flash"); setTimeout(function () { el.classList.remove("flash"); }, 1500);
+    el.querySelector("[data-copy-prompt]").focus({ preventScroll: true });
+  });
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    if (e.key === "/" && tag !== "input" && tag !== "textarea" && tag !== "select") { e.preventDefault(); document.getElementById("q").focus(); }
+  });
+
+  // Start
+  document.getElementById("tagline").textContent =
+    prompts.length + " standalone prompts for motion graphics, animation, 3D, generative art and interactive toys. " +
+    "Each one works with or without your brand. Toggle power-ups, roll a style, copy, paste into Claude.";
+  document.getElementById("footer").innerHTML =
+    "Prompts marked “Based on” are adapted from creators who shared them during Claude Opus 5.5’s first week; follow the links for the originals. " +
+    "The rest were written for this kit. None are tested as written, so expect to iterate. Version " + esc(KIT.version) + " · updated " + esc(KIT.updated) + ".";
+  if (window.matchMedia("(max-width: 900px)").matches) {
+    document.querySelectorAll("aside details").forEach(function (d, i) { if (i > 0) d.open = false; });
+  }
+  renderPowerupControls(); renderRoll(); renderCats(); renderExtras(); renderList();
+})();
+</script>
+</body>
+</html>

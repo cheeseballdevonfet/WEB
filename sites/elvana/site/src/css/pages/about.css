@@ -1,0 +1,275 @@
+/* =========================================================================
+   Elvana Media: pages/about.css
+   The About page's one signature, "Layers of the wall" (INTERACTIONS.md):
+   six posters pasted one over another in a pinned stage. about.js strips
+   them back sheet by sheet as you scroll (scrubbed, reversible) and peels
+   the team posters to show each person's focus.
+
+   Two layouts, both finished:
+   - FLOW (the base): no JS, reduced motion, or a viewport too short for the
+     stage (about.js adds .is-flow when a layer would not fit). The six
+     layers are ordinary posters, one under the other, every word visible.
+   - STAGED: html.js.motion on a viewport at least 600px tall. The layers
+     stack in a sticky stage the height of the screen; type is sized
+     against the stage (cqh) so each layer fits whole.
+   ========================================================================= */
+
+/* ---------- The wall (both layouts) ---------- */
+.wall{--stage-h:calc(100svh - var(--hdr));--roll:34px;--curl:clamp(56px,6vw,96px)}
+.wall__rail,.wall__rolls{display:none}
+.layer{margin-top:-10px}                     /* flow: each layer pasted a little over the one above */
+.layer:first-child{margin-top:0}
+.layer__label{font-family:var(--text);font-weight:800;font-size:17px;line-height:1.2;margin-bottom:clamp(14px,2vw,24px)}
+
+/* Layer 1: why */
+.why{display:grid;grid-template-columns:5fr 7fr;gap:28px clamp(32px,4.4vw,72px);align-items:end}
+.why__head h2{max-width:9ch}
+.why__head .lede{margin-top:clamp(16px,2vw,28px);max-width:30ch}
+.why__vm{display:grid;gap:clamp(22px,3vw,40px)}
+.why__vm b{display:block;font-family:var(--display);font-weight:400;font-size:var(--fs-d3);line-height:1;color:var(--hi);margin-bottom:8px}
+.why__vision span{display:block;font-family:var(--display);font-size:clamp(28px,3.3vw,52px);line-height:1.04;max-width:22ch}
+.why__mission span{display:block;font-size:var(--fs-lede);line-height:1.4;max-width:46ch}
+
+/* Layer 2: the three pillars, billed as three painted lines */
+.trio{border-top:6px solid var(--ink)}
+.trio li{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:8px clamp(24px,3vw,56px);align-items:end;padding:clamp(14px,2vw,26px) 0 clamp(12px,1.6vw,22px);border-bottom:6px solid var(--ink)}
+.trio h3{font-size:clamp(64px,11vw,176px);line-height:.86}
+.trio p{font-size:var(--fs-lede);line-height:1.32;max-width:30ch;padding-bottom:.35em}
+
+/* Layer 3: the founder (reuses .founder and .portrait from components.css) */
+.layer .founder{margin-top:0}
+.founder .org{font-size:var(--fs-small);font-weight:800}
+.founder .lede{margin-top:20px;max-width:40ch}
+
+/* Layer 4: leadership. A poster per person: initials sheet pasted over their focus. */
+.team-head{display:grid;grid-template-columns:7fr 5fr;gap:12px 48px;align-items:end;margin-bottom:clamp(24px,3vw,44px)}
+.team-head h2{color:var(--yellow)}
+.team-head__note{font-size:var(--fs-body);max-width:44ch;color:var(--paper-dim)}
+.crew{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(14px,1.6vw,24px)}
+.mate{display:grid;grid-template-rows:auto auto auto;align-content:start;container-type:inline-size}
+.mate h3{order:2;font-size:clamp(24px,min(14cqw,2.4vw),36px);line-height:1;margin-top:14px;color:var(--paper)}
+.mate__role{order:3;font-weight:800;font-size:15px;color:var(--yellow);margin-top:6px}
+.mate__art{order:1;display:grid;grid-template-rows:auto auto;position:relative;isolation:isolate;box-shadow:inset 0 0 0 3px var(--ink)}
+.mate__sheet{aspect-ratio:4/3.4;display:grid;place-items:center;position:relative;z-index:2;overflow:hidden;
+  background:radial-gradient(circle,var(--blue) 30%,transparent 33%) 0 0/9px 9px,var(--paper);box-shadow:inset 0 0 0 3px var(--ink)}
+.mate__sheet>b{font-family:var(--display);font-weight:400;font-size:clamp(54px,34cqw,96px);line-height:1;color:var(--ink);background:var(--paper);padding:.14em .22em .02em}
+.mate .coming-soon--over{left:-7%;right:-7%;font-size:14px;gap:0 .5em;padding:.45em .6em .32em}
+.mate .coming-soon--over>b{font-size:clamp(20px,11cqw,26px)}
+.mate__sheet .coming-soon{--strip-top:76%;--strip-angle:-8deg}
+.mate__focus{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:flex-start;gap:6px;min-height:clamp(120px,46cqw,170px);padding:14px 14px 16px;box-shadow:inset 0 0 0 3px var(--ink)}
+.mate__focus .lbl{font-weight:800;font-size:14px;line-height:1.2}
+.mate__focus p{font-family:var(--display);font-size:clamp(21px,12cqw,30px);line-height:1.04}
+.mate__focus--blank{justify-content:flex-start}
+.mate__focus--blank .coming-soon{--strip-top:60%;--strip-angle:-7deg}
+
+/* Layer 5: the group */
+.group-head{display:grid;grid-template-columns:7fr 5fr;gap:20px 48px;align-items:end}
+.group-head h2{color:var(--yellow);max-width:16ch}
+.backs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px clamp(28px,3.4vw,56px);margin-top:clamp(32px,4.4vw,64px);border-top:6px solid var(--yellow);padding-top:clamp(20px,2.4vw,32px)}
+.group .strip-note,#group .strip-note{margin-top:clamp(32px,4vw,56px)}
+.backs b{display:block;font-family:var(--display);font-weight:400;font-size:var(--fs-d3);line-height:1;color:var(--yellow);margin-bottom:10px}
+
+/* Layer 6: the cities */
+#cities-h{max-width:18ch}
+
+/* ---------- Company at a glance ---------- */
+#glance .facts{border-top-color:var(--red)}
+#glance .facts li+li{box-shadow:inset 3px 0 0 rgba(26,24,20,.16)}
+#glance .facts span{font-size:var(--fs-body)}
+.particulars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 clamp(24px,3vw,48px);margin-top:clamp(40px,5vw,72px);border-top:10px solid var(--ink)}
+.particulars>div{padding:18px 0 20px;border-bottom:3px solid var(--ink)}
+.particulars .wide{grid-column:span 2}
+.particulars dt{font-weight:800;font-size:15px;margin-bottom:4px}
+.particulars dd{font-family:var(--display);font-size:clamp(22px,1.9vw,30px);line-height:1.12;overflow-wrap:anywhere}
+
+/* ---------- Flow layout, tablet and phone ---------- */
+@media (max-width:1099px){
+  .why,.team-head,.group-head{grid-template-columns:1fr}
+  .crew{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .backs{grid-template-columns:1fr 1fr}
+  .particulars{grid-template-columns:1fr 1fr}
+}
+@media (max-width:699px){
+  .trio li{grid-template-columns:1fr}
+  .trio h3{font-size:clamp(56px,17vw,80px)}
+  .crew{grid-template-columns:1fr 1fr}
+  .crew .mate:last-child{grid-column:1 / -1}
+  .backs{grid-template-columns:1fr}
+  .particulars{grid-template-columns:1fr}
+  .particulars .wide{grid-column:auto}
+}
+
+/* =========================================================================
+   STAGED: the pinned wall. Only with JS and motion, on a screen tall enough.
+   ========================================================================= */
+@media (min-height:600px){
+  .js.motion .wall:not(.is-flow) .wall__track{height:calc(var(--stage-h) * 7.1)}
+  .js.motion .wall:not(.is-flow) .wall__stage{position:sticky;top:var(--hdr);height:var(--stage-h);display:grid;grid-template-rows:minmax(0,1fr) auto;overflow:hidden;background:var(--wall)}
+  .js.motion .wall:not(.is-flow) .wall__layers,
+  .js.motion .wall:not(.is-flow) .wall__rolls{grid-row:1;grid-column:1;position:relative;min-height:0}
+  .js.motion .wall:not(.is-flow) .wall__layers{container:layers / size}
+  .js.motion .wall:not(.is-flow) .wall__rolls{display:block;z-index:8;pointer-events:none;overflow:hidden}
+  .js.motion .wall:not(.is-flow) .layer{position:absolute;inset:0;margin:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;
+    padding:clamp(22px,6cqh,64px) var(--pad-x) clamp(18px,4cqh,44px)}
+  .js.motion .wall:not(.is-flow) .layer:nth-child(1){z-index:6}
+  .js.motion .wall:not(.is-flow) .layer:nth-child(2){z-index:5}
+  .js.motion .wall:not(.is-flow) .layer:nth-child(3){z-index:4}
+  .js.motion .wall:not(.is-flow) .layer:nth-child(4){z-index:3}
+  .js.motion .wall:not(.is-flow) .layer:nth-child(5){z-index:2}
+  .js.motion .wall:not(.is-flow) .layer:nth-child(6){z-index:1}
+  .js.motion .wall:not(.is-flow) .layer::before{display:none}
+  .js.motion .wall:not(.is-flow) .layer__label{font-size:min(17px,2.4cqh);margin-bottom:min(24px,2.4cqh)}
+
+  /* the roll of paper riding each sheet's peel line (back of the paper, a sliver of print underneath) */
+  .wall__roll{position:absolute;top:0;height:var(--roll);opacity:0;transform-origin:50% 50%;will-change:transform;
+    background:linear-gradient(to bottom,rgba(26,24,20,.55) 0,#D3D1CA 9%,#FBFBF7 27%,var(--back) 50%,#B4B1A9 70%,#7E7A72 77%,var(--roll-ink,var(--red)) 79%,var(--roll-ink,var(--red)) 100%);
+    box-shadow:0 14px 16px -8px rgba(0,0,0,.55),0 -3px 6px -2px rgba(0,0,0,.25)}
+  .wall__roll.on{opacity:1}
+  /* the top poster's corner has already come unstuck: an invitation to strip it (about.js shows it while that layer is whole) */
+  .wall__curl{position:absolute;right:0;bottom:0;width:var(--curl);height:var(--curl);opacity:0;pointer-events:none;
+    background:linear-gradient(to top left,transparent 50%,#B9B7B0 50%,var(--back) 64%,#F7F7F3 100%);filter:drop-shadow(-3px -3px 3px rgba(0,0,0,.3));transition:opacity var(--t-press) linear}
+  .wall__curl.on{opacity:1}
+
+  /* the rail: the stage's base, an ink strip with the six layers */
+  .js.motion .wall:not(.is-flow) .wall__rail{grid-row:2;display:flex;align-items:center;gap:20px;position:relative;z-index:9;background:var(--ink);color:var(--paper);--focus:var(--yellow);padding:0 var(--pad-x);border-top:3px solid rgba(242,243,239,.18)}
+  .wall__hint{font-weight:600;font-size:15px;color:var(--paper-dim);margin-right:auto;white-space:nowrap}
+  .wall__rail ol{display:flex;gap:2px}
+  .wall__rail a{display:flex;align-items:center;gap:8px;min-height:48px;padding:10px 12px 7px;font-weight:800;font-size:15px;line-height:1;text-decoration:none;color:var(--paper);box-shadow:inset 0 0 0 transparent;transition:box-shadow var(--t-lift) var(--ease-paste),color var(--t-lift) linear}
+  .wall__rail a:hover{box-shadow:inset 0 -4px 0 var(--paper)}
+  .wall__rail a[aria-current]{color:var(--yellow);box-shadow:inset 0 -4px 0 var(--yellow)}
+  .wall__rail .n{font-family:var(--display);font-weight:400;font-size:20px;line-height:1;color:var(--yellow);padding-top:2px}
+  .wall__rail a:focus-visible{outline-offset:-3px}
+
+  /* ---- layer compositions, sized against the stage ---- */
+  .js.motion .wall:not(.is-flow) .d2{font-size:min(var(--fs-d2),7.6cqh)}
+  .js.motion .wall:not(.is-flow) .lede{font-size:min(var(--fs-lede),3.2cqh)}
+  /* 1 why */
+  .js.motion .wall:not(.is-flow) .why{flex:1;align-items:stretch;min-height:0}
+  .js.motion .wall:not(.is-flow) .why__head{align-self:start}
+  .js.motion .wall:not(.is-flow) .why__vm{align-self:end}
+  .js.motion .wall:not(.is-flow) .why__head h2{font-size:min(var(--fs-d1),12cqh)}
+  .js.motion .wall:not(.is-flow) .why__head .lede{margin-top:min(28px,3cqh)}
+  .js.motion .wall:not(.is-flow) .why__vm{gap:min(40px,4cqh)}
+  .js.motion .wall:not(.is-flow) .why__vm b{font-size:min(var(--fs-d3),5cqh);margin-bottom:min(8px,1cqh)}
+  .js.motion .wall:not(.is-flow) .why__vision span{font-size:min(clamp(26px,3.3vw,52px),6.4cqh)}
+  .js.motion .wall:not(.is-flow) .why__mission span{font-size:min(var(--fs-lede),3.1cqh)}
+  /* 2 pillars */
+  .js.motion .wall:not(.is-flow) .trio h3{font-size:min(clamp(56px,11vw,176px),17cqh)}
+  .js.motion .wall:not(.is-flow) .trio li{padding:min(26px,2.2cqh) 0 min(20px,1.8cqh)}
+  .js.motion .wall:not(.is-flow) .trio p{font-size:min(var(--fs-lede),3cqh)}
+  /* 3 founder */
+  .js.motion .wall:not(.is-flow) .founder{grid-template-columns:auto 1fr;align-items:center}
+  .js.motion .wall:not(.is-flow) .portrait{height:min(68cqh,560px);width:auto;aspect-ratio:4/5}
+  .js.motion .wall:not(.is-flow) .portrait>b{font-size:min(clamp(90px,12vw,180px),16cqh)}
+  .js.motion .wall:not(.is-flow) .founder h3{font-size:min(var(--fs-d1),13cqh)}
+  .js.motion .wall:not(.is-flow) .founder .role{font-size:min(var(--fs-d3),5cqh);margin-top:min(14px,1.6cqh)}
+  .js.motion .wall:not(.is-flow) .founder .lede{margin-top:min(20px,2.4cqh)}
+  /* 4 team: the sheet sits over the focus in one cell; about.js peels it */
+  .js.motion .wall:not(.is-flow) .team-head{margin-bottom:min(40px,3.6cqh)}
+  .js.motion .wall:not(.is-flow) .team-head__note{font-size:min(var(--fs-body),2.6cqh)}
+  .js.motion .wall:not(.is-flow) .mate__art{grid-template-rows:1fr;height:min(50cqh,124cqw);overflow:hidden}
+  .js.motion .wall:not(.is-flow) .mate__focus p{font-size:min(clamp(21px,12cqw,30px),4.4cqh)}
+  .js.motion .wall:not(.is-flow) .mate__sheet,.js.motion .wall:not(.is-flow) .mate__focus{grid-area:1 / 1;aspect-ratio:auto;min-height:0}
+  .js.motion .wall:not(.is-flow) .mate__sheet{z-index:2}
+  .js.motion .wall:not(.is-flow) .mate h3{margin-top:min(14px,1.6cqh);font-size:min(clamp(24px,min(14cqw,2.4vw),36px),4cqh)}
+  .js.motion .wall:not(.is-flow) .mate__role{margin-top:min(6px,.8cqh)}
+  .mate__roll{position:absolute;left:0;right:0;top:0;height:22px;z-index:3;opacity:0;pointer-events:none;transform-origin:50% 50%;will-change:transform;
+    background:linear-gradient(to bottom,#C9C7C0 0%,#F7F7F3 20%,var(--back) 50%,#B9B7B0 76%,rgba(0,0,0,.25) 78%,var(--paper) 80%,var(--paper) 100%);box-shadow:0 9px 10px -6px rgba(0,0,0,.5)}
+  .mate__roll.on{opacity:1}
+  /* 5 group */
+  .js.motion .wall:not(.is-flow) .backs{margin-top:min(64px,5cqh);padding-top:min(32px,3cqh)}
+  .js.motion .wall:not(.is-flow) .backs b{font-size:min(var(--fs-d3),4.6cqh)}
+  .js.motion .wall:not(.is-flow) .backs li{font-size:min(var(--fs-body),2.6cqh)}
+  .js.motion .wall:not(.is-flow) .group-head h2{font-size:min(clamp(40px,5.8vw,88px),9cqh)}
+  .js.motion .wall:not(.is-flow) #group .strip-note{margin-top:min(56px,5cqh);font-size:min(var(--fs-lede),3cqh);padding:min(22px,2.4cqh) var(--pad-x) min(18px,2cqh)}
+  /* 6 cities */
+  .js.motion .wall:not(.is-flow) .boards{margin-top:min(72px,5cqh);gap:min(48px,4cqh) clamp(20px,2.6vw,40px)}
+  .js.motion .wall:not(.is-flow) .board .sign .en{font-size:min(clamp(32px,4.4vw,64px),6.6cqh)}
+  .js.motion .wall:not(.is-flow) .board .sign .hi{font-size:min(clamp(24px,2.8vw,40px),4.2cqh)}
+  .js.motion .wall:not(.is-flow) .board.main .sign .en{font-size:min(clamp(48px,7.2vw,108px),11cqh)}
+  .js.motion .wall:not(.is-flow) .board.main .sign .hi{font-size:min(clamp(32px,4vw,58px),6cqh)}
+  .js.motion .wall:not(.is-flow) .board .sign{padding:min(14px,1.4cqh) 10px min(10px,1cqh)}
+  .js.motion .wall:not(.is-flow) .board.main .posts{height:min(clamp(40px,6vw,96px),8cqh)}
+  .js.motion .wall:not(.is-flow) .board .meta{font-size:min(var(--fs-body),2.5cqh)}
+}
+
+/* staged, wide stages: the cities sit beside their heading */
+@media (min-height:600px) and (min-width:1000px){
+  .js.motion .wall:not(.is-flow) #cities{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);column-gap:clamp(28px,3.4vw,56px);align-content:center;align-items:start}
+  .js.motion .wall:not(.is-flow) #cities .boards{margin-top:0;grid-template-columns:1.25fr 1fr 1fr}
+  .js.motion .wall:not(.is-flow) #cities .board.main{grid-column:auto;grid-row:span 2}
+  .js.motion .wall:not(.is-flow) #cities-h{font-size:min(var(--fs-d2),7cqh);padding-top:min(18px,2cqh)}
+}
+/* staged, tablet */
+@media (min-height:600px) and (min-width:860px) and (max-width:1099px){
+  .js.motion .wall:not(.is-flow) .why{grid-template-columns:5fr 7fr}
+  .js.motion .wall:not(.is-flow) .group-head{grid-template-columns:7fr 5fr}
+}
+@media (min-height:600px) and (max-width:1099px){
+  .js.motion .wall:not(.is-flow) .why{gap:min(28px,2.6cqh)}
+  .js.motion .wall:not(.is-flow) .crew{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .js.motion .wall:not(.is-flow) .crew .mate:nth-child(n+4){grid-column:span 1}
+  .js.motion .wall:not(.is-flow) .mate__art{height:min(24cqh,90cqw)}
+  .js.motion .wall:not(.is-flow) .group-head{gap:min(20px,2cqh)}
+  .js.motion .wall:not(.is-flow) .founder{grid-template-columns:auto 1fr}
+  .js.motion .wall:not(.is-flow) .portrait{height:min(44cqh,520px)}
+  .js.motion .wall:not(.is-flow) .boards{margin-top:min(40px,3.6cqh);row-gap:min(32px,3cqh)}
+  .js.motion .wall:not(.is-flow) .board .sign .en{font-size:min(clamp(32px,4.4vw,64px),5.4cqh)}
+  .js.motion .wall:not(.is-flow) .board.main .sign .en{font-size:min(clamp(48px,7.2vw,108px),8.4cqh)}
+  .js.motion .wall:not(.is-flow) .board.main .posts{height:min(28px,2.6cqh)}
+}
+/* staged, phone: designed for the narrow stage, not shrunk */
+@media (min-height:600px) and (max-width:699px){
+  .wall{--roll:24px}
+  .js.motion .wall:not(.is-flow) .layer{justify-content:flex-start;padding-top:clamp(18px,4cqh,36px)}
+  .js.motion .wall:not(.is-flow) .why__vm b{font-size:min(26px,4cqh)}
+  .js.motion .wall:not(.is-flow) .why__vision span{font-size:min(26px,4cqh)}
+  .js.motion .wall:not(.is-flow) .why__mission span{font-size:min(17px,2.5cqh)}
+  .js.motion .wall:not(.is-flow) .why__head .lede{font-size:min(19px,2.7cqh)}
+  .js.motion .wall:not(.is-flow) .why__head h2{font-size:min(48px,6.4cqh)}
+  .js.motion .wall:not(.is-flow) .why__vm{align-self:start;margin-top:min(24px,3cqh)}
+  .js.motion .wall:not(.is-flow) .group-head h2{font-size:min(34px,4.8cqh)}
+  .js.motion .wall:not(.is-flow) #group .strip-note{font-size:min(17px,2.4cqh);margin-top:min(22px,2.2cqh);padding:min(16px,2cqh) var(--pad-x) min(14px,1.6cqh)}
+  .js.motion .wall:not(.is-flow) .trio{margin-top:auto;margin-bottom:auto}
+  .js.motion .wall:not(.is-flow) .trio h3{font-size:min(17vw,11cqh)}
+  .js.motion .wall:not(.is-flow) .trio p{font-size:min(17px,2.5cqh)}
+  .js.motion .wall:not(.is-flow) .founder{grid-template-columns:1fr;gap:min(20px,2.4cqh)}
+  .js.motion .wall:not(.is-flow) .portrait{height:24cqh;width:100%;max-width:none;aspect-ratio:auto}
+  .js.motion .wall:not(.is-flow) .portrait>b{font-size:min(90px,11cqh)}
+  .js.motion .wall:not(.is-flow) .founder h3{font-size:min(44px,6.2cqh)}
+  .js.motion .wall:not(.is-flow) .founder .role{font-size:min(24px,3.4cqh)}
+  .js.motion .wall:not(.is-flow) .founder .lede{font-size:min(18px,2.6cqh)}
+  .js.motion .wall:not(.is-flow) .team-head{margin-bottom:min(18px,2cqh)}
+  .js.motion .wall:not(.is-flow) .team-head__note{display:none}
+  .js.motion .wall:not(.is-flow) .crew{grid-template-columns:1fr 1fr;gap:min(14px,1.6cqh) 12px}
+  .js.motion .wall:not(.is-flow) .crew .mate:last-child{grid-column:1 / -1;grid-template-columns:1fr 1fr;column-gap:12px}
+  .js.motion .wall:not(.is-flow) .crew .mate:last-child .mate__art{grid-column:1;grid-row:1 / span 3}
+  .js.motion .wall:not(.is-flow) .crew .mate:last-child h3,.js.motion .wall:not(.is-flow) .crew .mate:last-child .mate__role{grid-column:2}
+  .js.motion .wall:not(.is-flow) .mate__art{height:min(17cqh,150px)}
+  .js.motion .wall:not(.is-flow) .mate h3{font-size:min(20px,2.8cqh)}
+  .js.motion .wall:not(.is-flow) .mate__focus{padding:10px 10px 12px}
+  .js.motion .wall:not(.is-flow) .mate__focus p{font-size:min(19px,2.6cqh)}
+  .js.motion .wall:not(.is-flow) .mate__sheet>b{font-size:min(56px,7cqh)}
+  .js.motion .wall:not(.is-flow) .backs{grid-template-columns:1fr;gap:min(18px,2cqh)}
+  .js.motion .wall:not(.is-flow) .backs b{font-size:min(24px,3.4cqh);margin-bottom:4px}
+  .js.motion .wall:not(.is-flow) .backs li{font-size:min(16px,2.3cqh);line-height:1.4}
+  .js.motion .wall:not(.is-flow) #cities-h{font-size:min(32px,4.3cqh)}
+  .js.motion .wall:not(.is-flow) .boards{grid-template-columns:1fr 1fr;gap:min(16px,1.8cqh) 14px;margin-top:min(22px,2.6cqh)}
+  .js.motion .wall:not(.is-flow) .board.main{grid-column:span 2}
+  .js.motion .wall:not(.is-flow) .board .sign{margin:4px;box-shadow:0 0 0 4px var(--yellow)}
+  .js.motion .wall:not(.is-flow) .board.next .sign{box-shadow:none}
+  .js.motion .wall:not(.is-flow) .board.main .sign .en{font-size:min(44px,6cqh)}
+  .js.motion .wall:not(.is-flow) .board.main .sign .hi{font-size:min(26px,3.6cqh)}
+  .js.motion .wall:not(.is-flow) .board .sign .en{font-size:min(28px,3.8cqh)}
+  .js.motion .wall:not(.is-flow) .board .sign .hi{font-size:min(20px,2.8cqh)}
+  .js.motion .wall:not(.is-flow) .board .posts{height:min(14px,1.6cqh)}
+  .js.motion .wall:not(.is-flow) .board.main .posts{height:min(20px,2.2cqh)}
+  .js.motion .wall:not(.is-flow) .board .meta{font-size:min(15px,2.1cqh);margin-top:4px;gap:0;line-height:1.3}
+  .js.motion .wall:not(.is-flow) .wall__rail{gap:0;padding:0 8px}
+  .wall__hint{display:none}
+  .wall__rail ol{flex:1;justify-content:space-between}
+  .wall__rail li{flex:1}
+  .wall__rail a{justify-content:center;padding:10px 2px 7px;font-size:14px;min-height:48px}
+  .wall__rail .n{display:none}
+}
+@media (prefers-reduced-motion:reduce){.wall__rail a{transition:none}}

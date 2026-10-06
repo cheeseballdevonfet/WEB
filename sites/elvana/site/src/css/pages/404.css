@@ -1,0 +1,119 @@
+/* =========================================================================
+   Elvana Media: pages/404.css
+   The 404's one signature, "Torn down": the page has been torn off the
+   wall, leaving bare concrete, a ragged remnant of the yellow poster with
+   the h1, and the useful part (a search-style list on a paper notice) under
+   a litter of scraps from old Elvana posters. js/pages/404.js lets the
+   visitor drag and fling the scraps aside, or clear them all at once.
+   No JS: no scraps. Reduced motion: the wall is already cleared, two
+   scraps tucked at its edges.
+   ========================================================================= */
+
+/* ---------- The bare wall ---------- */
+.page-hero.torn{grid-template-columns:repeat(12,minmax(0,1fr));align-items:start;gap:clamp(28px,3vw,48px) 0;min-height:calc(100svh - var(--hdr));
+  padding:clamp(24px,3.4vw,56px) var(--pad-x) clamp(48px,6vw,96px);overflow:clip;
+  background-color:var(--wall);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 600' preserveAspectRatio='none'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cpath d='M-20 520 C 240 430 400 470 640 380 S 1000 300 1240 260' stroke='%23fff' stroke-opacity='.10' stroke-width='90'/%3E%3Cpath d='M60 140 C 300 80 520 150 760 90 S 1080 60 1240 40' stroke='%23000' stroke-opacity='.05' stroke-width='60'/%3E%3Cpath d='M400 640 C 600 540 820 600 980 500 S 1180 470 1260 440' stroke='%23fff' stroke-opacity='.08' stroke-width='50'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(to right,rgba(0,0,0,.08) 1px,transparent 1px),linear-gradient(to bottom,rgba(0,0,0,.07) 1px,transparent 1px);
+  background-size:100% 100%,var(--sheet) 100%,100% var(--sheet-h)}
+
+/* ---------- What is left of the poster ---------- */
+.torn__poster{grid-column:1 / span 6;position:relative;margin-right:clamp(-40px,-2vw,-12px);z-index:1;filter:drop-shadow(3px 5px 0 rgba(0,0,0,.22))}
+.torn__poster::before{content:"";position:absolute;inset:0;background:#F7F7F3;clip-path:var(--torn)}   /* the white fibres of the torn edge */
+.torn{--torn:polygon(0 0,100% 0,98.5% 6%,100% 13%,97% 21%,99% 30%,96.5% 37%,98% 46%,95% 55%,97.5% 63%,94% 71%,96% 80%,92% 86%,88% 92%,81% 89%,74% 95%,66% 91%,58% 97%,49% 93%,41% 99%,32% 94%,24% 98%,16% 93%,8% 97%,0 94%)}
+.torn__sheet{position:relative;clip-path:var(--torn);margin:0 7px 9px 0;padding:clamp(24px,3vw,48px) clamp(40px,6vw,96px) clamp(56px,6vw,96px) clamp(22px,2.6vw,40px);display:grid;gap:clamp(14px,1.8vw,24px);
+  background-image:linear-gradient(to right,rgba(0,0,0,.09) 1px,rgba(255,255,255,.16) 1px 2px,transparent 2px),linear-gradient(to bottom,rgba(0,0,0,.08) 1px,rgba(255,255,255,.14) 1px 2px,transparent 2px);
+  background-size:var(--sheet) 100%,100% var(--sheet-h);background-position:-1px 0,0 -1px}
+.torn__code{display:flex;align-items:baseline;gap:14px;font-weight:800;font-size:15px}
+.torn__code .d{font-family:var(--display);font-weight:400;font-size:clamp(34px,3.4vw,52px);line-height:1;color:var(--red)}
+.torn h1{font-size:clamp(64px,min(10.4vw,17svh),168px);line-height:.86;max-width:7ch}
+.torn__line{font-size:var(--fs-lede);line-height:1.38;max-width:26ch}
+.torn__acts{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:6px}
+.torn__hint{font-weight:800;font-size:16px}
+.torn__acts .tag[disabled]{opacity:1;background:transparent;color:var(--ink);box-shadow:inset 0 0 0 3px var(--ink)}
+.torn__acts [hidden]{display:none}
+
+/* ---------- The board: the useful part, under the scraps ---------- */
+.torn__board{grid-column:7 / span 6;position:relative;z-index:2;margin-top:clamp(8px,3vw,48px)}
+.finder{position:relative;padding:clamp(22px,2.6vw,40px) clamp(20px,2.4vw,36px) clamp(18px,2vw,28px);box-shadow:inset 0 10px 0 var(--ink),6px 8px 0 rgba(0,0,0,.28);--focus:var(--blue)}
+.finder__h{font-size:var(--fs-d3);padding-top:10px}
+.finder__search{display:grid;gap:6px;margin-top:16px}
+.finder__search label{font-weight:800;font-size:16px}
+.finder__search input{width:100%;min-height:54px;padding:12px 14px 8px;border:0;border-bottom:3px solid var(--ink);border-radius:0;background:rgba(26,24,20,.05);color:var(--ink);font:400 20px/1.3 var(--text);-webkit-appearance:none;appearance:none}
+.finder__search input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.finder__hint{font-size:var(--fs-small);color:var(--ink-soft)}
+.results{margin-top:12px;border-top:3px solid var(--ink)}
+.results li{border-bottom:3px solid var(--ink)}
+.results .more{display:none}
+.results.is-searching li{display:none}
+.results.is-searching li.is-match{display:block}
+.results a{display:grid;gap:1px;padding:12px 10px 11px;text-decoration:none;transition:background-color var(--t-lift) linear}
+.results a:hover{background:var(--yellow)}
+.results a:focus-visible{outline-offset:-3px}
+.results b{font-family:var(--display);font-weight:400;font-size:clamp(22px,1.9vw,28px);line-height:1.05}
+.results a:hover b{text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:.14em}
+.results .url{font-weight:600;font-size:14px;line-height:1.3;color:var(--blue);overflow-wrap:anywhere}
+.results .desc{font-size:16px;line-height:1.35;color:var(--ink-soft)}
+.finder__none{margin-top:14px;font-weight:600}
+.finder__report{margin-top:16px;font-weight:800;font-size:16px}
+
+/* ---------- Scraps: torn pieces of old Elvana posters ---------- */
+.scraps{position:absolute;inset:0;z-index:3;pointer-events:none}
+.scrap{position:absolute;left:var(--x);top:var(--y);width:var(--w);aspect-ratio:var(--ar);pointer-events:auto;cursor:grab;touch-action:pan-y;
+  container-type:inline-size;transform:rotate(var(--r));filter:drop-shadow(2px 4px 0 rgba(0,0,0,.3));-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.scrap::before{content:"";position:absolute;inset:0;background:#F7F7F3;clip-path:var(--shape)}
+.scrap__ink{position:absolute;inset:4px;clip-path:var(--shape);overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:0 4%}
+.scrap.is-held{cursor:grabbing;filter:drop-shadow(8px 14px 6px rgba(0,0,0,.32));z-index:10}
+.scrap.is-gone{visibility:hidden}
+.frag{display:block;font-family:var(--display);font-size:24cqw;line-height:.9;white-space:nowrap;margin-left:-3%}
+.frag--big{font-size:34cqw}
+.frag--ini{font-size:46cqw;text-align:center;margin:0;background:var(--paper);align-self:center;padding:.06em .18em 0}
+.frag--hi{font-size:20cqw;text-align:center;margin:0}
+.frag--red{color:var(--red);font-size:17cqw}
+.scrap__ink--dots{background:radial-gradient(circle,var(--blue) 30%,transparent 33%) 0 0/9px 9px,var(--paper);color:var(--ink);align-items:center}
+.scrap__ink--strip{box-shadow:inset 0 5px 0 var(--paper),inset 0 -5px 0 var(--paper);align-items:center}
+.scrap__ink--board{box-shadow:inset 0 0 0 5px var(--yellow),inset 0 0 0 9px var(--ink);align-items:center;text-align:center}
+.scrap__ink--board .frag{margin:0;font-size:26cqw}
+
+/* where each scrap lies, and its torn shape */
+.s1{--x:-4%;--y:2%;--w:66%;--ar:2.3;--r:-6deg;--shape:polygon(2% 9%,14% 0,31% 6%,47% 1%,63% 7%,80% 0,97% 5%,100% 24%,96% 43%,99% 61%,94% 80%,97% 100%,78% 94%,61% 99%,44% 92%,27% 98%,9% 93%,0 100%,3% 76%,0 55%,4% 34%,0 19%)}
+.s2{--x:46%;--y:9%;--w:54%;--ar:1.6;--r:8deg;--shape:polygon(6% 3%,24% 0,41% 8%,60% 2%,79% 6%,100% 0,96% 19%,100% 38%,95% 57%,99% 77%,93% 100%,72% 95%,55% 100%,37% 93%,18% 98%,0 92%,4% 71%,0 49%,5% 28%)}
+.s3{--x:2%;--y:26%;--w:52%;--ar:2;--r:4deg;--shape:polygon(0 6%,19% 0,38% 7%,58% 2%,77% 9%,100% 3%,95% 27%,100% 50%,94% 72%,98% 95%,77% 100%,56% 93%,34% 99%,15% 92%,2% 100%,5% 75%,0 52%,6% 29%)}
+.s4{--x:42%;--y:35%;--w:60%;--ar:2.1;--r:-9deg;--shape:polygon(4% 0,22% 7%,43% 0,61% 6%,82% 1%,98% 8%,100% 30%,95% 51%,100% 73%,96% 100%,76% 93%,55% 99%,35% 92%,13% 99%,0 90%,5% 67%,0 44%,6% 22%)}
+.s5{--x:-3%;--y:47%;--w:40%;--ar:1;--r:-4deg;--shape:polygon(8% 0,30% 6%,52% 0,74% 7%,100% 2%,93% 25%,100% 48%,94% 73%,100% 100%,74% 94%,49% 100%,26% 93%,0 98%,6% 74%,0 50%,7% 26%)}
+.s6{--x:24%;--y:58%;--w:78%;--ar:4.4;--r:-11deg;--shape:polygon(0 12%,12% 0,26% 10%,40% 2%,55% 9%,69% 0,84% 8%,100% 0,97% 50%,100% 100%,85% 88%,70% 100%,54% 90%,39% 100%,24% 89%,10% 100%,0 86%,3% 50%)}
+.s7{--x:62%;--y:63%;--w:40%;--ar:1.2;--r:7deg;--shape:polygon(0 4%,26% 0,49% 6%,73% 0,100% 5%,94% 28%,100% 53%,95% 77%,100% 100%,75% 94%,51% 100%,25% 93%,3% 100%,0 76%,5% 51%,0 27%)}
+.s8{--x:0;--y:74%;--w:62%;--ar:3;--r:3deg;--shape:polygon(3% 0,21% 9%,40% 1%,59% 8%,78% 0,100% 7%,96% 36%,100% 64%,94% 100%,73% 91%,53% 99%,33% 90%,13% 98%,0 88%,5% 58%,0 30%)}
+.s9{--x:38%;--y:82%;--w:58%;--ar:2.4;--r:-5deg;--shape:polygon(0 0,18% 8%,37% 0,56% 7%,75% 1%,96% 9%,100% 34%,95% 59%,100% 84%,93% 100%,71% 92%,50% 100%,28% 93%,8% 100%,3% 74%,0 49%,5% 24%)}
+
+/* Reduced motion (JS on): the wall is already cleared; two scraps lie tucked at its edges */
+.js:not(.motion) .scrap{display:none}
+.js:not(.motion) .scrap.s2,.js:not(.motion) .scrap.s5{display:block;pointer-events:none;cursor:auto}
+.js:not(.motion) .s2{--x:auto;--y:-8%;left:auto;right:-30%;--w:34%}
+.js:not(.motion) .s5{--y:auto;top:auto;bottom:-10%;left:-22%;--w:26%}
+
+/* ---------- Tablet and phone ---------- */
+@media (max-width:1099px){
+  .torn__poster{grid-column:1 / span 10;margin-right:0}
+  .torn__board{grid-column:2 / span 11;margin-top:0}
+}
+@media (max-width:699px){
+  .page-hero.torn{padding:18px 12px 56px;gap:18px 0}
+  .torn__poster{grid-column:1 / -1;margin-right:-4px}
+  .torn__sheet{padding:22px 34px 46px 18px}
+  .torn h1{font-size:clamp(60px,19vw,92px)}
+  .torn__board{grid-column:1 / -1}
+  .finder{padding:20px 16px 18px}
+  .s1{--x:-8%;--y:3%;--w:84%}
+  .s2{--x:40%;--y:13%;--w:66%}
+  .s3{--x:-4%;--y:25%;--w:72%}
+  .s4{--x:30%;--y:36%;--w:76%}
+  .s5{--x:-6%;--y:48%;--w:50%}
+  .s6{--x:6%;--y:57%;--w:96%}
+  .s7{--x:52%;--y:64%;--w:50%}
+  .s8{--x:-6%;--y:76%;--w:80%}
+  .s9{--x:30%;--y:85%;--w:74%}
+  .js:not(.motion) .s2{right:-36%;--w:44%}
+  .js:not(.motion) .s5{left:-26%;--w:36%}
+}
+@media (prefers-reduced-motion:reduce){.results a{transition:none}}

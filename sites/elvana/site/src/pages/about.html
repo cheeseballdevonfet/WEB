@@ -4,31 +4,181 @@ name: About
 description: Elvana Media helps brands get seen, get chosen and grow. Meet the founder and leadership, and the BeyondSure group behind us.
 path: /about/
 body_class: page-about
+css: pages/about
+js: pages/about
 ---
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
+<!-- About. Signature: "Layers of the wall" (INTERACTIONS.md). Six posters are pasted one over another
+     in a pinned stage; scrolling strips them back sheet by sheet (scrubbed, reversible), and the team
+     posters peel to show each person's focus. js/pages/about.js drives it; css/pages/about.css lays it out.
+     No JS, reduced motion, or a viewport too short for the stage: the six layers are ordinary posters in
+     flow, every word visible. Facts: CONTENT.md only. -->
 <section class="page-hero" aria-labelledby="page-h">
   <div class="page-hero__main g-yellow">
     {{crumbs}}
-    <h1 id="page-h">About</h1>
+    <h1 id="page-h" class="is-long">About Elvana Media</h1>
   </div>
   <div class="page-hero__side g-blue">
     <p class="page-hero__line">A new-age media &amp; growth company.</p>
-    <p class="page-hero__sign"><span class="d">Elvana Media</span>Mumbai, Delhi, Gurgaon and Noida</p>
+    <p class="page-hero__sign"><span class="d">Elvana Media</span>Incorporated in Mumbai, 2026</p>
   </div>
 </section>
 
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
+<!-- The wall: six layers, the newest on top. In the stage they sit one over another; about.js strips them. -->
+<div class="poster wall" id="wall" style="--under:var(--ink)">
+  <div class="wall__track">
+    <div class="wall__stage">
+      <div class="wall__layers">
+
+        <!-- Layer 1: why Elvana exists -->
+        <section class="layer paste g-red" id="why" aria-labelledby="why-h" data-label="Why">
+          <div class="why">
+            <div class="why__head">
+              <h2 class="d1" id="why-h">Why Elvana exists</h2>
+              <p class="lede">Elvana Media helps brands get seen, get chosen and grow, blending creative storytelling, performance marketing and AI-powered automation under one roof.</p>
+            </div>
+            <div class="why__vm">
+              <p class="why__vision"><b>Vision</b><span>To be India's most trusted growth partner for ambitious brands, where every idea creates measurable impact.</span></p>
+              <p class="why__mission"><b>Mission</b><span>To make marketing smarter for every customer by combining creativity, data and AI automation, delivered with speed, transparency and care.</span></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Layer 2: the three pillars -->
+        <section class="layer paste g-yellow" id="pillars" aria-labelledby="pillars-h" data-label="Pillars">
+          <h2 class="layer__label" id="pillars-h">Three pillars</h2>
+          <ul class="trio">
+            <li><h3>Create.</h3><p>Content, video, design, branding and campaign ideas that people stop for.</p></li>
+            <li><h3>Connect.</h3><p>Social, WhatsApp, SMS, AI calling and PR that reach the right audience at the right time.</p></li>
+            <li><h3 class="hi-ink">Grow.</h3><p>SEO, SEM, performance ads, automation and reporting that turn attention into revenue.</p></li>
+          </ul>
+        </section>
+
+        <!-- Layer 3: the founder (no photo supplied: initials on halftone, with a Coming soon strip) -->
+        <section class="layer paste g-paper" id="founder" aria-labelledby="founder-h" data-label="Founder">
+          <h2 class="layer__label" id="founder-h">The founder</h2>
+          <div class="founder">
+            <div class="portrait has-strip"><b aria-hidden="true">SC</b><p class="coming-soon coming-soon--over" data-todo="founder photo"><b>Coming soon</b>Founder photo</p></div>
+            <div class="founder__text">
+              <h3>Shivansh Choudhary</h3>
+              <p class="role">Founder &amp; Visionary</p>
+              <p class="org">Head of Innovation &amp; Technology, BeyondSure</p>
+              <p class="lede">A young builder who conceived Elvana to make marketing smarter for customers, bringing AI, automation and bold creative thinking together in one agency.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Layer 4: leadership. Each poster is an initials sheet pasted over that person's focus;
+             in the stage the sheets peel back one by one. Focus areas the deck leaves blank stay as strips. -->
+        <section class="layer paste g-ink" id="team" aria-labelledby="team-h" data-label="Team">
+          <div class="team-head">
+            <h2 class="d2" id="team-h">Leadership</h2>
+            <p class="team-head__note">Photos are on their way. Until then each poster carries initials, pasted over what that person looks after.</p>
+          </div>
+          <ul class="crew">
+            <li class="mate">
+              <h3>Rashhi Choudhary</h3><p class="mate__role">Co-Founder</p>
+              <div class="mate__art">
+                <div class="mate__focus g-yellow"><span class="lbl">Focus</span><p>Finance &amp; governance. CFO, BeyondSure</p></div>
+                <div class="mate__sheet has-strip" aria-hidden="true"><b>RC</b><p class="coming-soon coming-soon--over" data-todo="photo: Rashhi Choudhary"><b>Coming soon</b>Photo</p></div>
+              </div>
+            </li>
+            <li class="mate">
+              <h3>Deepak K. Choudhary</h3><p class="mate__role">Co-Founder</p>
+              <div class="mate__art">
+                <div class="mate__focus g-red"><span class="lbl">Focus</span><p>Group leadership. CEO, BeyondSure</p></div>
+                <div class="mate__sheet has-strip" aria-hidden="true"><b>DC</b><p class="coming-soon coming-soon--over" data-todo="photo: Deepak K. Choudhary"><b>Coming soon</b>Photo</p></div>
+              </div>
+            </li>
+            <li class="mate">
+              <h3>Kunal Verma</h3><p class="mate__role">Co-Founder</p>
+              <div class="mate__art">
+                <div class="mate__focus mate__focus--blank g-paper has-strip"><span class="lbl">Focus</span><p class="coming-soon coming-soon--over" data-todo="focus area: Kunal Verma"><b>Coming soon</b>Focus area</p></div>
+                <div class="mate__sheet has-strip" aria-hidden="true"><b>KV</b><p class="coming-soon coming-soon--over" data-todo="photo: Kunal Verma"><b>Coming soon</b>Photo</p></div>
+              </div>
+            </li>
+            <li class="mate">
+              <h3>Srinivas Mahindrakar</h3><p class="mate__role">Co-Founder</p>
+              <div class="mate__art">
+                <div class="mate__focus mate__focus--blank g-paper has-strip"><span class="lbl">Focus</span><p class="coming-soon coming-soon--over" data-todo="focus area: Srinivas Mahindrakar"><b>Coming soon</b>Focus area</p></div>
+                <div class="mate__sheet has-strip" aria-hidden="true"><b>SM</b><p class="coming-soon coming-soon--over" data-todo="photo: Srinivas Mahindrakar"><b>Coming soon</b>Photo</p></div>
+              </div>
+            </li>
+            <li class="mate">
+              <h3>Anushka Maurya</h3><p class="mate__role">Project Lead</p>
+              <div class="mate__art">
+                <div class="mate__focus g-blue"><span class="lbl">Focus</span><p>Delivery, timelines &amp; client success</p></div>
+                <div class="mate__sheet has-strip" aria-hidden="true"><b>AM</b><p class="coming-soon coming-soon--over" data-todo="photo: Anushka Maurya"><b>Coming soon</b>Photo</p></div>
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Layer 5: the group -->
+        <section class="layer paste g-blue" id="group" aria-labelledby="group-h" data-label="Group">
+          <div class="group-head">
+            <h2 class="d2" id="group-h">Our backing: a group company of BeyondSure</h2>
+            <p class="lede">Elvana Media is promoted by BeyondSure Private Limited, the AI-powered insurance advisory platform, as its majority shareholder.</p>
+          </div>
+          <ul class="backs">
+            <li><b>In-house AI expertise</b>Automation and AI tools built by the group's own technology team.</li>
+            <li><b>Governance from day one</b>Run with the discipline of a regulated-industry group.</li>
+            <li><b>A ready ecosystem</b>Access to the group's network across insurance, healthcare and education.</li>
+          </ul>
+          <p class="strip-note">Group roots in insurance, healthcare and education give us a head start in regulated, trust-driven categories.</p>
+        </section>
+
+        <!-- Layer 6: the cities (the oldest layer, the wall's base: it never strips) -->
+        <section class="layer paste g-ink" id="cities" aria-labelledby="cities-h" data-label="Cities">
+          <h2 class="d2" id="cities-h">Where we are: four cities today, more to come</h2>
+          <ul class="boards">
+            <li class="board main"><div class="sign"><span class="hi" lang="hi">मुंबई</span><span class="en">Mumbai</span></div><div class="posts" aria-hidden="true"></div><p class="meta"><b>Andheri East</b><span>Registered office</span></p></li>
+            <li class="board"><div class="sign"><span class="hi" lang="hi">दिल्ली</span><span class="en">Delhi</span></div><div class="posts" aria-hidden="true"></div><p class="meta"><b>National capital</b><span>Branch</span></p></li>
+            <li class="board"><div class="sign"><span class="hi" lang="hi">गुड़गांव</span><span class="en">Gurgaon</span></div><div class="posts" aria-hidden="true"></div><p class="meta"><b>NCR corporate hub</b><span>Branch</span></p></li>
+            <li class="board"><div class="sign"><span class="hi" lang="hi">नोएडा</span><span class="en">Noida</span></div><div class="posts" aria-hidden="true"></div><p class="meta"><b>NCR media hub</b><span>Branch</span></p></li>
+            <li class="board next"><div class="sign"><span class="hi" aria-hidden="true">&nbsp;</span><span class="en">Next</span></div><div class="posts" aria-hidden="true"></div><p class="meta"><b>New cities on the roadmap</b><span>Coming soon</span></p></li>
+          </ul>
+        </section>
+
+      </div>
+      <!-- Paper rolls that ride the peel line while a layer strips (about.js fills this) -->
+      <div class="wall__rolls" aria-hidden="true"><i class="wall__curl"></i></div>
+      <!-- The stage's base rail: where you are in the stack, and a jump to any layer (keyboard and touch) -->
+      <nav class="wall__rail" aria-label="Layers of the wall">
+        <p class="wall__hint" aria-hidden="true">Scroll to strip the wall</p>
+        <ol>
+          <li><a href="#why"><span class="n">1</span>Why</a></li>
+          <li><a href="#pillars"><span class="n">2</span>Pillars</a></li>
+          <li><a href="#founder"><span class="n">3</span>Founder</a></li>
+          <li><a href="#team"><span class="n">4</span>Team</a></li>
+          <li><a href="#group"><span class="n">5</span>Group</a></li>
+          <li><a href="#cities"><span class="n">6</span>Cities</a></li>
+        </ol>
+      </nav>
     </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>Who we are, vision and mission</li><li>The founder: Shivansh Choudhary</li><li>Leadership</li><li>Our backing: a group company of BeyondSure</li><li>Four cities, and next</li><li>Company at a glance</li></ul>
+  </div>
+</div>
+
+<!-- Company at a glance: the deck's particulars (CONTENT-PAGES.md, About). -->
+<section class="poster" id="glance" aria-labelledby="glance-h" style="--under:var(--ink)">
+  <div class="paste g-paper">
+    <div class="head-split">
+      <h2 class="d1" id="glance-h">Company at a glance</h2>
+      <p class="lede">The particulars, as registered, and the four facts from our company deck.</p>
     </div>
+    <ul class="facts">
+      <li><b class="num">2026</b><span>Incorporated in Mumbai</span></li>
+      <li><b class="num">4</b><span>Branches, and growing</span></li>
+      <li><b class="num">8+</b><span>Service lines</span></li>
+      <li><b class="num">1</b><span>Partner for media + tech</span></li>
+    </ul>
+    <dl class="particulars">
+      <div><dt>Legal name</dt><dd>ELEVANA MEDIA PRIVATE LIMITED</dd></div>
+      <div><dt>CIN</dt><dd>U73100MH2026PTC472228</dd></div>
+      <div><dt>Incorporated</dt><dd>4 June 2026, Mumbai</dd></div>
+      <div><dt>Group</dt><dd>A group company of BeyondSure</dd></div>
+      <div class="wide"><dt>Registered office</dt><dd>203, Shivam Square, Building No. 4, Sahar Road, Andheri East, Mumbai 400069</dd></div>
+      <div><dt>Cities</dt><dd>Mumbai, Delhi, Gurgaon and Noida</dd></div>
+    </dl>
   </div>
 </section>
 

@@ -1,0 +1,153 @@
+/* =========================================================================
+   Elvana Media: pages/contact.css
+   The Contact page's one signature, "Paste your enquiry": the form is a
+   blank poster pasted on the ink wall. On send (js/pages/contact.js) the
+   finished enquiry is squeegeed over it as a printed poster and stamped
+   RECEIVED. Reuses .field, .err, .two, .form-foot, .details, .boards,
+   .plate and .tag from components.css; everything here is page-only.
+   ========================================================================= */
+
+.enquiry__grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(36px,5vw,80px);align-items:start}
+
+/* ---------- The blank poster ---------- */
+.sheet-wrap{display:grid;position:relative;scroll-margin-top:calc(var(--hdr) + 16px)}
+.sheet-wrap [hidden]{display:none!important}
+.sheet-wrap>.sheet-form,.sheet-wrap>.printed{grid-area:1 / 1}
+.sheet-form{position:relative;padding:clamp(24px,3.4vw,52px) clamp(20px,3.2vw,48px) clamp(26px,3vw,44px);box-shadow:8px 10px 0 rgba(0,0,0,.35);--focus:var(--blue)}
+.sheet-form::before{content:"";position:absolute;inset:0;pointer-events:none;     /* paste seams: the poster is two sheets */
+  background:linear-gradient(to bottom,transparent calc(50% - 1px),rgba(0,0,0,.07) calc(50% - 1px),rgba(255,255,255,.6) 50%,transparent calc(50% + 1px))}
+.sheet-form>*{position:relative}
+/* printer's crop marks at the corners: this is a poster, waiting to be filled in */
+.sheet-form::after{content:"";position:absolute;inset:10px;pointer-events:none;
+  background:linear-gradient(var(--ink),var(--ink)) 0 0/18px 2px,linear-gradient(var(--ink),var(--ink)) 0 0/2px 18px,
+    linear-gradient(var(--ink),var(--ink)) 100% 0/18px 2px,linear-gradient(var(--ink),var(--ink)) 100% 0/2px 18px,
+    linear-gradient(var(--ink),var(--ink)) 0 100%/18px 2px,linear-gradient(var(--ink),var(--ink)) 0 100%/2px 18px,
+    linear-gradient(var(--ink),var(--ink)) 100% 100%/18px 2px,linear-gradient(var(--ink),var(--ink)) 100% 100%/2px 18px;background-repeat:no-repeat;opacity:.55}
+.sheet-form__kicker{display:flex;justify-content:space-between;gap:12px;font-weight:800;font-size:14px;letter-spacing:.02em;padding-bottom:10px;margin-bottom:14px;border-bottom:3px solid var(--ink)}
+.sheet-form__head{display:grid;gap:12px;margin-bottom:clamp(20px,2.6vw,36px);padding-bottom:clamp(16px,2vw,24px);border-bottom:6px solid var(--ink)}
+.sheet-form__head h2{color:var(--red)}
+.sheet-form__head p{font-size:var(--fs-body);max-width:52ch}
+
+/* ruled fields, printed on the poster to be filled in */
+.sheet-form .field{margin-bottom:6px}
+.sheet-form .field input,.sheet-form .field textarea,.sheet-form .field select{border:0;border-bottom:3px solid var(--ink);background:transparent;padding:14px 4px 7px;transition:background-color var(--t-lift) linear}
+.sheet-form .field input:focus,.sheet-form .field textarea:focus,.sheet-form .field select:focus{background-color:rgba(255,208,0,.28)}
+.sheet-form .field textarea{min-height:120px;border:3px solid var(--ink);background:repeating-linear-gradient(to bottom,transparent 0 33px,rgba(26,24,20,.12) 33px 34px) 0 12px / 100% calc(100% - 12px) no-repeat,rgba(26,24,20,.045);line-height:34px;padding:12px 12px 8px}
+.sheet-form .field select{appearance:none;-webkit-appearance:none;padding-right:44px;cursor:pointer;
+  background:linear-gradient(45deg,transparent 50%,var(--ink) 50%) calc(100% - 22px) 52% / 9px 9px no-repeat,linear-gradient(-45deg,transparent 50%,var(--ink) 50%) calc(100% - 13px) 52% / 9px 9px no-repeat,transparent}
+.sheet-form .field [aria-invalid="true"]{border-color:var(--red);box-shadow:inset 0 -3px 0 var(--red),inset 5px 0 0 var(--red);background-color:rgba(200,32,26,.07)}
+.sheet-form .err{color:var(--red);font-size:15px}
+.sheet-form .opt{font-weight:600}
+.sheet-form [hidden]{display:none!important}
+
+/* choices: chips you tap (radio inputs, visible square, whole chip is the target) */
+.choice{border:0;margin:6px 0 18px;padding:0;min-width:0}
+.choice legend,.choice__sub{font-weight:800;font-size:16px;padding:0;margin-bottom:8px}
+.choice__sub{margin-top:4px}
+.choice .field{margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:8px 14px 6px 12px;border:3px solid var(--ink);background:transparent;font-weight:800;font-size:16px;line-height:1.15;cursor:pointer;
+  transition:background-color var(--t-lift) linear,color var(--t-lift) linear,transform var(--t-lift) var(--ease-lift)}
+.chip input{appearance:none;-webkit-appearance:none;flex:none;width:20px;height:20px;margin:0 0 2px;border:3px solid currentColor;border-radius:0;background:transparent;cursor:pointer;box-shadow:inset 0 0 0 0 var(--paper)}
+.chip input:checked{background:var(--yellow);box-shadow:inset 0 0 0 3px var(--ink)}
+.chip input:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.chip:has(input:focus-visible){outline:3px solid var(--blue);outline-offset:3px}
+.chip:has(input:focus-visible) input{outline:0}
+.chip:hover{transform:rotate(-1.4deg)}
+.chip:has(input:checked){background:var(--ink);color:var(--yellow)}
+.chip:active{transform:translateY(1px) scale(.98)}
+.from-link{margin:-2px 0 12px;font-weight:600;font-size:15px}
+.from-link b{background:var(--yellow);padding:2px 6px 0}
+
+.sheet-form .form-foot{margin-top:18px;padding-top:20px;border-top:6px solid var(--ink)}
+.sheet-form .tag[disabled]{opacity:.7}
+.sheet-form__left{margin-top:12px;font-weight:800;font-size:15px}
+.sheet-form__left.is-set{color:var(--blue)}
+.sheet-form__fix{margin-top:14px;padding:12px 14px 10px;background:var(--red);color:var(--paper);font-weight:800;font-size:16px;transform:rotate(-.6deg)}
+
+/* ---------- Sending: the printed enquiry is squeegeed over the blank poster ---------- */
+.printed{position:relative;z-index:2;display:flex;flex-direction:column;gap:clamp(14px,1.8vw,24px);align-self:start;min-height:clamp(420px,40vw,600px);overflow:hidden;
+  padding:clamp(24px,3.4vw,52px) clamp(20px,3.2vw,48px) clamp(28px,3.6vw,56px);background:var(--paper);color:var(--ink);box-shadow:8px 10px 0 rgba(0,0,0,.35);--focus:var(--blue)}
+.printed::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(to right,rgba(0,0,0,.07) 1px,rgba(255,255,255,.4) 1px 2px,transparent 2px),linear-gradient(to bottom,rgba(0,0,0,.06) 1px,rgba(255,255,255,.4) 1px 2px,transparent 2px);background-size:50% 100%,100% 50%;background-position:-1px 0,0 -1px}
+.printed:focus{outline:0}
+.printed__kicker{font-weight:800;font-size:15px;padding-bottom:12px;border-bottom:6px solid var(--ink)}
+.printed__need{font-size:clamp(40px,5.2vw,84px);line-height:.92;color:var(--red);overflow-wrap:anywhere;max-width:62%}
+.printed__msg{font-family:var(--display);font-size:clamp(22px,2.1vw,32px);line-height:1.18;max-width:28ch;overflow-wrap:anywhere;white-space:pre-line}
+.printed__msg::before{content:"\201C"}
+.printed__msg::after{content:"\201D"}
+.printed__from{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;margin-top:auto;padding-top:16px;border-top:3px solid var(--ink)}
+.printed__from dt{font-weight:800;font-size:15px}
+.printed__from dd{font-size:var(--fs-body);overflow-wrap:anywhere}
+/* RECEIVED: a rubber stamp in red ink, a little uneven */
+.stamp{position:absolute;right:clamp(14px,2.4vw,36px);top:clamp(80px,7.6vw,112px);z-index:3;display:grid;justify-items:center;gap:2px;padding:10px 18px 8px;
+  border:5px solid var(--red);box-shadow:inset 0 0 0 3px var(--paper),inset 0 0 0 6px var(--red);color:var(--red);transform:rotate(-9deg);opacity:0;
+  -webkit-mask-image:radial-gradient(circle at 30% 40%,#000 0 55%,rgba(0,0,0,.72) 56% 60%,#000 61%),repeating-radial-gradient(circle at 70% 30%,#000 0 3px,rgba(0,0,0,.55) 3px 4px);
+  mask-image:radial-gradient(circle at 30% 40%,#000 0 55%,rgba(0,0,0,.72) 56% 60%,#000 61%),repeating-radial-gradient(circle at 70% 30%,#000 0 3px,rgba(0,0,0,.55) 3px 4px);
+  -webkit-mask-composite:source-in;mask-composite:intersect}
+.stamp b{font:800 clamp(26px,2.5vw,38px)/1 var(--text);letter-spacing:.12em;text-transform:uppercase;padding-left:.12em}
+.stamp span{font-weight:800;font-size:14px;letter-spacing:.04em}
+.is-stamped-done .stamp{opacity:.92}
+.squeegee{position:absolute;inset:0;z-index:4;pointer-events:none;opacity:0;
+  background:linear-gradient(90deg,transparent calc(100% - 170px),rgba(255,255,255,.3) calc(100% - 9px),var(--ink) calc(100% - 9px),var(--ink) calc(100% - 3px),rgba(255,255,255,.5) calc(100% - 3px),transparent calc(100% - 1px))}
+@media (prefers-reduced-motion:no-preference){
+  .js.motion .is-pasting .printed{animation:paste var(--t-paste-in) var(--ease-paste) both}
+  .js.motion .is-pasting .squeegee{animation:squeegee var(--t-paste-in) var(--ease-paste) both}
+  .js.motion .is-stamping .stamp{animation:stamp-down calc(260ms * var(--slow)) var(--ease-paste) both}
+  .js.motion .is-fresh .sheet-form{animation:paste var(--t-paste-in) var(--ease-paste) both}
+  .js.motion .after.is-in{animation:paste var(--t-paste) var(--ease-paste) both}
+}
+@keyframes stamp-down{0%{opacity:0;transform:rotate(-16deg) scale(1.7)}55%{opacity:.95;transform:rotate(-8deg) scale(.94)}100%{opacity:.92;transform:rotate(-9deg) scale(1)}}
+
+/* ---------- After: what happens next ---------- */
+.after{grid-area:2 / 1;margin:-26px clamp(-12px,-1vw,-4px) 0 auto;max-width:600px;position:relative;z-index:5;transform:rotate(-1.2deg);transform-origin:100% 0}
+.after h3:focus{outline:0}
+.after h3:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+.after .replay{justify-self:start;margin-top:4px}
+/* once sent, the blank poster is cut down to the printed one's size at once (inside the click, so
+   nothing shifts later), squeegeed over, then taken away; the next-steps plate keeps its space hidden */
+.sheet-wrap.is-sent .sheet-form{max-height:var(--ph);overflow:hidden;visibility:visible}
+.sheet-wrap[data-state="done"] .sheet-form{display:none}
+.after.is-waiting{visibility:hidden}
+
+/* ---------- Reach us directly ---------- */
+.reach{display:grid;gap:clamp(28px,3.4vw,44px);padding-top:clamp(8px,1vw,16px)}
+.reach__h{font-size:var(--fs-d3);color:var(--yellow)}
+.wa-sign{position:relative;display:grid;gap:4px;justify-items:start;padding:clamp(20px,2.4vw,30px) clamp(20px,2.4vw,30px) clamp(18px,2vw,26px);margin-top:26px;text-decoration:none;
+  background:var(--red);color:var(--paper);box-shadow:inset 0 0 0 6px var(--red),inset 0 0 0 9px var(--paper),6px 8px 0 rgba(0,0,0,.35);
+  transform-origin:50% 0;transition:transform var(--t-lift) var(--ease-lift)}
+.wa-sign::before,.wa-sign::after{content:"";position:absolute;top:-26px;width:3px;height:26px;background:var(--post)}   /* the sign hangs from two wires */
+.wa-sign::before{left:22%}.wa-sign::after{right:22%}
+.wa-sign__top{font-family:var(--display);font-size:clamp(30px,3vw,44px);line-height:1;color:var(--yellow)}
+.wa-sign__num{font-family:var(--display);font-size:clamp(34px,3.6vw,56px);line-height:1.05}
+.wa-sign__small{font-weight:800;font-size:15px}
+.wa-sign:hover{transform:rotate(-1.6deg)}
+.wa-sign:hover .wa-sign__num{text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:.12em}
+.wa-sign:active{transform:rotate(-.6deg) translateY(2px)}
+.wa-sign:focus-visible{outline:3px solid var(--yellow);outline-offset:6px}
+.reach .details{color:var(--paper)}
+.reach .details dt{color:var(--paper-dim)}
+.reach .details a{color:var(--paper)}
+
+/* ---------- Cities ---------- */
+#cities-h{max-width:18ch}
+#cities .board.main .meta span{max-width:32ch}
+
+/* ---------- Tablet and phone ---------- */
+@media (max-width:1099px){
+  .enquiry__grid{grid-template-columns:1fr}
+  .reach{grid-template-columns:1fr 1fr;align-items:start}
+  .reach__h{grid-column:1 / -1}
+}
+@media (max-width:699px){
+  .enquiry .paste,.enquiry{padding-left:12px;padding-right:12px}
+  .sheet-form{padding:24px 18px 26px}
+  .printed{padding:24px 18px 28px}
+  .printed__from{grid-template-columns:1fr}
+  .printed__need{max-width:none}
+  .stamp{position:relative;top:auto;right:auto;align-self:flex-end;margin:-6px 4px 0 0}
+  .after{margin:-18px -4px 0 8px}
+  .reach{grid-template-columns:1fr;padding:0 8px}
+  .chip{font-size:15px;padding:8px 12px 6px 10px}
+}
+@media (prefers-reduced-motion:reduce){.chip,.wa-sign{transition:none}.chip:hover,.wa-sign:hover{transform:none}}

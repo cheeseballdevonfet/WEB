@@ -4,9 +4,10 @@ name: Privacy
 description: How Elvana Media handles personal data. The policy is being finalised; write to info@elvanamedia.com with any question about your data.
 path: /privacy/
 body_class: page-legal
+css: pages/legal
 ---
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
+<!-- Privacy. Plain and readable, carrying the designed notice from CONTENT-PAGES.md (Legal pages).
+     The final legal text comes from Elvana and its legal advisers: do not draft it here. -->
 <section class="page-hero" aria-labelledby="page-h">
   <div class="page-hero__main g-yellow">
     {{crumbs}}
@@ -18,22 +19,26 @@ body_class: page-legal
   </div>
 </section>
 
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
-    </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>The privacy policy, to be supplied by Elvana and its legal advisers</li><li>Company particulars: legal name, CIN and registered office</li><li>Contact for questions: info@elvanamedia.com</li></ul>
-    </div>
+<section class="poster" id="notice" aria-labelledby="notice-h" style="--under:var(--ink)">
+  <div class="paste g-ink notice-wall">
+    <article class="notice g-paper">
+      <!-- Hindi echo, for the client to approve: "Notice" -->
+      <h2 class="notice__h" id="notice-h">Notice <span class="deva" lang="hi">सूचना</span></h2>
+      <p class="notice__stamp" aria-hidden="true"><b>Being finalised</b><span>Elvana Media</span></p>
+      <p class="notice__text">Our privacy policy is being finalised with our legal advisers. For any question about your data, write to <a href="mailto:info@elvanamedia.com">info@elvanamedia.com</a>.</p>
+      <p class="coming-soon" data-todo="privacy policy text, from Elvana and its legal advisers"><b>Coming soon</b>The full privacy policy</p>
+      <dl class="notice__meta">
+        <div><dt>Write to</dt><dd><a href="mailto:info@elvanamedia.com">info@elvanamedia.com</a></dd></div>
+        <div><dt>Call</dt><dd><a href="tel:+918928339531">+91 89283 39531</a></dd></div>
+        <div><dt>Registered office</dt><dd>203, Shivam Square, Building No. 4, Sahar Road, Andheri East, Mumbai 400069</dd></div>
+      </dl>
+      <p class="notice__also">Also on the wall: <a href="/terms/">Terms</a></p>
+    </article>
   </div>
 </section>
 
 <!-- Closing CTA poster: every page ends here, always to /contact/. -->
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--ink)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>

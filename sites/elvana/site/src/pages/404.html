@@ -5,38 +5,77 @@ description: This page is not on the wall. Go back to the Elvana Media home page
 path: /404.html
 noindex: true
 body_class: page-404
-css: tear
-js: tear
+css: pages/404
+js: pages/404
 ---
-<!-- 404. Served by the host for any missing URL, so in dist/ it is self-contained and its links are
-     root-absolute (build.py --base sets the prefix). The side sheet is a .peel: the site's example of
-     the peel contract (tear.js brings it to life; without it the corner stays still and curled). -->
-<section class="page-hero" aria-labelledby="page-h">
-  <div class="page-hero__main g-yellow">
-    <p class="page-hero__sign"><span class="d">404</span>Elvana Media</p>
-    <h1 id="page-h">Page not found</h1>
-  </div>
-  <div class="peel" data-peel data-peel-corner="br">
-    <div class="peel__under page-hero__side g-yellow" aria-hidden="true">
-      <p class="page-hero__line">Ideas that create impact.</p>
+<!-- 404. Signature: "Torn down" (INTERACTIONS.md). The page has been torn off the wall; scraps of old
+     posters lie over the useful part. Drag or fling them aside (js/pages/404.js: light physics,
+     interruptible), or press "Clear the wall". Keyboard: the button, and tabbing into the list clears the
+     wall too. No JS: the scraps are not there and the list is simply visible. Reduced motion: the wall
+     is already cleared. Served by the host for any missing URL, so in dist/ it is self-contained and its
+     links are root-absolute (build.py --base sets the prefix). -->
+<section class="page-hero torn" aria-labelledby="page-h">
+  <div class="torn__poster">
+    <div class="torn__sheet g-yellow">
+      <p class="torn__code"><span class="d">404</span>Page not found</p>
+      <h1 id="page-h">Torn down.</h1>
+      <p class="torn__line">Someone tore this page off the wall. The useful bits are still underneath.</p>
+      <div class="torn__acts js-only motion-only">
+        <button class="tag tag-ink" type="button" id="clear-wall">Clear the wall</button>
+        <p class="torn__hint">or drag the scraps aside</p>
+      </div>
     </div>
-    <div class="peel__over page-hero__side g-red">
-      <p class="page-hero__line">Nothing is pasted on this part of the wall.</p>
-      <p class="page-hero__sign"><span class="d">Try the home page</span>or one of the links below</p>
-    </div>
   </div>
-</section>
 
-<section class="poster" aria-labelledby="lost-h" style="--under:var(--ink)">
-  <div class="paste g-ink">
-    <div class="head-split">
-      <h2 class="d2" id="lost-h">Where to go from here</h2>
-      <p class="lede">The link may be old or mistyped. Everything Elvana Media does starts from these pages.</p>
+  <div class="torn__board" id="board">
+    <div class="finder g-paper" id="finder">
+      <h2 class="finder__h" id="finder-h">Still on the wall</h2>
+      <div class="finder__search js-only">
+        <label for="q">Search the site</label>
+        <input id="q" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-controls="results" aria-describedby="q-hint">
+        <p class="finder__hint" id="q-hint">Try WhatsApp, SEO, video or Mumbai.</p>
+      </div>
+      <ul class="results" id="results" aria-labelledby="finder-h">
+        <li data-k="home start elvana ideas impact hindi"><a href="/"><b>Home</b><span class="url">elvanamedia.com</span><span class="desc">Ideas that create impact. Digital marketing, media and AI-powered growth.</span></a></li>
+        <li data-k="services all fourteen 14 create connect grow core beyond digital"><a href="/services/"><b>All services</b><span class="url">elvanamedia.com/services/</span><span class="desc">Eight core services and six beyond digital, under Create, Connect and Grow.</span></a></li>
+        <li data-k="contact email phone call whatsapp office address mumbai delhi gurgaon noida enquiry"><a href="/contact/"><b>Contact</b><span class="url">elvanamedia.com/contact/</span><span class="desc">Write, call or WhatsApp. Offices in Mumbai, Delhi, Gurgaon and Noida.</span></a></li>
+        <li data-k="how we work process steps discover strategise create launch optimise"><a href="/how-we-work/"><b>How we work</b><span class="url">elvanamedia.com/how-we-work/</span><span class="desc">From brief to impact in five steps.</span></a></li>
+        <li data-k="our edge ai automation media whatsapp bot sms calling reporting"><a href="/our-edge/"><b>Our edge</b><span class="url">elvanamedia.com/our-edge/</span><span class="desc">Where media meets AI: automation that keeps working after the campaign goes live.</span></a></li>
+        <li data-k="about team founder people leadership beyondsure group cities company"><a href="/about/"><b>About</b><span class="url">elvanamedia.com/about/</span><span class="desc">Who we are, the founder, the team and the BeyondSure group.</span></a></li>
+        <li class="more" data-k="work case studies portfolio clients"><a href="/work/"><b>Work</b><span class="url">elvanamedia.com/work/</span><span class="desc">First case studies are being written.</span></a></li>
+        <li class="more" data-k="industries sectors insurance healthcare education real estate retail d2c hospitality startups corporate b2b"><a href="/industries/"><b>Industries</b><span class="url">elvanamedia.com/industries/</span><span class="desc">Built for brands of every size, with group roots in regulated categories.</span></a></li>
+        <li class="more" data-k="engagement models pricing price retainer campaign sow project"><a href="/engagement-models/"><b>Engagement models</b><span class="url">elvanamedia.com/engagement-models/</span><span class="desc">Monthly Retainer, Campaign SOW or Project-based.</span></a></li>
+        <li class="more" data-k="website development web site landing pages"><a href="/services/website-development/"><b>Website Development</b><span class="url">elvanamedia.com/services/website-development/</span><span class="desc">Fast, mobile-first sites and landing pages built to convert.</span></a></li>
+        <li class="more" data-k="seo sem search google ads ranking"><a href="/services/seo-sem/"><b>SEO &amp; SEM</b><span class="url">elvanamedia.com/services/seo-sem/</span><span class="desc">Rank higher on Google and run search ads that pay back.</span></a></li>
+        <li class="more" data-k="sms blasting bulk text dlt"><a href="/services/sms-blasting/"><b>SMS Blasting</b><span class="url">elvanamedia.com/services/sms-blasting/</span><span class="desc">Bulk SMS campaigns on DLT-registered templates.</span></a></li>
+        <li class="more" data-k="whatsapp blasting broadcast"><a href="/services/whatsapp-blasting/"><b>WhatsApp Blasting</b><span class="url">elvanamedia.com/services/whatsapp-blasting/</span><span class="desc">Broadcast offers and updates where customers actually read.</span></a></li>
+        <li class="more" data-k="whatsapp chat bot chatbot automated replies leads support"><a href="/services/whatsapp-chat-bot/"><b>WhatsApp Chat Bot</b><span class="url">elvanamedia.com/services/whatsapp-chat-bot/</span><span class="desc">24×7 automated replies, lead capture and support.</span></a></li>
+        <li class="more" data-k="ai calling voice agents calls follow-ups reminders"><a href="/services/ai-calling/"><b>AI Calling</b><span class="url">elvanamedia.com/services/ai-calling/</span><span class="desc">AI voice agents for follow-ups, reminders and qualification.</span></a></li>
+        <li class="more" data-k="post creation content posts reels carousels copy"><a href="/services/post-creation-content/"><b>Post Creation &amp; Content</b><span class="url">elvanamedia.com/services/post-creation-content/</span><span class="desc">Scroll-stopping posts, reels, carousels and copy.</span></a></li>
+        <li class="more" data-k="pr media relations press public relations"><a href="/services/pr-media-relations/"><b>PR &amp; Media Relations</b><span class="url">elvanamedia.com/services/pr-media-relations/</span><span class="desc">Stories placed with the press and the people who matter.</span></a></li>
+        <li class="more" data-k="content video production film ad animation"><a href="/services/content-video-production/"><b>Content &amp; Video Production</b><span class="url">elvanamedia.com/services/content-video-production/</span><span class="desc">Ad films, brand films, animation, graphics and sound.</span></a></li>
+        <li class="more" data-k="social media management instagram facebook linkedin community"><a href="/services/social-media-management/"><b>Social Media Management</b><span class="url">elvanamedia.com/services/social-media-management/</span><span class="desc">Always-on calendars, community management and paid social campaigns.</span></a></li>
+        <li class="more" data-k="branding identity logo brand book packaging"><a href="/services/branding-identity/"><b>Branding &amp; Identity</b><span class="url">elvanamedia.com/services/branding-identity/</span><span class="desc">Logos, brand books, packaging and a voice that stays consistent everywhere.</span></a></li>
+        <li class="more" data-k="events activations launches on-ground"><a href="/services/events-activations/"><b>Events &amp; Activations</b><span class="url">elvanamedia.com/services/events-activations/</span><span class="desc">Pan-India event management, launches and on-ground brand experiences.</span></a></li>
+        <li class="more" data-k="outdoor hoardings signage billboard ooh"><a href="/services/outdoor-hoardings-signage/"><b>Outdoor, Hoardings &amp; Signage</b><span class="url">elvanamedia.com/services/outdoor-hoardings-signage/</span><span class="desc">High-visibility outdoor media planned around your audience.</span></a></li>
+        <li class="more" data-k="print digital publishing magazines brochures regional"><a href="/services/print-digital-publishing/"><b>Print &amp; Digital Publishing</b><span class="url">elvanamedia.com/services/print-digital-publishing/</span><span class="desc">Magazines, brochures and regional-language content in print and online.</span></a></li>
+      </ul>
+      <p class="finder__none" id="none" hidden>Nothing on the wall by that name. Try WhatsApp, SEO or Mumbai, or <a href="/contact/">ask us directly</a>.</p>
+      <p class="finder__count sr" id="q-count" aria-live="polite"></p>
+      <p class="finder__report"><a id="report" href="mailto:info@elvanamedia.com?subject=Broken%20link%20on%20elvanamedia.com">Tell us about this broken link</a></p>
     </div>
-    <p class="poster-foot tags">
-      <a class="tag" href="/">Home</a>
-      <a class="tag tag-line" href="/services/">All services</a>
-      <a class="tag tag-line" href="/contact/">Contact</a>
-    </p>
+
+    <!-- Scraps of old posters, lying over the list. Decorative and draggable (404.js); absent without JS. -->
+    <div class="scraps js-only" id="scraps" aria-hidden="true">
+      <div class="scrap s1"><div class="scrap__ink g-yellow"><span class="frag frag--big">Ideas th</span></div></div>
+      <div class="scrap s2"><div class="scrap__ink g-red"><span class="frag frag--big">Grow.</span></div></div>
+      <div class="scrap s3"><div class="scrap__ink g-blue"><span class="frag">Get chos</span></div></div>
+      <div class="scrap s4"><div class="scrap__ink g-ink"><span class="frag frag--big hi-ink">impact.</span></div></div>
+      <div class="scrap s5"><div class="scrap__ink scrap__ink--dots"><span class="frag frag--ini">SC</span></div></div>
+      <div class="scrap s6"><div class="scrap__ink g-red scrap__ink--strip"><span class="frag">Coming so</span></div></div>
+      <div class="scrap s7"><div class="scrap__ink g-yellow scrap__ink--board"><span class="frag frag--hi" lang="hi">मुंबई</span><span class="frag">Mumb</span></div></div>
+      <div class="scrap s8"><div class="scrap__ink g-paper"><span class="frag frag--red">This space is av</span></div></div>
+      <div class="scrap s9"><div class="scrap__ink g-blue"><span class="frag frag--big">Connect.</span></div></div>
+    </div>
   </div>
 </section>

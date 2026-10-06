@@ -92,7 +92,7 @@ if (motionOK && !(window.CSS && CSS.supports && CSS.supports('animation-timeline
     if (!e.isIntersecting) return;
     e.target.classList.remove('is-waiting'); e.target.classList.add('is-pasted'); io.unobserve(e.target);
   }), { rootMargin: '0px 0px -6% 0px' });
-  document.querySelectorAll('.poster').forEach(p => {
+  document.querySelectorAll('.poster:not(.page-hero + .poster)').forEach(p => {
     if (p.getBoundingClientRect().top > innerHeight) { p.classList.add('is-waiting'); io.observe(p); }
   });
 }

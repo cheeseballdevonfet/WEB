@@ -429,6 +429,11 @@ def validate_tree(root, pages, label, opts):
         for tag, u in sc.res:
             if is_external(u): err(f'{where}: external request <{tag}> {u}')
         src = read(os.path.join(root, p.out))
+        for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', re.sub(r'<!--.*?-->', '', src, flags=re.S), flags=re.S):
+            try:
+                json.loads(block)
+            except ValueError as e:
+                err(f'{where}: JSON-LD does not parse: {e}')
         for u in re.findall(r'url\(\s*["\']?([^"\')]+)', re.sub(r'<script\b.*?</script>', '', src, flags=re.S)):
             if is_external(u): err(f'{where}: external url() {u}')
         for u in re.findall(r'@import\s+["\']?([^"\';]+)', src):

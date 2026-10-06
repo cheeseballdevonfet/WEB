@@ -1,5 +1,5 @@
 {
- "built": "2026-10-06T13:34:18",
+ "built": "2026-10-06T13:45:20",
  "pages": [
   {
    "path": "/",
@@ -9,8 +9,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/index.html",
-   "dist_bytes": 44320,
-   "preview_bytes": 344107,
+   "dist_bytes": 44316,
+   "preview_bytes": 344493,
    "devanagari": true
   },
   {
@@ -21,8 +21,8 @@
    "noindex": true,
    "is404": true,
    "src": "src/pages/404.html",
-   "dist_bytes": 209016,
-   "preview_bytes": 209412,
+   "dist_bytes": 209402,
+   "preview_bytes": 209798,
    "devanagari": false
   },
   {
@@ -33,8 +33,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/about.html",
-   "dist_bytes": 13277,
-   "preview_bytes": 178629,
+   "dist_bytes": 13273,
+   "preview_bytes": 179015,
    "devanagari": false
   },
   {
@@ -45,8 +45,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/contact.html",
-   "dist_bytes": 15417,
-   "preview_bytes": 279170,
+   "dist_bytes": 15413,
+   "preview_bytes": 279556,
    "devanagari": true
   },
   {
@@ -57,8 +57,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/engagement-models.html",
-   "dist_bytes": 13275,
-   "preview_bytes": 178627,
+   "dist_bytes": 13271,
+   "preview_bytes": 179013,
    "devanagari": false
   },
   {
@@ -69,8 +69,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/how-we-work.html",
-   "dist_bytes": 13148,
-   "preview_bytes": 178500,
+   "dist_bytes": 13144,
+   "preview_bytes": 178886,
    "devanagari": false
   },
   {
@@ -81,8 +81,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/industries.html",
-   "dist_bytes": 13320,
-   "preview_bytes": 178672,
+   "dist_bytes": 13316,
+   "preview_bytes": 179058,
    "devanagari": false
   },
   {
@@ -93,8 +93,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/our-edge.html",
-   "dist_bytes": 13204,
-   "preview_bytes": 178556,
+   "dist_bytes": 13200,
+   "preview_bytes": 178942,
    "devanagari": false
   },
   {
@@ -105,8 +105,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/privacy.html",
-   "dist_bytes": 13163,
-   "preview_bytes": 178515,
+   "dist_bytes": 13192,
+   "preview_bytes": 178934,
    "devanagari": false
   },
   {
@@ -117,8 +117,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services.html",
-   "dist_bytes": 13123,
-   "preview_bytes": 178475,
+   "dist_bytes": 13119,
+   "preview_bytes": 178861,
    "devanagari": false
   },
   {
@@ -129,8 +129,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services/ai-calling.html",
-   "dist_bytes": 13275,
-   "preview_bytes": 178609,
+   "dist_bytes": 13271,
+   "preview_bytes": 178995,
    "devanagari": false
   },
   {
@@ -141,8 +141,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services/branding-identity.html",
-   "dist_bytes": 13528,
-   "preview_bytes": 178862,
+   "dist_bytes": 13524,
+   "preview_bytes": 179248,
    "devanagari": false
   },
   {
@@ -153,8 +153,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services/content-video-production.html",
-   "dist_bytes": 13673,
-   "preview_bytes": 179007,
+   "dist_bytes": 13669,
+   "preview_bytes": 179393,
    "devanagari": false
   },
   {
@@ -165,8 +165,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services/events-activations.html",
-   "dist_bytes": 13513,
-   "preview_bytes": 178847,
+   "dist_bytes": 13509,
+   "preview_bytes": 179233,
    "devanagari": false
   },
   {
@@ -177,8 +177,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services/outdoor-hoardings-signage.html",
-   "dist_bytes": 13579,
-   "preview_bytes": 178913,
+   "dist_bytes": 13575,
+   "preview_bytes": 179299,
    "devanagari": false
   },
   {
@@ -189,8 +189,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services/post-creation-content.html",
-   "dist_bytes": 13455,
-   "preview_bytes": 178789,
+   "dist_bytes": 13451,
+   "preview_bytes": 179175,
    "devanagari": false
   },
   {
@@ -201,8 +201,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services/pr-media-relations.html",
-   "dist_bytes": 13445,
-   "preview_bytes": 178779,
+   "dist_bytes": 13441,
+   "preview_bytes": 179165,
    "devanagari": false
   },
   {
@@ -213,8 +213,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services/print-digital-publishing.html",
-   "dist_bytes": 13613,
-   "preview_bytes": 178947,
+   "dist_bytes": 13609,
+   "preview_bytes": 179333,
    "devanagari": false
   },
   {
@@ -225,8 +225,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services/seo-sem.html",
-   "dist_bytes": 13259,
-   "preview_bytes": 178593,
+   "dist_bytes": 13255,
+   "preview_bytes": 178979,
    "devanagari": false
   },
   {
@@ -237,8 +237,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services/sms-blasting.html",
-   "dist_bytes": 13240,
-   "preview_bytes": 178574,
+   "dist_bytes": 13236,
+   "preview_bytes": 178960,
    "devanagari": false
   },
   {
@@ -249,8 +249,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services/social-media-management.html",
-   "dist_bytes": 13529,
-   "preview_bytes": 178863,
+   "dist_bytes": 13525,
+   "preview_bytes": 179249,
    "devanagari": false
   },
   {
@@ -261,8 +261,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services/website-development.html",
-   "dist_bytes": 13426,
-   "preview_bytes": 178760,
+   "dist_bytes": 13422,
+   "preview_bytes": 179146,
    "devanagari": false
   },
   {
@@ -273,8 +273,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services/whatsapp-blasting.html",
-   "dist_bytes": 13375,
-   "preview_bytes": 178709,
+   "dist_bytes": 13371,
+   "preview_bytes": 179095,
    "devanagari": false
   },
   {
@@ -285,8 +285,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/services/whatsapp-chat-bot.html",
-   "dist_bytes": 13330,
-   "preview_bytes": 178664,
+   "dist_bytes": 13326,
+   "preview_bytes": 179050,
    "devanagari": false
   },
   {
@@ -297,8 +297,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/terms.html",
-   "dist_bytes": 13095,
-   "preview_bytes": 178447,
+   "dist_bytes": 13124,
+   "preview_bytes": 178866,
    "devanagari": false
   },
   {
@@ -309,8 +309,8 @@
    "noindex": false,
    "is404": false,
    "src": "src/pages/work.html",
-   "dist_bytes": 13225,
-   "preview_bytes": 178577,
+   "dist_bytes": 13221,
+   "preview_bytes": 178963,
    "devanagari": false
   },
   {
@@ -321,8 +321,8 @@
    "noindex": true,
    "is404": false,
    "src": "src/pages/work/case-study-template.html",
-   "dist_bytes": 14890,
-   "preview_bytes": 180224,
+   "dist_bytes": 14886,
+   "preview_bytes": 180610,
    "devanagari": false
   }
  ],

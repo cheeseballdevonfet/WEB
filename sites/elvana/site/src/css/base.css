@@ -27,7 +27,6 @@
   --paper-dim:#D9DAD5; /* small print on ink: 12.61 */
   --ink-soft:#3D3A35;  /* secondary text on paper: 10.16 */
   --post:#6E6A62;      /* station-board posts (decorative only) */
-  --rim:#FBFBF6;       /* white paper fibre on torn edges (decorative only) */
 
   /* Motion: named curves. core.js mirrors them in MOTION; tear.js keeps its own copy. */
   --ease-paste:cubic-bezier(.2,.7,.1,1);   /* paste: squeegee settle; every entrance eases out */
@@ -54,7 +53,6 @@
      A "sheet" is one poster sheet; seams are drawn at every sheet. */
   --pad-x:clamp(20px,4.4vw,64px);
   --pad-y:clamp(56px,7.5vw,112px);
-  --gap:clamp(24px,3vw,48px);
   --hdr:64px;
   --sheet:calc(100vw / 6);
   --sheet-h:calc(var(--sheet) * 1.5);
@@ -105,6 +103,3 @@ img,svg{max-width:100%}
 .no-js .js-only,.js:not(.motion) .motion-only{display:none!important}
 .skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--yellow);color:var(--ink);padding:12px 18px;font-weight:800;text-decoration:none}
 .skip:focus{top:12px}
-.stack>*+*{margin-top:var(--stack,20px)}
-.mt{margin-top:clamp(36px,4.5vw,64px)}
-.measure{max-width:56ch}

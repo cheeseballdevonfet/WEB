@@ -27,6 +27,14 @@ const ONLY = arg('only', '') ? arg('only').split(',') : null;
       for (const w of WIDTHS) {
         const { ctx, page, log } = await open(browser, fileUrl(tree, p.out), w);
         const a = await page.evaluate(AUDIT);
+        // the phone/tablet menu must open, show every link, and close with Escape
+        if (w < 980) {
+          await page.click('.menu-btn');
+          await page.waitForTimeout(450);
+          a.menu = await page.evaluate(() => { const m = document.getElementById('menu'); const r = m.getBoundingClientRect(); return { open: m.matches(':popover-open'), h: Math.round(r.height), links: [...m.querySelectorAll('a')].filter(x => x.getBoundingClientRect().height > 0).length }; });
+          await page.keyboard.press('Escape'); await page.waitForTimeout(300);
+          a.menu.closes = await page.evaluate(() => !document.getElementById('menu').matches(':popover-open'));
+        }
         const shots = [];
         if (tree === SHOTS) {
           const slug = (p.out.replace(/\/?index\.html$/, '').replace(/[\/.]/g, '-') || 'home');
@@ -48,6 +56,7 @@ const ONLY = arg('only', '') ? arg('only').split(',') : null;
         if (a.h1 !== 1) fail.push('h1');
         if (a.header !== 1 || a.main !== 1 || a.footer !== 1) fail.push('landmarks');
         if (a.contrastFails.length) fail.push('contrast');
+        if (a.menu && !(a.menu.open && a.menu.h > 200 && a.menu.links >= 8 && a.menu.closes)) fail.push('menu');
         if (fail.length) failures++;
         results.push({ tree, path: p.path, w, fail, errors: log.errors, blocked: log.blocked, ...a, shots });
         console.log(`${fail.length ? 'FAIL' : 'ok  '} ${tree.padEnd(7)} ${String(w).padEnd(4)} ${p.path}${fail.length ? '  ' + fail.join(',') : ''}`);

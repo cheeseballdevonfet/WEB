@@ -16,6 +16,16 @@ Prompts marked "Based on" are adapted from creators who shared them during Opus 
 
 ## Power-ups
 
+### Anti-repetition
+id: variety
+note: Makes Claude reject its first, most obvious idea. Paste onto any prompt for more variety.
+
+```text
+Before designing anything, list 6 completely different visual directions for this prompt (medium, palette, type,
+motion language, reference era or art movement). Throw out the 3 most obvious ones, the ones any AI would pick.
+Commit to the boldest remaining direction and tell me in one line which one you chose and why.
+```
+
 ### ALL OUT booster
 id: allout
 note: The "go all out" energy from the viral prompts, plus the craft rules that separated great results from generic ones.
@@ -30,16 +40,6 @@ Banned (the giveaways of AI-made motion): centered title on a gradient, everythi
 glassmorphism, near-black with one acid-green accent, cream with terracotta, Inter/Roboto/Geist, corner labels,
 frame borders, fake timecodes, fake dashboards, spinning logos, lens flares, stock AI imagery.
 Before you finish, screenshot 6 key moments, critique them as a harsh creative director, and fix the 3 weakest.
-```
-
-### Anti-repetition
-id: variety
-note: Makes Claude reject its first, most obvious idea. Paste onto any prompt for more variety.
-
-```text
-Before designing anything, list 6 completely different visual directions for this prompt (medium, palette, type,
-motion language, reference era or art movement). Throw out the 3 most obvious ones, the ones any AI would pick.
-Commit to the boldest remaining direction and tell me in one line which one you chose and why.
 ```
 
 ### Brand block
@@ -68,6 +68,8 @@ sync every cut to it.
 
 ### Format switch
 id: format
+mode: append
+line: Format
 note: Add one line to change the canvas.
 options:
 - 9:16 vertical for Reels/TikTok, key content inside the centre safe zone

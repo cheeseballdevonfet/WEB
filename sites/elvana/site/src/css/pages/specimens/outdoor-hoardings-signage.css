@@ -1,0 +1,44 @@
+/* Specimen: Outdoor, Hoardings & Signage. The visitor's brand name, painted on a highway
+   hoarding, a street panel and a shopfront fascia. --n (the name's length) sizes the type to
+   each board. No JS: "Your brand" on all three. */
+.spec-ooh{display:grid;gap:18px;--n:10}
+.ooh-ctl{display:grid;gap:6px;max-width:560px}
+.ooh-ctl label{font-weight:800;font-size:16px}
+.ooh-ctl input{width:100%;min-height:58px;padding:14px 16px 10px;border:0;border-radius:0;background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 3px var(--ink);font:400 26px/1.1 var(--display)}
+.ooh-ctl input::placeholder{color:var(--ink-soft);opacity:1}
+.ooh-ctl input:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.ooh-scenes{display:grid;grid-template-columns:6fr 3fr 3fr;gap:clamp(10px,1.4vw,18px);align-items:end}
+.ooh-s{display:grid;gap:8px}
+.ooh-k{font-family:var(--display);font-size:clamp(22px,2vw,30px);line-height:1}
+.ooh-scene{position:relative;overflow:hidden;background:linear-gradient(var(--paper) 0 72%,#C9C8C1 72%);box-shadow:inset 0 0 0 3px var(--ink)}
+.ooh-name{display:block;font-family:var(--display);line-height:.95;white-space:nowrap;overflow-wrap:normal}
+/* highway: a far hoarding on two posts over the road */
+.ooh-hw .ooh-scene{aspect-ratio:16 / 10.2}
+.ooh-board{position:absolute;left:17%;width:66%;top:12%;aspect-ratio:3 / 1.15;display:flex;flex-direction:column;justify-content:center;gap:4%;padding:0 6%;background:var(--yellow);color:var(--ink);box-shadow:0 0 0 5px var(--ink);container-type:inline-size;z-index:1}
+.ooh-board .ooh-name{font-size:min(19cqw,calc(158cqw / var(--n)))}
+.ooh-board .ooh-line{font-weight:800;font-size:clamp(14px,4.4cqw,22px);line-height:1.1}
+.ooh-posts{position:absolute;left:30%;right:30%;top:40%;bottom:24%;background:linear-gradient(90deg,var(--ink) 0 9px,transparent 9px calc(100% - 9px),var(--ink) calc(100% - 9px))}
+.ooh-road{position:absolute;left:0;right:0;bottom:0;height:28%;background:linear-gradient(90deg,var(--yellow) 0 30px,transparent 30px 60px) 0 50% / 60px 6px repeat-x,var(--ink)}
+/* street: a lit panel at eye level */
+.ooh-st .ooh-scene{aspect-ratio:3 / 4.07}
+.ooh-panel{position:absolute;left:18%;right:18%;top:9%;height:64%;display:flex;flex-direction:column;justify-content:space-between;padding:10% 8%;background:var(--red);color:var(--paper);box-shadow:0 0 0 5px var(--ink);container-type:inline-size;z-index:1}
+.ooh-panel .ooh-name{font-size:min(30cqw,calc(170cqw / var(--n)))}
+.ooh-qr{width:44%;aspect-ratio:1;background:
+  conic-gradient(var(--ink) 25%,transparent 0 50%,var(--ink) 0 75%,transparent 0) 0 0 / 25% 25%,var(--paper);box-shadow:inset 0 0 0 4px var(--paper)}
+.ooh-panel .ooh-line{font-weight:800;font-size:clamp(14px,9cqw,16px);line-height:1.15}
+.ooh-pole{position:absolute;left:calc(50% - 6px);width:12px;top:70%;bottom:6%;background:var(--ink)}
+.ooh-kerb{position:absolute;left:0;right:0;bottom:0;height:7%;background:var(--ink-soft)}
+/* shopfront: the fascia over a rolling shutter */
+.ooh-sf .ooh-scene{aspect-ratio:3 / 4.07;background:linear-gradient(var(--paper) 0 12%,var(--paper-dim) 12%)}
+.ooh-fascia{position:absolute;left:5%;right:5%;top:12%;height:20%;display:grid;place-items:center;padding:0 6%;background:var(--ink);color:var(--yellow);container-type:inline-size;z-index:1}
+.ooh-fascia .ooh-name{font-size:min(22cqw,calc(150cqw / var(--n)))}
+.ooh-shop{position:absolute;left:10%;right:10%;top:32%;bottom:0;background:var(--ink-soft)}
+.ooh-shutter{position:absolute;left:6%;right:6%;top:0;height:46%;background:repeating-linear-gradient(180deg,#B9B7B0 0 7px,#8E8B84 7px 9px)}
+.ooh-open{position:absolute;right:10%;bottom:16%;padding:5px 8px 3px;background:var(--paper);color:var(--ink);font-weight:800;font-size:14px;transform:rotate(-4deg)}
+@media (max-width:1099px){
+  .ooh-scenes{grid-template-columns:1fr 1fr}
+  .ooh-hw{grid-column:1 / -1}
+}
+@media (max-width:699px){
+  .ooh-scenes{gap:14px 10px}
+}

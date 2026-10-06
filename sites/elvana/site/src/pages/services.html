@@ -4,40 +4,199 @@ name: Services
 description: Eight core services and six beyond digital: websites, SEO and SEM, WhatsApp, SMS, AI calling, content, PR, video, branding, events and outdoor.
 path: /services/
 body_class: page-services
+css: pages/services
+js: pages/services
 ---
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
+<!-- Services overview. Signature: the fly-poster wall (#wall). All 14 services are pasted as one wall;
+     choosing Create, Connect or Grow tears the other posters down and slaps the matching ones into place
+     (an interruptible FLIP with a squeegee; services.js). Without JS or with reduced motion the wall is
+     simply all 14 posters (no JS) or filters without motion (reduced motion).
+     Pillar membership follows the deck's pillar lines (Create: content, video, design, branding; Connect:
+     social, WhatsApp, SMS, AI calling, PR; Grow: SEO, SEM, performance ads, automation, reporting). -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Elvana Media services","itemListElement":[{"@type":"ListItem","position":1,"name":"Website Development","url":"https://www.elvanamedia.com/services/website-development/"},{"@type":"ListItem","position":2,"name":"SEO & SEM","url":"https://www.elvanamedia.com/services/seo-sem/"},{"@type":"ListItem","position":3,"name":"SMS Blasting","url":"https://www.elvanamedia.com/services/sms-blasting/"},{"@type":"ListItem","position":4,"name":"WhatsApp Blasting","url":"https://www.elvanamedia.com/services/whatsapp-blasting/"},{"@type":"ListItem","position":5,"name":"WhatsApp Chat Bot","url":"https://www.elvanamedia.com/services/whatsapp-chat-bot/"},{"@type":"ListItem","position":6,"name":"AI Calling","url":"https://www.elvanamedia.com/services/ai-calling/"},{"@type":"ListItem","position":7,"name":"Post Creation & Content","url":"https://www.elvanamedia.com/services/post-creation-content/"},{"@type":"ListItem","position":8,"name":"PR & Media Relations","url":"https://www.elvanamedia.com/services/pr-media-relations/"},{"@type":"ListItem","position":9,"name":"Content & Video Production","url":"https://www.elvanamedia.com/services/content-video-production/"},{"@type":"ListItem","position":10,"name":"Social Media Management","url":"https://www.elvanamedia.com/services/social-media-management/"},{"@type":"ListItem","position":11,"name":"Branding & Identity","url":"https://www.elvanamedia.com/services/branding-identity/"},{"@type":"ListItem","position":12,"name":"Events & Activations","url":"https://www.elvanamedia.com/services/events-activations/"},{"@type":"ListItem","position":13,"name":"Outdoor, Hoardings & Signage","url":"https://www.elvanamedia.com/services/outdoor-hoardings-signage/"},{"@type":"ListItem","position":14,"name":"Print & Digital Publishing","url":"https://www.elvanamedia.com/services/print-digital-publishing/"}]}</script>
 <section class="page-hero" aria-labelledby="page-h">
   <div class="page-hero__main g-yellow">
     {{crumbs}}
     <h1 id="page-h">Services</h1>
   </div>
   <div class="page-hero__side g-ink">
-    <p class="page-hero__line">Create. Connect. Grow.</p>
-    <p class="page-hero__sign"><span class="d">Elvana Media</span>Mumbai, Delhi, Gurgaon and Noida</p>
+    <p class="page-hero__line">Eight core services. Six beyond digital.</p>
+    <p class="page-hero__sign"><span class="d hi-ink">Create. Connect. Grow.</span>Digital marketing, media &amp; AI-powered growth</p>
   </div>
 </section>
 
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
-    </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>Create, Connect, Grow: the three pillars</li><li>The 8 core services</li><li>The 6 services beyond digital</li><li>How any service runs as a retainer, a campaign or a project</li></ul>
+<section class="poster svc-pillars" id="pillars" aria-labelledby="pillars-h" style="--under:var(--ink)">
+  <div class="paste flush">
+    <h2 class="sr" id="pillars-h">Create. Connect. Grow.</h2>
+    <div class="pillars">
+      <div class="pillar g-red">
+        <h3>Create.</h3>
+        <div class="pillar__foot">
+          <p>Content, video, design, branding and campaign ideas that people stop for.</p>
+          <a class="tag" href="#wall" data-filter="create">Show the Create services</a>
+        </div>
+      </div>
+      <div class="pillar g-blue">
+        <h3>Connect.</h3>
+        <div class="pillar__foot">
+          <p>Social, WhatsApp, SMS, AI calling and PR that reach the right audience at the right time.</p>
+          <a class="tag" href="#wall" data-filter="connect">Show the Connect services</a>
+        </div>
+      </div>
+      <div class="pillar g-yellow">
+        <h3>Grow.</h3>
+        <div class="pillar__foot">
+          <p>SEO, SEM, performance ads, automation and reporting that turn attention into revenue.</p>
+          <a class="tag tag-ink" href="#wall" data-filter="grow">Show the Grow services</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Closing CTA poster: every page ends here, always to /contact/. -->
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+<section class="poster svc-wall" id="wall" aria-labelledby="wall-h" style="--under:var(--yellow)">
+  <div class="paste g-ink">
+    <div class="head-split">
+      <h2 class="d1" id="wall-h">Every service, on one wall</h2>
+      <p class="lede">Fourteen posters, one for each service. <span class="js-only">Pick a pillar: the posters that don't belong come down, and the ones that do are pasted into place.</span></p>
+    </div>
+    <div class="fp-bar g-ink js-only" role="group" aria-labelledby="fp-bar-h">
+      <p class="fp-bar__h" id="fp-bar-h">Show</p>
+      <div class="fp-bar__btns">
+          <button class="fp-btn" type="button" data-filter="all" aria-pressed="true">All 14</button>
+          <button class="fp-btn" type="button" data-filter="create" aria-pressed="false">Create</button>
+          <button class="fp-btn" type="button" data-filter="connect" aria-pressed="false">Connect</button>
+          <button class="fp-btn" type="button" data-filter="grow" aria-pressed="false">Grow</button>
+      </div>
+      <p class="fp-bar__note" aria-hidden="true"><span data-note="all">Every service we run, pasted edge to edge.</span><span data-note="create" hidden>Content, video, design, branding and campaign ideas that people stop for.</span><span data-note="connect" hidden>Social, WhatsApp, SMS, AI calling and PR that reach the right audience at the right time.</span><span data-note="grow" hidden>SEO, SEM, performance ads, automation and reporting that turn attention into revenue.</span></p>
+    </div>
+    <div class="fp-wall" data-wall>
+      <article class="flyer fp g-yellow" data-pillars="create grow" style="--s:5;--st:7;--sp:12">
+        <p class="fam">Core service</p>
+        <h3><a href="/services/website-development/">Website Development</a></h3>
+        <p class="fp-line">Fast, mobile-first sites and landing pages built to convert.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Create</li><li>Grow</li></ul>
+      </article>
+      <article class="flyer fp g-ink" data-pillars="grow" style="--s:3;--st:5;--sp:6">
+        <p class="fam">Core service</p>
+        <h3><a href="/services/seo-sem/">SEO &amp; SEM</a></h3>
+        <p class="fp-line">Rank higher on Google and run search ads that pay back.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Grow</li></ul>
+      </article>
+      <article class="flyer fp g-red" data-pillars="connect" style="--s:4;--st:5;--sp:6">
+        <p class="fam">Core service</p>
+        <h3><a href="/services/sms-blasting/">SMS Blasting</a></h3>
+        <p class="fp-line">Bulk SMS campaigns on DLT-registered templates.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li></ul>
+      </article>
+      <article class="flyer fp g-blue" data-pillars="connect" style="--s:5;--st:7;--sp:12">
+        <p class="fam">Core service</p>
+        <h3><a href="/services/whatsapp-blasting/">WhatsApp Blasting</a></h3>
+        <p class="fp-line">Broadcast offers and updates where customers actually read.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li></ul>
+      </article>
+      <article class="flyer fp g-paper" data-pillars="connect grow" style="--s:4;--st:7;--sp:12">
+        <p class="fam">Core service</p>
+        <h3><a href="/services/whatsapp-chat-bot/">WhatsApp Chat Bot</a></h3>
+        <p class="fp-line">24×7 automated replies, lead capture and support.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li><li>Grow</li></ul>
+      </article>
+      <article class="flyer fp g-yellow" data-pillars="connect grow" style="--s:3;--st:5;--sp:12">
+        <p class="fam">Core service</p>
+        <h3><a href="/services/ai-calling/">AI Calling</a></h3>
+        <p class="fp-line">AI voice agents for follow-ups, reminders and qualification.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li><li>Grow</li></ul>
+      </article>
+      <article class="flyer fp g-ink" data-pillars="create" style="--s:4;--st:7;--sp:12">
+        <p class="fam">Core service</p>
+        <h3><a href="/services/post-creation-content/">Post Creation &amp; Content</a></h3>
+        <p class="fp-line">Scroll-stopping posts, reels, carousels and copy.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Create</li></ul>
+      </article>
+      <article class="flyer fp g-blue" data-pillars="connect" style="--s:3;--st:5;--sp:12">
+        <p class="fam">Core service</p>
+        <h3><a href="/services/pr-media-relations/">PR &amp; Media Relations</a></h3>
+        <p class="fp-line">Stories placed with the press and the people who matter.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li></ul>
+      </article>
+      <article class="flyer fp g-yellow" data-pillars="create" style="--s:5;--st:7;--sp:12">
+        <p class="fam">Beyond digital</p>
+        <h3><a href="/services/content-video-production/">Content &amp; Video Production</a></h3>
+        <p class="fp-line">Ad films, brand films, animation, graphics and sound, from pre- to post-production.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Create</li></ul>
+      </article>
+      <article class="flyer fp g-red" data-pillars="connect grow" style="--s:5;--st:5;--sp:12">
+        <p class="fam">Beyond digital</p>
+        <h3><a href="/services/social-media-management/">Social Media Management</a></h3>
+        <p class="fp-line">Always-on calendars, community management and paid social campaigns.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li><li>Grow</li></ul>
+      </article>
+      <article class="flyer fp g-blue" data-pillars="create" style="--s:3;--st:5;--sp:12">
+        <p class="fam">Beyond digital</p>
+        <h3><a href="/services/branding-identity/">Branding &amp; Identity</a></h3>
+        <p class="fp-line">Logos, brand books, packaging and a voice that stays consistent everywhere.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Create</li></ul>
+      </article>
+      <article class="flyer fp g-ink" data-pillars="connect" style="--s:4;--st:7;--sp:12">
+        <p class="fam">Beyond digital</p>
+        <h3><a href="/services/events-activations/">Events &amp; Activations</a></h3>
+        <p class="fp-line">Pan-India event management, launches and on-ground brand experiences.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li></ul>
+      </article>
+      <article class="flyer fp g-yellow" data-pillars="connect" style="--s:7;--st:7;--sp:12">
+        <p class="fam">Beyond digital</p>
+        <h3><a href="/services/outdoor-hoardings-signage/">Outdoor, Hoardings &amp; Signage</a></h3>
+        <p class="fp-line">High-visibility outdoor media planned around your audience.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Connect</li></ul>
+      </article>
+      <article class="flyer fp g-paper" data-pillars="create" style="--s:5;--st:5;--sp:12">
+        <p class="fam">Beyond digital</p>
+        <h3><a href="/services/print-digital-publishing/">Print &amp; Digital Publishing</a></h3>
+        <p class="fp-line">Magazines, brochures and regional-language content in print and online.</p>
+        <ul class="fp-pills" aria-label="Pillars"><li>Create</li></ul>
+      </article>
+      <i class="fp-blade" aria-hidden="true"></i>
+    </div>
+  </div>
+</section>
+
+<section class="poster" id="beyond-digital" aria-labelledby="beyond-h" style="--under:var(--ink)">
+  <div class="paste bill g-paper">
+    <div class="bill-head">
+      <h2 class="d1" id="beyond-h">Beyond digital</h2>
+      <p class="d2">Media, production &amp; brand building</p>
+    </div>
+    <ul class="bill-list">
+      <li><h3><a href="/services/content-video-production/">Content &amp; Video Production</a></h3><p>Ad films, brand films, animation, graphics and sound, from pre- to post-production.</p><p class="bill-good"><b>Good for</b> launches, brand films, explainers, ad campaigns and social video.</p></li>
+      <li><h3><a href="/services/social-media-management/">Social Media Management</a></h3><p>Always-on calendars, community management and paid social campaigns.</p><p class="bill-good"><b>Good for</b> brands that need to be present every day, not just at launches.</p></li>
+      <li><h3><a href="/services/branding-identity/">Branding &amp; Identity</a></h3><p>Logos, brand books, packaging and a voice that stays consistent everywhere.</p><p class="bill-good"><b>Good for</b> new businesses, rebrands and companies whose brand has drifted across teams and agencies.</p></li>
+      <li><h3><a href="/services/events-activations/">Events &amp; Activations</a></h3><p>Pan-India event management, launches and on-ground brand experiences.</p><p class="bill-good"><b>Good for</b> launches, seasonal campaigns and community and trade events.</p></li>
+      <li><h3><a href="/services/outdoor-hoardings-signage/">Outdoor, Hoardings &amp; Signage</a></h3><p>High-visibility outdoor media planned around your audience.</p><p class="bill-good"><b>Good for</b> launches, local businesses, real estate, retail and events.</p></li>
+      <li><h3><a href="/services/print-digital-publishing/">Print &amp; Digital Publishing</a></h3><p>Magazines, brochures and regional-language content in print and online.</p><p class="bill-good"><b>Good for</b> education, real estate, healthcare and corporate communications.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="poster svc-models" id="engagement" aria-labelledby="models-h" style="--under:var(--paper)">
+  <div class="paste g-blue">
+    <div class="head-split">
+      <h2 class="d1" id="models-h">Any service, three ways to work</h2>
+      <p class="lede">Any service can be part of a Monthly Retainer, a Campaign SOW or a Project. Every one runs through the same five steps and reports into the same live dashboard.</p>
+    </div>
+    <ul class="models">
+      <li><h3>Monthly Retainer</h3><p class="models__best">Always-on growth</p><p>Social media, content, SEO, ads management and monthly reporting.</p></li>
+      <li><h3>Campaign SOW</h3><p class="models__best">Launches &amp; seasons</p><p>Product launches, festive pushes, events and PR bursts, scoped per campaign.</p></li>
+      <li><h3>Project-based</h3><p class="models__best">Build once, use daily</p><p>Websites, WhatsApp bots, AI calling set-up and brand identity.</p></li>
+    </ul>
+    <p class="poster-foot tags"><a class="tag" href="/engagement-models/">Compare engagement models</a><a class="tag tag-line" href="/how-we-work/">How we work</a></p>
+  </div>
+</section>
+
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--blue)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>
-      <p class="lede">Write to info@elvanamedia.com or call +91 89283 39531. Offices in Mumbai, Delhi, Gurgaon and Noida.</p>
+      <p class="lede">Not sure which service you need? Tell us the problem and we will start from there. Write to info@elvanamedia.com or call +91 89283 39531.</p>
       <div class="tags"><a class="tag tag-ink" href="/contact/">Let's talk</a><a class="tag tag-line" href="tel:+918928339531">Call +91 89283 39531</a></div>
     </div>
   </div>

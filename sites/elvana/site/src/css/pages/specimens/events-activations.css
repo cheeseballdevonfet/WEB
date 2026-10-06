@@ -1,0 +1,47 @@
+/* Specimen: Events & Activations. A sample event ticket whose stub you tear off (drag it, or
+   the button); the ticket is checked in and the digital tie-ins tick off beside it.
+   No JS: the whole ticket and the list. Reduced motion: the stub simply comes away. */
+.spec-tk{display:grid;grid-template-columns:3fr 2fr;gap:24px clamp(24px,3vw,44px);align-items:start}
+.spec-tk .spec-cap{grid-column:1 / -1}
+.tk-stage{display:grid;gap:18px;justify-items:start}
+.tk{position:relative;display:grid;grid-template-columns:1fr minmax(118px,30%);width:100%;max-width:700px;filter:drop-shadow(8px 8px 0 rgba(0,0,0,.35))}
+.tk-main,.tk-stub{position:relative;background:var(--yellow);color:var(--ink);--focus:var(--ink)}
+.tk-main{display:grid;gap:10px;padding:clamp(18px,2.4vw,28px);-webkit-mask:radial-gradient(circle 14px at 100% 0,transparent 98%,#000) top right / 100% 51% no-repeat,radial-gradient(circle 14px at 100% 100%,transparent 98%,#000) bottom right / 100% 51% no-repeat;mask:radial-gradient(circle 14px at 100% 0,transparent 98%,#000) top right / 100% 51% no-repeat,radial-gradient(circle 14px at 100% 100%,transparent 98%,#000) bottom right / 100% 51% no-repeat}
+.tk-stub{display:flex;flex-direction:column;gap:8px;padding:clamp(18px,2.4vw,28px) 16px;transform-origin:0 0;touch-action:none;cursor:grab;background-color:var(--yellow)!important;
+  background:linear-gradient(90deg,transparent 0 3px,var(--yellow) 3px) 0 0 / 100% 100%,repeating-linear-gradient(180deg,var(--ink) 0 6px,transparent 6px 12px) 0 0 / 3px 100% no-repeat;
+  -webkit-mask:radial-gradient(circle 14px at 0 0,transparent 98%,#000) top left / 100% 51% no-repeat,radial-gradient(circle 14px at 0 100%,transparent 98%,#000) bottom left / 100% 51% no-repeat;mask:radial-gradient(circle 14px at 0 0,transparent 98%,#000) top left / 100% 51% no-repeat,radial-gradient(circle 14px at 0 100%,transparent 98%,#000) bottom left / 100% 51% no-repeat}
+.tk-stub.is-held{cursor:grabbing}
+.tk-k{font-weight:800;font-size:15px}
+.tk-name{font-family:var(--display);font-size:clamp(32px,3.6vw,52px);line-height:.95;max-width:9ch}
+.tk-stub__name{font-family:var(--display);font-size:clamp(18px,1.6vw,22px);line-height:1.05}
+.tk-bars{margin-top:auto;height:52px;background:repeating-linear-gradient(90deg,var(--ink) 0 3px,transparent 3px 5px,var(--ink) 5px 6px,transparent 6px 9px,var(--ink) 9px 13px,transparent 13px 15px)}
+.tk-dl{display:grid;grid-template-columns:repeat(3,auto);gap:4px 22px;margin-top:6px;justify-content:start}
+.tk-dl dt{font-weight:800;font-size:14px}
+.tk-dl dd{font-size:16px;line-height:1.3;max-width:16ch}
+.tk-in{display:none;position:absolute;right:20px;bottom:18px;padding:8px 12px 5px;font:400 26px/1 var(--display);color:var(--red);box-shadow:inset 0 0 0 3px var(--red);transform:rotate(-9deg)}
+.tk-ctl{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
+.tk-hint{font-weight:800;font-size:15px}
+.tk-after{display:grid;gap:12px}
+.tk-after__h{font-family:var(--display);font-size:var(--fs-d3);line-height:1;color:var(--yellow)}
+.tk-list{display:grid;border-top:3px solid currentColor}
+.tk-list li{display:grid;grid-template-columns:30px 1fr;align-items:center;gap:12px;padding:12px 0 10px;border-bottom:3px solid rgba(242,243,239,.3);font-size:var(--fs-lede);line-height:1.3;font-weight:600}
+.tk-list li::before{content:"";width:22px;height:22px;box-shadow:inset 0 0 0 3px currentColor}
+.spec-tk.is-live .tk-list li{color:var(--paper-dim)}
+.spec-tk.is-live .tk-list li.is-done{color:var(--paper)}
+.tk-list li.is-done::before,.spec-tk:not(.is-live) .tk-list li::before{box-shadow:none;background:var(--yellow)}
+.tk-list li{position:relative}
+.tk-list li.is-done::after,.spec-tk:not(.is-live) .tk-list li::after{content:"";position:absolute;left:7px;top:50%;width:7px;height:13px;margin-top:-10px;border:solid var(--ink);border-width:0 3px 3px 0;transform:rotate(40deg)}
+.spec-tk.is-torn .tk-in{display:block}
+.spec-tk.is-torn .tk-stub{visibility:hidden}
+@media (max-width:1099px){.spec-tk{grid-template-columns:1fr}}
+@media (max-width:699px){
+  .tk{grid-template-columns:1fr;max-width:none}
+  .tk-main{-webkit-mask:radial-gradient(circle 14px at 0 100%,transparent 98%,#000) bottom left / 51% 100% no-repeat,radial-gradient(circle 14px at 100% 100%,transparent 98%,#000) bottom right / 51% 100% no-repeat;mask:radial-gradient(circle 14px at 0 100%,transparent 98%,#000) bottom left / 51% 100% no-repeat,radial-gradient(circle 14px at 100% 100%,transparent 98%,#000) bottom right / 51% 100% no-repeat}
+  .tk-stub{flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:16px 20px;
+    background:linear-gradient(180deg,transparent 0 3px,var(--yellow) 3px) 0 0 / 100% 100%,repeating-linear-gradient(90deg,var(--ink) 0 6px,transparent 6px 12px) 0 0 / 100% 3px no-repeat;
+    -webkit-mask:radial-gradient(circle 14px at 0 0,transparent 98%,#000) top left / 51% 100% no-repeat,radial-gradient(circle 14px at 100% 0,transparent 98%,#000) top right / 51% 100% no-repeat;mask:radial-gradient(circle 14px at 0 0,transparent 98%,#000) top left / 51% 100% no-repeat,radial-gradient(circle 14px at 100% 0,transparent 98%,#000) top right / 51% 100% no-repeat}
+  .tk-bars{margin:0 0 0 auto;width:96px;height:36px}
+  .tk-dl{grid-template-columns:1fr 1fr}
+  .tk-dl div:last-child{grid-column:1 / -1}
+  .tk-in{right:14px;bottom:14px;font-size:22px}
+}

@@ -3,42 +3,179 @@ title: Post Creation & Content | Elvana Media
 name: Post Creation & Content
 description: Scroll-stopping posts, reels, carousels and copy. Post Creation & Content by Elvana Media in Mumbai, Delhi, Gurgaon and Noida.
 path: /services/post-creation-content/
-body_class: page-service
+body_class: page-service svc-post-creation-content
+css: tear, pages/services, pages/specimens/post-creation-content
+js: tear, pages/services, pages/specimens/post-creation-content
 ---
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
-<section class="page-hero" aria-labelledby="page-h">
-  <div class="page-hero__main g-yellow">
-    {{crumbs}}
-    <h1 id="page-h" class="is-long">Post Creation &amp; Content</h1>
+<!-- Post Creation & Content. Service page from the shared template (SYSTEM.md, services.css). Signature: the corner peel in the hero
+     (the yellow title poster peels back to show the promise underneath; tear.js owns the peel), then the
+     "Mock-up" specimen (pages/specimens/post-creation-content.css + .js). Copy: CONTENT.md and CONTENT-PAGES.md. -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","@id":"https://www.elvanamedia.com/services/post-creation-content/#service","name":"Post Creation & Content","serviceType":"Post Creation & Content","description":"Scroll-stopping posts, reels, carousels and copy.","url":"https://www.elvanamedia.com/services/post-creation-content/","provider":{"@id":"https://www.elvanamedia.com/#organization"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}]}</script>
+<section class="page-hero svc-hero" aria-labelledby="page-h">
+  <div class="peel svc-peel" data-peel data-peel-corner="br" data-peel-label="Peel back the poster" data-peel-label-back="Paste it back">
+    <div class="peel__under page-hero__main g-paper svc-under" aria-hidden="true">
+      <p class="svc-under__k">The promise</p>
+      <p class="svc-under__line">Scroll-stopping posts, reels, carousels and copy.</p>
+    </div>
+    <div class="peel__over page-hero__main g-yellow">
+      {{crumbs}}
+      <h1 id="page-h" class="is-long">Post Creation &amp; Content</h1>
+    </div>
   </div>
-  <div class="page-hero__side g-red">
-    <p class="page-hero__line">Scroll-stopping posts, reels, carousels and copy.</p>
+  <div class="page-hero__side g-red svc-side">
     <p class="page-hero__sign"><span class="d">Core service</span>Elvana Media</p>
+    <div class="svc-side__pillar">
+      <p class="svc-side__w">Create.</p>
+      <p class="svc-side__t">Content, video, design, branding and campaign ideas that people stop for.</p>
+    </div>
+    <p class="svc-side__hint js-only motion-only">Peel the yellow poster's corner to read the promise.</p>
   </div>
 </section>
-
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
+<section class="poster svc-what svc-what--split" id="what-we-do" aria-labelledby="what-h" style="--under:var(--ink)">
+  <div class="paste g-red">
+    <div class="head-split">
+      <h2 class="d1" id="what-h">What we do</h2>
+      <p class="lede">Scroll-stopping posts, reels, carousels and copy.</p>
     </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>What we do</li><li>How it runs, through our five steps</li><li>Who it suits</li><li>Services it works with</li><li>Questions people ask</li></ul>
+    <ul class="what-list">
+      <li>A monthly content calendar built from your goals, launches and seasons.</li>
+      <li>Reels, carousels, static posts and stories, written and designed in your brand's voice.</li>
+      <li>Copy in the languages your audience reads, starting with English and Hindi.</li>
+      <li>Captions, hashtags and posting times planned per platform.</li>
+      <li>Every piece approved by you before it goes out.</li>
+    </ul>
+  </div>
+</section>
+<section class="poster svc-spec svc-spec--wide" id="mock-up" aria-labelledby="spec-h" style="--under:var(--red)">
+  <div class="paste g-paper">
+    <div class="spec-grid">
+      <div class="spec-head">
+        <p class="mockup">Mock-up</p>
+        <h2 class="d2" id="spec-h">Swipe the post, plan the month</h2>
+        <p class="lede">Swipe through a sample carousel, then pick a day in the calendar and approve its post.</p>
+      </div>
+      <figure class="spec spec-post" data-spec="post">
+        <div class="pc-grid">
+          <div class="pc-car">
+            <p class="pc-h">Carousel post, ready for approval</p>
+            <div class="pc-frame">
+              <p class="pc-acct"><b>Sample Sweets</b><span>Carousel</span></p>
+              <ul class="pc-slides" tabindex="0" aria-label="Sample carousel. Swipe, or use the arrow keys, to move through the slides.">
+                <li class="pc-slide g-red"><p class="pc-big">Festive boxes are here.</p><p class="pc-small">Swipe to build yours</p></li>
+                <li class="pc-slide g-yellow"><p class="pc-big">Pick your sweets.</p><p class="pc-small">Kaju katli, laddoos, barfi and more.</p></li>
+                <li class="pc-slide g-blue"><p class="pc-big">Add a note for family.</p><p class="pc-small">Written by hand, packed with care.</p></li>
+                <li class="pc-slide g-ink"><p class="pc-big hi-ink">Order on WhatsApp.</p><p class="pc-small">Delivered across the city.</p></li>
+              </ul>
+              <div class="pc-nav js-only">
+                <button class="chip pc-prev" type="button" aria-label="Previous slide">Back</button>
+                <p class="pc-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></p>
+                <button class="chip pc-next" type="button" aria-label="Next slide">Next</button>
+              </div>
+              <p class="pc-cap"><b>Sample Sweets</b> Festive boxes, built your way. Swipe to see how.</p>
+            </div>
+          </div>
+          <div class="pc-cal">
+            <p class="pc-h">A sample month on the calendar</p>
+            <ol class="pc-days" aria-hidden="true"><li>Mon</li><li>Tue</li><li>Wed</li><li>Thu</li><li>Fri</li><li>Sat</li><li>Sun</li></ol>
+            <ol class="pc-month" aria-label="Sample month">
+              <li class="pc-pad" aria-hidden="true"></li><li class="pc-pad" aria-hidden="true"></li>
+              <li><span>1</span></li>
+              <li data-post="reel" data-title="Behind the counter: packing the festive boxes"><span>2</span></li>
+              <li><span>3</span></li><li><span>4</span></li>
+              <li data-post="carousel" data-title="Festive boxes are here"><span>5</span></li>
+              <li><span>6</span></li><li><span>7</span></li><li><span>8</span></li>
+              <li data-post="static" data-title="Last day to order for the festival"><span>9</span></li>
+              <li><span>10</span></li><li><span>11</span></li>
+              <li data-post="story" data-title="Poll: which sweet goes in first?"><span>12</span></li>
+              <li><span>13</span></li><li><span>14</span></li><li><span>15</span></li>
+              <li data-post="reel" data-title="A sweet maker at work"><span>16</span></li>
+              <li><span>17</span></li><li><span>18</span></li>
+              <li data-post="carousel" data-title="Gift ideas for the office"><span>19</span></li>
+              <li><span>20</span></li><li><span>21</span></li><li><span>22</span></li>
+              <li data-post="static" data-title="Thank you for a sweet season"><span>23</span></li>
+              <li><span>24</span></li><li><span>25</span></li><li><span>26</span></li>
+              <li data-post="story" data-title="Reminder: order on WhatsApp"><span>27</span></li>
+              <li><span>28</span></li><li><span>29</span></li><li><span>30</span></li>
+            </ol>
+            <p class="pc-key" aria-hidden="true"><span class="k-reel">Reel</span><span class="k-carousel">Carousel</span><span class="k-static">Static</span><span class="k-story">Story</span></p>
+            <div class="pc-detail js-only" aria-live="polite">
+              <p class="pc-detail__k">Pick a marked day to see its post.</p>
+            </div>
+          </div>
+        </div>
+        <figcaption class="spec-cap">Mock-up for a sample sweet shop, with a sample month. Every real post is approved by you before it is scheduled.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
-
-<!-- Closing CTA poster: every page ends here, always to /contact/. -->
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+<section class="poster svc-fit svc-fit--pair" id="good-for" aria-labelledby="good-h" style="--under:var(--paper)">
+  <div class="paste g-blue">
+    <div class="fit-grid">
+      <div class="fit-good">
+        <h2 class="d2" id="good-h">Good for</h2>
+        <ul class="cast fit-cast"><li>Brands that need a steady, recognisable presence without building an in-house team</li></ul>
+        <h3 class="fit-sub" id="sectors-h">Sectors where it often fits</h3>
+        <ul class="tags fit-sectors" aria-labelledby="sectors-h">
+          <li><a class="tag tag-line" href="/industries/">Healthcare &amp; Wellness</a></li>
+          <li><a class="tag tag-line" href="/industries/">Education &amp; EdTech</a></li>
+          <li><a class="tag tag-line" href="/industries/">Retail, D2C &amp; E-commerce</a></li>
+          <li><a class="tag tag-line" href="/industries/">Hospitality &amp; Events</a></li>
+          <li><a class="tag tag-line" href="/industries/">Corporate &amp; B2B</a></li>
+        </ul>
+      </div>
+      <div class="fit-works">
+        <h2 class="d2" id="works-h">Works with</h2>
+        <div class="works">
+          <article class="flyer works__p g-red"><p class="fam">Beyond digital</p><h3><a href="/services/social-media-management/">Social Media Management</a></h3><p>Always-on calendars, community management and paid social campaigns.</p></article>
+          <article class="flyer works__p g-yellow"><p class="fam">Beyond digital</p><h3><a href="/services/content-video-production/">Content &amp; Video Production</a></h3><p>Ad films, brand films, animation, graphics and sound, from pre- to post-production.</p></article>
+          <article class="flyer works__p g-blue"><p class="fam">Beyond digital</p><h3><a href="/services/branding-identity/">Branding &amp; Identity</a></h3><p>Logos, brand books, packaging and a voice that stays consistent everywhere.</p></article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="poster svc-runs" id="how-it-runs" aria-labelledby="runs-h" style="--under:var(--blue)">
+  <div class="paste g-ink">
+    <div class="head-split runs-head">
+      <h2 class="d1" id="runs-h">How it runs</h2>
+      <p class="lede">Like every Elvana service, through the same five steps, from brief to impact.</p>
+    </div>
+    <ol class="runs-steps">
+      <li><span aria-hidden="true">1</span>Discover</li>
+      <li><span aria-hidden="true">2</span>Strategise</li>
+      <li><span aria-hidden="true">3</span>Create</li>
+      <li><span aria-hidden="true">4</span>Launch</li>
+      <li><span aria-hidden="true">5</span>Optimise</li>
+    </ol>
+    <div class="runs-grid">
+      <div class="runs">
+        <p>It can be part of a Monthly Retainer, a Campaign SOW or a Project, and it reports into the same live dashboard and monthly report as every other service.</p>
+        <p class="tags runs-tags"><a class="tag tag-line" href="/how-we-work/">How we work</a><a class="tag tag-line" href="/engagement-models/">Engagement models</a></p>
+      </div>
+      <div class="faq">
+        <h2 class="d2" id="faq-h">Questions</h2>
+        <details class="q">
+          <summary>How do approvals work?</summary>
+          <p>You see each month's calendar in advance and approve every post before it is scheduled.</p>
+        </details>
+        <details class="q">
+          <summary>Do you shoot photos and video?</summary>
+          <p>Yes, through our production team. See Content &amp; Video Production.</p>
+        </details>
+        <details class="q">
+          <summary>Can this be a retainer, a campaign or a project?</summary>
+          <p>Yes. Any service can be part of a Monthly Retainer, a Campaign SOW or a Project.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--ink)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>
-      <p class="lede">Write to info@elvanamedia.com or call +91 89283 39531. Offices in Mumbai, Delhi, Gurgaon and Noida.</p>
-      <div class="tags"><a class="tag tag-ink" href="/contact/">Let's talk</a><a class="tag tag-line" href="tel:+918928339531">Call +91 89283 39531</a></div>
+      <p class="lede">Tell us what you want Post Creation &amp; Content to do for you. Write to info@elvanamedia.com or call +91 89283 39531.</p>
+      <div class="tags"><a class="tag tag-ink" href="/contact/">Let's talk</a><a class="tag tag-line" href="/services/">All 14 services</a></div>
     </div>
   </div>
 </section>

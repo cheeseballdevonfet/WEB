@@ -1,0 +1,54 @@
+/* Specimen: WhatsApp Blasting. An approved template, an opted-in broadcast list and the phone
+   it lands on, with quick-reply buttons. No JS: the message already on the phone. */
+.wab-grid{display:grid;grid-template-columns:4fr 4fr 4fr;gap:clamp(20px,3vw,44px);align-items:start}
+.wab-h{font-weight:800;font-size:16px;margin-bottom:10px}
+.wab-tpl{display:grid;gap:18px;justify-items:start}
+.wab-tpl .wab-h{margin-bottom:-8px}
+.wab-card{position:relative;display:grid;gap:10px;padding:18px 18px 16px;background:var(--ink);color:var(--paper);font-size:var(--fs-lede);line-height:1.38;box-shadow:6px 6px 0 rgba(0,0,0,.2)}
+.wab-card__btns{font-weight:800;font-size:15px;color:var(--paper-dim)}
+.wab-stamp{position:absolute;right:12px;top:-14px;padding:6px 10px 3px;font:800 15px/1 var(--text);color:var(--yellow);background:var(--ink);box-shadow:inset 0 0 0 2px var(--yellow);transform:rotate(4deg)}
+.wab-rows{display:grid;border-top:3px solid var(--ink)}
+.wab-row{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:12px;padding:10px 0 9px;border-bottom:3px solid var(--ink);font-size:16px}
+.wab-ini{display:grid;place-items:center;width:40px;height:40px;background:var(--ink);color:var(--yellow);font-family:var(--display);font-size:22px;padding-top:3px}
+.wab-who{font-weight:600}
+.wab-st{position:relative;font-weight:800;font-size:15px;text-align:right}
+.wab-row.is-out .wab-ini{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.wab-row.is-out .wab-st{color:var(--red)}
+.wab-st.is-sent::before,.wab-st.is-read::before{content:"";display:inline-block;width:6px;height:11px;margin:0 8px 0 0;border:solid currentColor;border-width:0 3px 3px 0;transform:rotate(40deg) translateY(-2px)}
+.wab-st.is-read::before{box-shadow:6px 0 0 -0px transparent;width:6px;filter:drop-shadow(6px 0 0 currentColor);margin-right:14px}
+.wab-st.is-read{color:var(--blue)}
+.wab-phone{--focus:var(--yellow);background:var(--ink);padding:12px 11px 14px;border-radius:30px;box-shadow:inset 0 0 0 2px #3D3A35;max-width:360px;justify-self:end;width:100%}
+.wab-top{display:grid;padding:8px 14px 10px;color:var(--paper)}
+.wab-top b{font-family:var(--display);font-weight:400;font-size:22px;line-height:1.1;color:var(--yellow)}
+.wab-top span{font-weight:800;font-size:14px;color:var(--paper-dim)}
+.wab-chat{display:flex;flex-direction:column;gap:10px;min-height:400px;padding:14px 12px;background:var(--paper-dim);color:var(--ink);border-radius:16px}
+.wab-empty{display:none;margin:auto;font-weight:800;font-size:15px;color:var(--ink-soft)}
+.wab-msg{align-self:flex-start;max-width:92%;display:grid;gap:8px;padding:8px 8px 0;background:var(--paper);border-radius:3px 14px 14px 14px;box-shadow:3px 3px 0 rgba(0,0,0,.14);font-size:16px;line-height:1.4}
+.wab-msg>p{padding:0 4px}
+.wab-img{display:grid;align-content:end;min-height:130px;padding:12px 14px;background:var(--red);color:var(--yellow);font-family:var(--display);line-height:.95;box-shadow:inset 0 0 0 6px var(--red),inset 0 0 0 8px var(--yellow)}
+.wab-img b{font-weight:400;font-size:40px}
+.wab-img span{font-size:24px;color:var(--paper)}
+.wab-qr{display:grid;margin:0 -8px;border-top:2px solid rgba(26,24,20,.12)}
+.wab-qb{min-height:46px;border:0;border-top:2px solid rgba(26,24,20,.12);background:transparent;color:var(--blue);font:800 16px/1 var(--text);cursor:pointer}
+.wab-qb:first-child{border-top:0}
+.wab-qb:hover:not(:disabled){background:rgba(31,63,180,.08);text-decoration:underline}
+.wab-qb:active:not(:disabled){transform:translateY(1px)}
+.wab-qb:focus-visible{outline:3px solid var(--blue);outline-offset:-3px}
+.wab-qb:disabled{cursor:default;color:var(--ink-soft)}
+.wab-qb[aria-pressed="true"]{color:var(--ink-soft);text-decoration:line-through}
+.wab-you{align-self:flex-end;max-width:80%;padding:8px 12px 7px;background:var(--blue);color:var(--paper);border-radius:14px 3px 14px 14px;font-size:16px}
+.wab-reply{padding:9px 12px 8px}
+.wab-note{align-self:center;padding:5px 10px 3px;background:var(--yellow);color:var(--ink);font-weight:800;font-size:14px;transform:rotate(-1.2deg)}
+.spec-wab.is-live .wab-empty{display:block}
+.spec-wab.is-live .wab-chat.has-msg .wab-empty,.spec-wab.is-live .wab-chat:not(.has-msg) .wab-msg{display:none}
+@media (max-width:1099px){
+  .wab-grid{grid-template-columns:1fr 1fr}
+  .wab-tpl{grid-column:1 / -1;grid-template-columns:1fr auto;align-items:end;column-gap:24px}
+  .wab-tpl .wab-h{grid-column:1 / -1;margin-bottom:0}
+}
+@media (max-width:699px){
+  .wab-grid{grid-template-columns:1fr}
+  .wab-tpl{grid-template-columns:1fr}
+  .wab-phone{justify-self:start;max-width:none}
+  .wab-chat{min-height:380px}
+}

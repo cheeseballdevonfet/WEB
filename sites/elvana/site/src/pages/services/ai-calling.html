@@ -3,42 +3,156 @@ title: AI Calling | Elvana Media
 name: AI Calling
 description: AI voice agents for follow-ups, reminders and qualification. AI Calling by Elvana Media in Mumbai, Delhi, Gurgaon and Noida.
 path: /services/ai-calling/
-body_class: page-service
+body_class: page-service svc-ai-calling
+css: tear, pages/services, pages/specimens/ai-calling
+js: tear, pages/services, pages/specimens/ai-calling
 ---
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
-<section class="page-hero" aria-labelledby="page-h">
-  <div class="page-hero__main g-yellow">
-    {{crumbs}}
-    <h1 id="page-h">AI Calling</h1>
+<!-- AI Calling. Service page from the shared template (SYSTEM.md, services.css). Signature: the corner peel in the hero
+     (the yellow title poster peels back to show the promise underneath; tear.js owns the peel), then the
+     "Mock-up" specimen (pages/specimens/ai-calling.css + .js). Copy: CONTENT.md and CONTENT-PAGES.md. -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","@id":"https://www.elvanamedia.com/services/ai-calling/#service","name":"AI Calling","serviceType":"AI Calling","description":"AI voice agents for follow-ups, reminders and qualification.","url":"https://www.elvanamedia.com/services/ai-calling/","provider":{"@id":"https://www.elvanamedia.com/#organization"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}]}</script>
+<section class="page-hero svc-hero" aria-labelledby="page-h">
+  <div class="peel svc-peel" data-peel data-peel-corner="tr" data-peel-label="Peel back the poster" data-peel-label-back="Paste it back">
+    <div class="peel__under page-hero__main g-blue svc-under" aria-hidden="true">
+      <p class="svc-under__k">The promise</p>
+      <p class="svc-under__line">AI voice agents for follow-ups, reminders and qualification.</p>
+    </div>
+    <div class="peel__over page-hero__main g-yellow">
+      {{crumbs}}
+      <h1 id="page-h">AI Calling</h1>
+    </div>
   </div>
-  <div class="page-hero__side g-red">
-    <p class="page-hero__line">AI voice agents for follow-ups, reminders and qualification.</p>
+  <div class="page-hero__side g-red svc-side">
     <p class="page-hero__sign"><span class="d">Core service</span>Elvana Media</p>
+    <div class="svc-side__pillar">
+      <p class="svc-side__w">Connect. Grow.</p>
+      <p class="svc-side__t">Social, WhatsApp, SMS, AI calling and PR that reach the right audience at the right time.</p>
+    </div>
+    <p class="svc-side__hint js-only motion-only">Peel the yellow poster's corner to read the promise.</p>
   </div>
 </section>
-
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
-    </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>What we do</li><li>How it runs, through our five steps</li><li>Who it suits</li><li>Services it works with</li><li>Questions people ask</li></ul>
+<section class="poster svc-spec svc-spec--split" id="mock-up" aria-labelledby="spec-h" style="--under:var(--ink)">
+  <div class="paste g-ink">
+    <div class="spec-grid">
+      <div class="spec-head">
+        <p class="mockup">Mock-up</p>
+        <h2 class="d2" id="spec-h">Play a sample call</h2>
+        <p class="lede">A renewal follow-up for a sample insurer. Play it in English or Hinglish and follow the transcript as it runs.</p>
+      </div>
+      <figure class="spec spec-call" data-spec="call">
+        <div class="call-card g-paper">
+          <div class="call-head">
+            <p class="call-who"><b>Automated assistant</b><span>Renewal follow-up for Sample Insurance</span></p>
+            <div class="chips call-lang js-only" role="group" aria-label="Language of the call">
+              <button class="chip" type="button" data-lang="en" aria-pressed="true">English</button>
+              <button class="chip" type="button" data-lang="hi" aria-pressed="false">Hinglish</button>
+            </div>
+          </div>
+          <div class="call-play js-only">
+            <button class="call-btn" type="button"><span class="call-ico" aria-hidden="true"></span><span class="call-lbl">Play the call</span></button>
+            <div class="call-wave">
+              <div class="call-bars" aria-hidden="true"></div>
+              <div class="call-bars call-bars--on" aria-hidden="true"></div>
+              <input class="call-seek" type="range" min="0" max="1000" step="10" value="0" aria-label="Position in the call">
+            </div>
+          </div>
+          <!-- Hinglish lines (lang="hi-Latn") need a native speaker's sign-off; the English line beside each is its meaning. -->
+          <ol class="call-script">
+            <li data-who="ai"><span class="who">Assistant</span><span class="t t-en">Hello, this is the automated assistant from Sample Insurance. Am I speaking with the policyholder?</span><span class="t t-hi" lang="hi-Latn">Namaste, main Sample Insurance ki automated assistant bol rahi hoon. Kya meri baat policyholder se ho rahi hai?</span></li>
+            <li data-who="c"><span class="who">Customer</span><span class="t t-en">Yes, speaking.</span><span class="t t-hi" lang="hi-Latn">Haan, boliye.</span></li>
+            <li data-who="ai"><span class="who">Assistant</span><span class="t t-en">Your policy is due for renewal soon. Shall I send a renewal quote on WhatsApp, or arrange a call from an advisor?</span><span class="t t-hi" lang="hi-Latn">Aapki policy ka renewal jald hi due hai. Renewal quote WhatsApp par bhej doon, ya advisor se call karwa doon?</span></li>
+            <li data-who="c"><span class="who">Customer</span><span class="t t-en">An advisor, please. The evening is better.</span><span class="t t-hi" lang="hi-Latn">Advisor se call karwa dijiye. Shaam ko theek rahega.</span></li>
+            <li data-who="ai"><span class="who">Assistant</span><span class="t t-en">Done. An advisor will call you this evening, and I've sent the details on WhatsApp. Thank you.</span><span class="t t-hi" lang="hi-Latn">Ho gaya. Advisor aaj shaam aapko call karenge, aur details WhatsApp par bhej di hain. Dhanyavaad!</span></li>
+          </ol>
+          <p class="call-note"><b>Note for your team</b>Renewal due. Wants an advisor call this evening. Quote details sent on WhatsApp.</p>
+        </div>
+        <figcaption class="spec-cap">Mock-up: a written sample call for a sample insurer, with no audio and no real customer. Real agents say they are automated and can hand over to a person.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
-
-<!-- Closing CTA poster: every page ends here, always to /contact/. -->
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+<section class="poster svc-what svc-what--split" id="what-we-do" aria-labelledby="what-h" style="--under:var(--ink)">
+  <div class="paste g-paper">
+    <div class="head-split">
+      <h2 class="d1" id="what-h">What we do</h2>
+      <p class="lede">AI voice agents for follow-ups, reminders and qualification.</p>
+    </div>
+    <ul class="what-list">
+      <li>Voice agents in Indian languages for lead follow-ups, appointment reminders, renewals and feedback.</li>
+      <li>Scripts written and tested with your team before any call goes out.</li>
+      <li>Qualification questions that sort hot leads from later ones, with notes for your team.</li>
+      <li>Hand-off to a human caller or a WhatsApp conversation when needed.</li>
+      <li>Calls placed within telecom rules and DND preferences, with the agent saying it is an automated assistant.</li>
+    </ul>
+  </div>
+</section>
+<section class="poster svc-fit svc-fit--stack" id="good-for" aria-labelledby="good-h" style="--under:var(--paper)">
+  <div class="paste g-red">
+    <div class="fit-grid">
+      <div class="fit-good">
+        <h2 class="d2" id="good-h">Good for</h2>
+        <ul class="cast fit-cast"><li>High-volume follow-ups</li><li>Reminder calls</li><li>Lead qualification</li><li>Feedback calls</li></ul>
+        <h3 class="fit-sub" id="sectors-h">Sectors where it often fits</h3>
+        <ul class="tags fit-sectors" aria-labelledby="sectors-h">
+          <li><a class="tag tag-line" href="/industries/">Insurance &amp; Financial Services</a></li>
+          <li><a class="tag tag-line" href="/industries/">Healthcare &amp; Wellness</a></li>
+          <li><a class="tag tag-line" href="/industries/">Education &amp; EdTech</a></li>
+          <li><a class="tag tag-line" href="/industries/">Real Estate &amp; Infrastructure</a></li>
+        </ul>
+      </div>
+      <div class="fit-works">
+        <h2 class="d2" id="works-h">Works with</h2>
+        <div class="works">
+          <article class="flyer works__p g-paper"><p class="fam">Core service</p><h3><a href="/services/whatsapp-chat-bot/">WhatsApp Chat Bot</a></h3><p>24×7 automated replies, lead capture and support.</p></article>
+          <article class="flyer works__p g-red"><p class="fam">Core service</p><h3><a href="/services/sms-blasting/">SMS Blasting</a></h3><p>Bulk SMS campaigns on DLT-registered templates.</p></article>
+          <article class="flyer works__p g-ink"><p class="fam">Our edge</p><h3><a href="/our-edge/">Live reporting</a></h3><p>Clear dashboards so you always see what is working.</p></article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="poster svc-runs" id="how-it-runs" aria-labelledby="runs-h" style="--under:var(--red)">
+  <div class="paste g-blue">
+    <div class="head-split runs-head">
+      <h2 class="d1" id="runs-h">How it runs</h2>
+      <p class="lede">Like every Elvana service, through the same five steps, from brief to impact.</p>
+    </div>
+    <ol class="runs-steps">
+      <li><span aria-hidden="true">1</span>Discover</li>
+      <li><span aria-hidden="true">2</span>Strategise</li>
+      <li><span aria-hidden="true">3</span>Create</li>
+      <li><span aria-hidden="true">4</span>Launch</li>
+      <li><span aria-hidden="true">5</span>Optimise</li>
+    </ol>
+    <div class="runs-grid">
+      <div class="runs">
+        <p>It can be part of a Monthly Retainer, a Campaign SOW or a Project, and it reports into the same live dashboard and monthly report as every other service.</p>
+        <p class="tags runs-tags"><a class="tag tag-line" href="/how-we-work/">How we work</a><a class="tag tag-line" href="/engagement-models/">Engagement models</a></p>
+      </div>
+      <div class="faq">
+        <h2 class="d2" id="faq-h">Questions</h2>
+        <details class="q">
+          <summary>Does it replace my team?</summary>
+          <p>No. It handles the repetitive first calls so your team spends its time on the people ready to talk.</p>
+        </details>
+        <details class="q">
+          <summary>Can I hear it before it goes live?</summary>
+          <p>Yes. You approve the voice, script and test calls first.</p>
+        </details>
+        <details class="q">
+          <summary>Can this be a retainer, a campaign or a project?</summary>
+          <p>Yes. Any service can be part of a Monthly Retainer, a Campaign SOW or a Project.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--blue)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>
-      <p class="lede">Write to info@elvanamedia.com or call +91 89283 39531. Offices in Mumbai, Delhi, Gurgaon and Noida.</p>
-      <div class="tags"><a class="tag tag-ink" href="/contact/">Let's talk</a><a class="tag tag-line" href="tel:+918928339531">Call +91 89283 39531</a></div>
+      <p class="lede">Tell us what you want AI Calling to do for you. Write to info@elvanamedia.com or call +91 89283 39531.</p>
+      <div class="tags"><a class="tag tag-ink" href="/contact/">Let's talk</a><a class="tag tag-line" href="/services/">All 14 services</a></div>
     </div>
   </div>
 </section>

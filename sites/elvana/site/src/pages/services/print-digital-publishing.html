@@ -3,42 +3,160 @@ title: Print & Digital Publishing | Elvana Media
 name: Print & Digital Publishing
 description: Magazines, brochures and regional-language content in print and online. Print & Digital Publishing by Elvana Media in Mumbai, Delhi, Gurgaon and Noida.
 path: /services/print-digital-publishing/
-body_class: page-service
+body_class: page-service svc-print-digital-publishing
+css: tear, pages/services, pages/specimens/print-digital-publishing
+js: tear, pages/services, pages/specimens/print-digital-publishing
 ---
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
-<section class="page-hero" aria-labelledby="page-h">
-  <div class="page-hero__main g-yellow">
-    {{crumbs}}
-    <h1 id="page-h" class="is-long">Print &amp; Digital Publishing</h1>
+<!-- Print & Digital Publishing. Service page from the shared template (SYSTEM.md, services.css). Signature: the corner peel in the hero
+     (the yellow title poster peels back to show the promise underneath; tear.js owns the peel), then the
+     "Mock-up" specimen (pages/specimens/print-digital-publishing.css + .js). Copy: CONTENT.md and CONTENT-PAGES.md. -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","@id":"https://www.elvanamedia.com/services/print-digital-publishing/#service","name":"Print & Digital Publishing","serviceType":"Print & Digital Publishing","description":"Magazines, brochures and regional-language content in print and online.","url":"https://www.elvanamedia.com/services/print-digital-publishing/","provider":{"@id":"https://www.elvanamedia.com/#organization"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}]}</script>
+<section class="page-hero svc-hero" aria-labelledby="page-h">
+  <div class="peel svc-peel" data-peel data-peel-corner="tr" data-peel-label="Peel back the poster" data-peel-label-back="Paste it back">
+    <div class="peel__under page-hero__main g-ink svc-under" aria-hidden="true">
+      <p class="svc-under__k">The promise</p>
+      <p class="svc-under__line">Magazines, brochures and regional-language content in print and online.</p>
+    </div>
+    <div class="peel__over page-hero__main g-yellow">
+      {{crumbs}}
+      <h1 id="page-h" class="is-long">Print &amp; Digital Publishing</h1>
+    </div>
   </div>
-  <div class="page-hero__side g-blue">
-    <p class="page-hero__line">Magazines, brochures and regional-language content in print and online.</p>
+  <div class="page-hero__side g-blue svc-side">
     <p class="page-hero__sign"><span class="d">Beyond digital</span>Elvana Media</p>
+    <div class="svc-side__pillar">
+      <p class="svc-side__w">Create.</p>
+      <p class="svc-side__t">Content, video, design, branding and campaign ideas that people stop for.</p>
+    </div>
+    <p class="svc-side__hint js-only motion-only">Peel the yellow poster's corner to read the promise.</p>
   </div>
 </section>
-
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
+<section class="poster svc-what svc-what--side" id="what-we-do" aria-labelledby="what-h" style="--under:var(--ink)">
+  <div class="paste g-red">
+    <div class="what-head">
+      <h2 class="d1" id="what-h">What we do</h2>
+      <p class="lede">Magazines, brochures and regional-language content in print and online.</p>
     </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>What we do</li><li>How it runs, through our five steps</li><li>Who it suits</li><li>Services it works with</li><li>Questions people ask</li></ul>
+    <ul class="what-list">
+      <li>Brochures, catalogues, annual reports and magazines.</li>
+      <li>Regional-language editions and translations, in the languages your readers use.</li>
+      <li>Digital editions and downloadable guides that capture leads.</li>
+      <li>Print production and vendor management.</li>
+    </ul>
+  </div>
+</section>
+<section class="poster svc-spec svc-spec--split" id="mock-up" aria-labelledby="spec-h" style="--under:var(--red)">
+  <div class="paste g-blue">
+    <div class="spec-grid">
+      <div class="spec-head">
+        <p class="mockup">Mock-up</p>
+        <h2 class="d2" id="spec-h">Turn the page</h2>
+        <p class="lede">Drag the corner of a sample magazine page, or use the button, to turn it to the regional-language edition.</p>
+      </div>
+      <figure class="spec spec-mag" data-spec="mag">
+        <div class="mag">
+          <div class="mag-page mag-p1 g-paper">
+            <p class="mag-mast"><span>The Sample Review</span><span>Feature</span></p>
+            <p class="mag-head">Made to be read</p>
+            <p class="mag-stand">How a brochure, a magazine or a guide earns a reader's time.</p>
+            <div class="mag-cols">
+              <p>Every page starts with the reader: what they need to know, in the order they need it. Then the words are cut until each one earns its place.</p>
+              <p>Design follows. Type that reads easily, pictures that carry the story, and room to breathe. Print and digital editions come from the same files.</p>
+            </div>
+            <p class="mag-folio">English edition</p>
+          </div>
+          <!-- Hindi lines for the client to approve with a native speaker:
+               "हिंदी संस्करण" = "Hindi edition"; "पढ़ने के लिए बना" = "Made to be read". -->
+          <div class="mag-page mag-p2 g-paper">
+            <p class="mag-mast"><span class="deva" lang="hi">हिंदी संस्करण</span><span>Regional edition</span></p>
+            <p class="mag-head deva" lang="hi">पढ़ने के लिए बना</p>
+            <p class="mag-stand">The same feature, set for readers in their own language.</p>
+            <div class="mag-dl">
+              <p class="mag-dl__h">Digital edition</p>
+              <p>Read it online, or download the guide with your email.</p>
+              <span class="mag-dl__btn">Download the guide</span>
+            </div>
+            <p class="mag-folio">Print and digital, from the same files</p>
+          </div>
+          <div class="mag-flapwrap" aria-hidden="true"><div class="mag-flap"></div></div>
+          <span class="mag-grip" aria-hidden="true"></span>
+        </div>
+        <div class="mag-ctl js-only">
+          <button class="chip mag-btn" type="button">Turn the page</button>
+          <p class="mag-hint motion-only">Or drag the bottom-right corner.</p>
+        </div>
+        <figcaption class="spec-cap">Mock-up of a sample magazine and its sample Hindi edition, not a real publication.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
-
-<!-- Closing CTA poster: every page ends here, always to /contact/. -->
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+<section class="poster svc-fit svc-fit--stack" id="good-for" aria-labelledby="good-h" style="--under:var(--blue)">
+  <div class="paste g-paper">
+    <div class="fit-grid">
+      <div class="fit-good">
+        <h2 class="d2" id="good-h">Good for</h2>
+        <ul class="cast fit-cast"><li>Education</li><li>Real estate</li><li>Healthcare</li><li>Corporate communications</li></ul>
+        <h3 class="fit-sub" id="sectors-h">Sectors where it often fits</h3>
+        <ul class="tags fit-sectors" aria-labelledby="sectors-h">
+          <li><a class="tag tag-line" href="/industries/">Education &amp; EdTech</a></li>
+          <li><a class="tag tag-line" href="/industries/">Real Estate &amp; Infrastructure</a></li>
+          <li><a class="tag tag-line" href="/industries/">Healthcare &amp; Wellness</a></li>
+          <li><a class="tag tag-line" href="/industries/">Corporate &amp; B2B</a></li>
+        </ul>
+      </div>
+      <div class="fit-works">
+        <h2 class="d2" id="works-h">Works with</h2>
+        <div class="works">
+          <article class="flyer works__p g-blue"><p class="fam">Beyond digital</p><h3><a href="/services/branding-identity/">Branding &amp; Identity</a></h3><p>Logos, brand books, packaging and a voice that stays consistent everywhere.</p></article>
+          <article class="flyer works__p g-blue"><p class="fam">Core service</p><h3><a href="/services/pr-media-relations/">PR &amp; Media Relations</a></h3><p>Stories placed with the press and the people who matter.</p></article>
+          <article class="flyer works__p g-yellow"><p class="fam">Core service</p><h3><a href="/services/website-development/">Website Development</a></h3><p>Fast, mobile-first sites and landing pages built to convert.</p></article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="poster svc-runs" id="how-it-runs" aria-labelledby="runs-h" style="--under:var(--paper)">
+  <div class="paste g-ink">
+    <div class="head-split runs-head">
+      <h2 class="d1" id="runs-h">How it runs</h2>
+      <p class="lede">Like every Elvana service, through the same five steps, from brief to impact.</p>
+    </div>
+    <ol class="runs-steps">
+      <li><span aria-hidden="true">1</span>Discover</li>
+      <li><span aria-hidden="true">2</span>Strategise</li>
+      <li><span aria-hidden="true">3</span>Create</li>
+      <li><span aria-hidden="true">4</span>Launch</li>
+      <li><span aria-hidden="true">5</span>Optimise</li>
+    </ol>
+    <div class="runs-grid">
+      <div class="runs">
+        <p>It can be part of a Monthly Retainer, a Campaign SOW or a Project, and it reports into the same live dashboard and monthly report as every other service.</p>
+        <p class="tags runs-tags"><a class="tag tag-line" href="/how-we-work/">How we work</a><a class="tag tag-line" href="/engagement-models/">Engagement models</a></p>
+      </div>
+      <div class="faq">
+        <h2 class="d2" id="faq-h">Questions</h2>
+        <details class="q">
+          <summary>Can this be a retainer, a campaign or a project?</summary>
+          <p>Yes. Any service can be part of a Monthly Retainer, a Campaign SOW or a Project.</p>
+        </details>
+        <details class="q">
+          <summary>What does it cost?</summary>
+          <p>Prices are shared after Discover, based on scope.</p>
+        </details>
+        <details class="q">
+          <summary>How will I see what it is doing?</summary>
+          <p>It reports into the same live dashboard and monthly report as every other service, so you see the channels side by side.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--ink)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>
-      <p class="lede">Write to info@elvanamedia.com or call +91 89283 39531. Offices in Mumbai, Delhi, Gurgaon and Noida.</p>
-      <div class="tags"><a class="tag tag-ink" href="/contact/">Let's talk</a><a class="tag tag-line" href="tel:+918928339531">Call +91 89283 39531</a></div>
+      <p class="lede">Tell us what you want Print &amp; Digital Publishing to do for you. Write to info@elvanamedia.com or call +91 89283 39531.</p>
+      <div class="tags"><a class="tag tag-ink" href="/contact/">Let's talk</a><a class="tag tag-line" href="/services/">All 14 services</a></div>
     </div>
   </div>
 </section>

@@ -3,42 +3,149 @@ title: Social Media Management | Elvana Media
 name: Social Media Management
 description: Always-on calendars, community management and paid social campaigns. Social Media Management by Elvana Media in Mumbai, Delhi, Gurgaon and Noida.
 path: /services/social-media-management/
-body_class: page-service
+body_class: page-service svc-social-media-management
+css: tear, pages/services, pages/specimens/social-media-management
+js: tear, pages/services, pages/specimens/social-media-management
 ---
-<!-- STUB page. Start from src/pages/_template.html and SYSTEM.md ("How to add or finish a page"). Keep the hero and the closing CTA poster. -->
-<!-- Page hero: title sheet (yellow) + side sheet. The side sheet may become a .peel (see _template.html). -->
-<section class="page-hero" aria-labelledby="page-h">
-  <div class="page-hero__main g-yellow">
-    {{crumbs}}
-    <h1 id="page-h" class="is-long">Social Media Management</h1>
+<!-- Social Media Management. Service page from the shared template (SYSTEM.md, services.css). Signature: the corner peel in the hero
+     (the yellow title poster peels back to show the promise underneath; tear.js owns the peel), then the
+     "Mock-up" specimen (pages/specimens/social-media-management.css + .js). Copy: CONTENT.md and CONTENT-PAGES.md. -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","@id":"https://www.elvanamedia.com/services/social-media-management/#service","name":"Social Media Management","serviceType":"Social Media Management","description":"Always-on calendars, community management and paid social campaigns.","url":"https://www.elvanamedia.com/services/social-media-management/","provider":{"@id":"https://www.elvanamedia.com/#organization"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}]}</script>
+<section class="page-hero svc-hero" aria-labelledby="page-h">
+  <div class="peel svc-peel" data-peel data-peel-corner="tr" data-peel-label="Peel back the poster" data-peel-label-back="Paste it back">
+    <div class="peel__under page-hero__main g-ink svc-under" aria-hidden="true">
+      <p class="svc-under__k">The promise</p>
+      <p class="svc-under__line">Always-on calendars, community management and paid social campaigns.</p>
+    </div>
+    <div class="peel__over page-hero__main g-yellow">
+      {{crumbs}}
+      <h1 id="page-h" class="is-long">Social Media Management</h1>
+    </div>
   </div>
-  <div class="page-hero__side g-blue">
-    <p class="page-hero__line">Always-on calendars, community management and paid social campaigns.</p>
+  <div class="page-hero__side g-blue svc-side">
     <p class="page-hero__sign"><span class="d">Beyond digital</span>Elvana Media</p>
+    <div class="svc-side__pillar">
+      <p class="svc-side__w">Connect. Grow.</p>
+      <p class="svc-side__t">Social, WhatsApp, SMS, AI calling and PR that reach the right audience at the right time.</p>
+    </div>
+    <p class="svc-side__hint js-only motion-only">Peel the yellow poster's corner to read the promise.</p>
   </div>
 </section>
-
-<!-- STUB body: the designed "being pasted up" TODO block. Replace this poster with the page's sections. -->
-<section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
-  <div class="paste vacant vacant--todo">
-    <div class="vacant__frame">
-      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
-      <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
+<section class="poster svc-what svc-what--side" id="what-we-do" aria-labelledby="what-h" style="--under:var(--ink)">
+  <div class="paste g-paper">
+    <div class="what-head">
+      <h2 class="d1" id="what-h">What we do</h2>
+      <p class="lede">Always-on calendars, community management and paid social campaigns.</p>
     </div>
-    <div class="plate g-ink">
-      <h3>What goes up here</h3>
-      <ul><li>What we do</li><li>How it runs, through our five steps</li><li>Who it suits</li><li>Services it works with</li><li>Questions people ask</li></ul>
+    <ul class="what-list">
+      <li>Always-on calendars across the platforms your audience uses.</li>
+      <li>Community management: replies, comments and messages handled in your voice, with clear escalation rules.</li>
+      <li>Paid social campaigns planned, run and tuned weekly.</li>
+      <li>Creator and influencer collaborations, where they fit your brand.</li>
+      <li>Monthly reporting on what moved and what to change.</li>
+    </ul>
+  </div>
+</section>
+<section class="poster svc-spec svc-spec--wide" id="mock-up" aria-labelledby="spec-h" style="--under:var(--paper)">
+  <div class="paste g-blue">
+    <div class="spec-grid">
+      <div class="spec-head">
+        <p class="mockup">Mock-up</p>
+        <h2 class="d2" id="spec-h">Plan the week</h2>
+        <p class="lede">Drag a post to another day. With a keyboard, pick it up with Space and move it with the arrow keys.</p>
+      </div>
+      <figure class="spec spec-wk" data-spec="wk">
+        <ol class="wk">
+          <li class="wk-day" data-day="Monday"><p class="wk-dn">Monday</p><ul class="wk-slot">
+            <li><div class="wk-post t-reel"><span class="wk-t">Reel</span><span class="wk-n">Behind the scenes</span></div></li>
+          </ul></li>
+          <li class="wk-day" data-day="Tuesday"><p class="wk-dn">Tuesday</p><ul class="wk-slot"></ul></li>
+          <li class="wk-day" data-day="Wednesday"><p class="wk-dn">Wednesday</p><ul class="wk-slot">
+            <li><div class="wk-post t-car"><span class="wk-t">Carousel</span><span class="wk-n">How to choose the right size</span></div></li>
+          </ul></li>
+          <li class="wk-day" data-day="Thursday"><p class="wk-dn">Thursday</p><ul class="wk-slot">
+            <li><div class="wk-post t-story"><span class="wk-t">Story</span><span class="wk-n">Poll: pick the next flavour</span></div></li>
+          </ul></li>
+          <li class="wk-day" data-day="Friday"><p class="wk-dn">Friday</p><ul class="wk-slot">
+            <li><div class="wk-post t-paid"><span class="wk-t">Paid</span><span class="wk-n">Weekend offer, boosted to your city</span></div></li>
+          </ul></li>
+          <li class="wk-day" data-day="Saturday"><p class="wk-dn">Saturday</p><ul class="wk-slot"></ul></li>
+          <li class="wk-day" data-day="Sunday"><p class="wk-dn">Sunday</p><ul class="wk-slot">
+            <li><div class="wk-post t-reply"><span class="wk-t">Replies</span><span class="wk-n">Answering the week's comments</span></div></li>
+          </ul></li>
+        </ol>
+        <p class="wk-tip js-only">Drag a post to another day. With a keyboard: Space picks a post up, the arrow keys move it, Space puts it down, Escape puts it back.</p>
+        <figcaption class="spec-cap">Mock-up of a sample week for a sample brand. A real calendar runs across the platforms your audience uses, with community replies and paid campaigns in the same plan.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
-
-<!-- Closing CTA poster: every page ends here, always to /contact/. -->
-<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+<section class="poster svc-fit svc-fit--stack" id="good-for" aria-labelledby="good-h" style="--under:var(--blue)">
+  <div class="paste g-yellow">
+    <div class="fit-grid">
+      <div class="fit-good">
+        <h2 class="d2" id="good-h">Good for</h2>
+        <ul class="cast fit-cast"><li>Brands that need to be present every day, not just at launches</li></ul>
+        <h3 class="fit-sub" id="sectors-h">Sectors where it often fits</h3>
+        <ul class="tags fit-sectors" aria-labelledby="sectors-h">
+          <li><a class="tag tag-line" href="/industries/">Education &amp; EdTech</a></li>
+          <li><a class="tag tag-line" href="/industries/">Retail, D2C &amp; E-commerce</a></li>
+          <li><a class="tag tag-line" href="/industries/">Startups &amp; SMEs</a></li>
+        </ul>
+      </div>
+      <div class="fit-works">
+        <h2 class="d2" id="works-h">Works with</h2>
+        <div class="works">
+          <article class="flyer works__p g-ink"><p class="fam">Core service</p><h3><a href="/services/post-creation-content/">Post Creation &amp; Content</a></h3><p>Scroll-stopping posts, reels, carousels and copy.</p></article>
+          <article class="flyer works__p g-yellow"><p class="fam">Beyond digital</p><h3><a href="/services/content-video-production/">Content &amp; Video Production</a></h3><p>Ad films, brand films, animation, graphics and sound, from pre- to post-production.</p></article>
+          <article class="flyer works__p g-ink"><p class="fam">Our edge</p><h3><a href="/our-edge/">Live reporting</a></h3><p>Clear dashboards so you always see what is working.</p></article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="poster svc-runs" id="how-it-runs" aria-labelledby="runs-h" style="--under:var(--yellow)">
+  <div class="paste g-ink">
+    <div class="head-split runs-head">
+      <h2 class="d1" id="runs-h">How it runs</h2>
+      <p class="lede">Like every Elvana service, through the same five steps, from brief to impact.</p>
+    </div>
+    <ol class="runs-steps">
+      <li><span aria-hidden="true">1</span>Discover</li>
+      <li><span aria-hidden="true">2</span>Strategise</li>
+      <li><span aria-hidden="true">3</span>Create</li>
+      <li><span aria-hidden="true">4</span>Launch</li>
+      <li><span aria-hidden="true">5</span>Optimise</li>
+    </ol>
+    <div class="runs-grid">
+      <div class="runs">
+        <p>It can be part of a Monthly Retainer, a Campaign SOW or a Project, and it reports into the same live dashboard and monthly report as every other service.</p>
+        <p class="tags runs-tags"><a class="tag tag-line" href="/how-we-work/">How we work</a><a class="tag tag-line" href="/engagement-models/">Engagement models</a></p>
+      </div>
+      <div class="faq">
+        <h2 class="d2" id="faq-h">Questions</h2>
+        <details class="q">
+          <summary>Can this be a retainer, a campaign or a project?</summary>
+          <p>Yes. Any service can be part of a Monthly Retainer, a Campaign SOW or a Project.</p>
+        </details>
+        <details class="q">
+          <summary>How will I see what it is doing?</summary>
+          <p>It reports into the same live dashboard and monthly report as every other service, so you see the channels side by side.</p>
+        </details>
+        <details class="q">
+          <summary>What does it cost?</summary>
+          <p>Prices are shared after Discover, based on scope.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--ink)">
   <div class="paste g-yellow cta-poster">
     <h2 class="d1" id="cta-h">Let's create impact together</h2>
     <div>
-      <p class="lede">Write to info@elvanamedia.com or call +91 89283 39531. Offices in Mumbai, Delhi, Gurgaon and Noida.</p>
-      <div class="tags"><a class="tag tag-ink" href="/contact/">Let's talk</a><a class="tag tag-line" href="tel:+918928339531">Call +91 89283 39531</a></div>
+      <p class="lede">Tell us what you want Social Media Management to do for you. Write to info@elvanamedia.com or call +91 89283 39531.</p>
+      <div class="tags"><a class="tag tag-ink" href="/contact/">Let's talk</a><a class="tag tag-line" href="/services/">All 14 services</a></div>
     </div>
   </div>
 </section>

@@ -1,0 +1,128 @@
+/* =========================================================================
+   Elvana Media: pages/industries.css
+   Industries only. The signature, "The tri-vision hoarding"
+   (INTERACTIONS.md): a highway billboard of vertical triangular slats.
+   - At rest the board is real HTML (.tv__flat, the tab panel), with seams
+     drawn where the slats meet, so it reads the same as the slats.
+   - While it turns (.tv.is-turning), pages/industries.js shows the slats:
+     each a 3-faced prism (preserve-3d), each face holding a copy of a
+     sector's board offset to its own strip. Only transform and opacity
+     change per frame.
+   - Board layout is in container units (container "tv"), so every face
+     copy and the flat board line up to the pixel at any width.
+   No JS and reduced motion: the flat board only (the picker needs JS; the
+   plain list below carries every sector).
+   ========================================================================= */
+
+#board-h{max-width:12ch}
+.tv-wrap{margin-top:clamp(40px,5vw,72px);display:grid;gap:clamp(16px,1.6vw,22px)}
+
+/* ---------- The hoarding: lamps, steel frame, slats, legs ---------- */
+.tv{position:relative;margin:0;display:grid}
+.tv__lamps{display:flex;justify-content:space-around;height:26px;padding:0 9%}
+.tv__lamps i{position:relative;width:52px}
+.tv__lamps i::before{content:"";position:absolute;left:calc(50% - 2px);top:8px;bottom:0;width:4px;background:var(--post)}
+.tv__lamps i::after{content:"";position:absolute;left:0;right:0;top:0;height:10px;background:var(--post);box-shadow:inset 0 -3px 0 var(--paper-dim)}
+.tv__frame{position:relative;padding:clamp(8px,1vw,14px);background:var(--post);box-shadow:inset 0 0 0 2px rgba(0,0,0,.35),inset 0 3px 0 rgba(255,255,255,.12),0 10px 0 rgba(0,0,0,.32)}
+.tv__screen{position:relative;aspect-ratio:5/2;overflow:hidden;background:var(--ink);container:tv / inline-size;--n:20;touch-action:pan-y}
+.tv__plate{position:absolute;left:50%;bottom:0;transform:translate(-50%,55%);padding:5px 14px 2px;background:var(--yellow);color:var(--ink);font:400 18px/1 var(--display);box-shadow:2px 3px 0 rgba(0,0,0,.35);white-space:nowrap}
+.tv__legs{display:flex;justify-content:space-around;height:clamp(24px,2.4vw,34px);padding:0 20%}
+.tv__legs i{width:clamp(10px,1vw,16px);background:linear-gradient(to right,rgba(0,0,0,.25),transparent 40%),var(--post)}
+.tv__cap{margin-top:10px;font-size:var(--fs-small);font-weight:600;color:var(--paper-dim)}
+
+/* The flat board (rest) and its seams */
+.tv__flat{position:absolute;inset:0}
+.tv__seams{position:absolute;inset:0;pointer-events:none;z-index:2;
+  background-image:linear-gradient(to right,transparent calc(100% - 2px),rgba(26,24,20,.5) calc(100% - 2px)),linear-gradient(to bottom,rgba(255,255,255,.07),transparent 18%,transparent 82%,rgba(0,0,0,.12));
+  background-size:calc(100% / var(--n)) 100%,100% 100%}
+
+/* The slats (turning) */
+.tv__slats{position:absolute;inset:0;z-index:1;perspective:1700px;visibility:hidden}
+.tv.is-turning .tv__slats{visibility:visible}
+.tv.is-turning .tv__flat{visibility:hidden}
+.tv-slat{position:absolute;top:0;bottom:0;left:calc(var(--i) * 100% / var(--n));width:calc(100% / var(--n))}
+.tv-prism{position:absolute;inset:0;transform-style:preserve-3d}
+.tv-f{position:absolute;inset:0;overflow:hidden;backface-visibility:hidden;transform:rotateY(calc(var(--f) * 120deg)) translateZ(var(--r,0px))}
+.tv-f>.tv-art{left:calc(var(--i) * -100%);width:calc(var(--n) * 100%)}
+.tv-f::after{content:"";position:absolute;top:0;bottom:0;right:0;width:2px;background:rgba(26,24,20,.5);z-index:3}
+.tv-sh{position:absolute;inset:0;z-index:2;background:var(--ink);opacity:0;pointer-events:none}
+
+/* ---------- One sector's board (flat, and every face copy) ---------- */
+.tv-art{position:absolute;top:0;bottom:0;left:0;width:100%;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:4cqw;padding:3.8cqw 4cqw 3.6cqw}
+.tv-name{grid-column:1;font:400 6.3cqw/.9 var(--display);max-width:12ch}
+.tv-need{grid-column:1;align-self:end;max-width:30ch;font:600 max(15px,1.8cqw)/1.34 var(--text)}
+.tv-fit{grid-column:2;grid-row:1 / 3;display:flex;flex-direction:column;padding-left:2.4cqw;border-left:max(4px,.5cqw) solid var(--hi)}
+.tv-fit__l{margin-bottom:1.2cqw;font:800 max(14px,1.3cqw)/1.2 var(--text)}
+.tv-fit ul{display:grid;gap:.7cqw}
+.tv-fit li{font:400 max(19px,2.25cqw)/1.08 var(--display)}
+.tv-fit a{text-decoration:none}
+.tv-fit a:hover{text-decoration:underline;text-decoration-thickness:3px}
+.tv-fit a:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.tv-roots{position:absolute;right:3cqw;bottom:3.4cqw;padding:.8cqw 1.4cqw .5cqw;background:var(--hi);color:var(--paper);font:800 max(14px,1.3cqw)/1.2 var(--text);transform:rotate(-3deg);box-shadow:3px 4px 0 rgba(0,0,0,.22)}
+.tv-art.g-blue .tv-roots,.tv-art.g-ink .tv-roots,.tv-art.g-red .tv-roots{color:var(--ink)}
+@container tv (max-width:940px){
+  .tv-art{column-gap:3.4cqw;padding:4.4cqw 4.4cqw 4cqw}
+  .tv-name{font-size:7.6cqw}
+  .tv-need{font-size:max(15px,2.5cqw)}
+  .tv-fit__l{font-size:max(14px,1.9cqw)}
+  .tv-fit li{font-size:max(18px,3.1cqw)}
+  .tv-roots{font-size:max(14px,1.9cqw);padding:1cqw 1.8cqw .7cqw}
+}
+@container tv (max-width:600px){
+  .tv-art{grid-template-columns:1fr;grid-template-rows:auto auto auto 1fr;padding:6cqw 6cqw 6cqw;row-gap:4cqw}
+  .tv-name{font-size:10.6cqw;max-width:none}
+  .tv-need{align-self:start;font-size:max(15px,4.3cqw)}
+  .tv-fit{grid-column:1;grid-row:auto;align-self:end;padding:3cqw 0 0;border-left:0;border-top:max(4px,1.2cqw) solid var(--hi)}
+  .tv-fit__l{font-size:max(14px,3.9cqw);margin-bottom:2cqw}
+  .tv-fit ul{gap:1.4cqw}
+  .tv-fit li{font-size:max(18px,5.5cqw)}
+  .tv-fit{grid-row:4}
+  .tv-roots{position:relative;inset:auto;grid-row:3;justify-self:start;font-size:max(14px,3.7cqw);padding:1.6cqw 2.6cqw 1cqw}
+}
+
+/* ---------- The picker: eight sector plates ---------- */
+.tv-pick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.tv-pick button{position:relative;min-height:58px;padding:12px 14px 9px 16px;border:0;border-radius:0;background:transparent;color:var(--paper);box-shadow:inset 0 0 0 2px rgba(242,243,239,.55);
+  font:800 16px/1.2 var(--text);text-align:left;cursor:pointer;transform-origin:0 0;
+  transition:transform calc(220ms * var(--slow)) var(--ease-lift),background-color calc(160ms * var(--slow)) linear,color calc(160ms * var(--slow)) linear}
+.tv-pick button:hover{background:var(--paper);color:var(--ink);box-shadow:none;transform:rotate(-1.2deg)}
+.tv-pick button:active{transform:translateY(1px) scale(.98)}
+.tv-pick button[aria-selected="true"]{background:var(--yellow);color:var(--ink);box-shadow:none}
+/* each plate carries a chip of its board's ink, so the picker is a key to the hoarding */
+.tv-pick button{padding-left:46px}
+.tv-pick button::before{content:"";position:absolute;left:14px;top:50%;width:20px;height:20px;margin-top:-11px;background:var(--chip);box-shadow:0 0 0 2px var(--paper);transform:rotate(-4deg)}
+.tv-pick button[aria-selected="true"]::before,.tv-pick button:hover::before{box-shadow:0 0 0 2px var(--ink)}
+#tvt-0,#tvt-5{--chip:var(--blue)}
+#tvt-1,#tvt-7{--chip:var(--paper)}
+#tvt-2,#tvt-6{--chip:var(--yellow)}
+#tvt-3{--chip:var(--ink)}
+#tvt-4{--chip:var(--red)}
+.tv-pick button:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.tv-pick button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ---------- Plain list ---------- */
+.sector-list li{align-content:start}
+.often{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 0;margin-top:4px}
+.often li{display:inline;padding:0;border:0;font-weight:800;font-size:var(--fs-body)}
+.often li:not(:last-child)::after{content:"/";padding:0 .45em;color:var(--red);font-weight:400}
+.often a{text-decoration-thickness:2px}
+
+/* ---------- Tablet and phone ---------- */
+@media (max-width:1099px){
+  .tv__screen{aspect-ratio:8/5;--n:14}
+  .tv-pick{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:699px){
+  .tv__screen{aspect-ratio:4/5;--n:9}
+  .tv__lamps{height:22px;padding:0 6%}
+  .tv__lamps i{width:36px}
+  .tv__legs{height:24px}
+  .tv__plate{font-size:16px}
+  .tv-pick{gap:8px}
+  .tv-pick button{min-height:54px;padding:11px 10px 8px 38px;font-size:15px}
+  .tv-pick button::before{left:10px;width:17px;height:17px;margin-top:-9px}
+}
+@media (prefers-reduced-motion:reduce){
+  .tv-pick button{transition:none}
+  .tv-pick button:hover{transform:none}
+}

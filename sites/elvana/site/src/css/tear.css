@@ -14,7 +14,7 @@
 /* The poster underneath sits ABOVE the top poster and is revealed through a clip:
    a still torn corner without JS or with reduced motion, live strips otherwise */
 .sheet-under{background:var(--red);color:var(--paper);clip-path:url(#still-tall);z-index:2}
-.js.motion .sheet-under{clip-path:url(#tear-clip)}
+.js.motion .sheet-under{clip-path:url(#tear-clip);will-change:transform}   /* own layer: a new hole re-masks it instead of repainting its type */
 .still-rim{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
 .still-rim .wide{display:none}
 .js.motion .still-rim{display:none}

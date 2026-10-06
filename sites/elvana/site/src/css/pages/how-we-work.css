@@ -1,0 +1,179 @@
+/* =========================================================================
+   Elvana Media: pages/how-we-work.css
+   How we work only. The signature, "The paste-up" (INTERACTIONS.md), on
+   WEB.md 30, "Stacking chapters": five sheets pasted one over another.
+   - SEQUENCE (default): no JS, reduced motion, screens under 600px tall,
+     or a sheet whose content would not fit (JS adds .no-stack): five still
+     sheets, one after another.
+   - STACK (html.motion): each sheet sticks, a sheet's width of edge lower
+     than the last, so the layers stay visible. The sheet underneath scales
+     down a little and dims, and each sheet's new layer is wiped on, all
+     scrubbed by scroll timelines (no scroll handler). Browsers without
+     scroll timelines get the plain stack.
+   Each sheet carries a proof of one campaign poster (container queries:
+   landscape on wide sheets, portrait on phones). Sheet 5 is the finished one.
+   ========================================================================= */
+
+#pasteup-h{max-width:10ch}
+
+/* ---------- Sheets ---------- */
+.pasteup{display:grid;gap:clamp(24px,3vw,44px);margin-top:clamp(40px,5.5vw,80px)}
+.sheet{position:relative;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(20px,3.4vw,56px);padding:clamp(20px,2.8vw,44px);
+  background:linear-gradient(to right,rgba(0,0,0,.07) 1px,rgba(255,255,255,.12) 1px 2px,transparent 2px) -1px 0/var(--sheet) 100%,var(--ground);
+  box-shadow:0 -2px 0 rgba(0,0,0,.08),0 22px 34px -20px rgba(0,0,0,.55)}
+/* the wet edge: a soft shadow just above each sheet, as on every pasted poster */
+.sheet::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px;pointer-events:none;background:linear-gradient(to top,rgba(0,0,0,.24),rgba(0,0,0,0))}
+.sheet::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;background:var(--ink);opacity:0}
+.sheet__plate{display:flex;flex-direction:column;gap:14px;min-width:0}
+.sheet__n{font:400 clamp(92px,10.4vw,176px)/.76 var(--display);color:var(--hi)}
+.sheet h3{font-size:clamp(46px,5.8vw,92px);line-height:.92;margin-top:6px}
+.sheet__what{font-size:var(--fs-lede);line-height:1.38;max-width:24ch}
+.sheet__get{margin-top:auto;padding-top:16px;border-top:4px solid currentColor;font-weight:600;max-width:30ch}
+.sheet__get b{display:block;margin-bottom:6px;font:400 var(--fs-d3)/1 var(--display);color:var(--hi)}
+.pasteup-cap{margin-top:clamp(28px,3vw,44px);max-width:62ch;font-size:var(--fs-small);font-weight:600}
+
+/* ---------- The proof: one campaign poster, at this step ---------- */
+.proof{position:relative;container-type:size;aspect-ratio:4/3;min-width:0;align-self:start;width:100%}
+/* crop marks in the proof's margin */
+.proof::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.6;background-repeat:no-repeat;
+  background-image:linear-gradient(currentColor,currentColor),linear-gradient(currentColor,currentColor),linear-gradient(currentColor,currentColor),linear-gradient(currentColor,currentColor),
+    linear-gradient(currentColor,currentColor),linear-gradient(currentColor,currentColor),linear-gradient(currentColor,currentColor),linear-gradient(currentColor,currentColor);
+  background-size:4.5% 2px,4.5% 2px,4.5% 2px,4.5% 2px,2px 4.5%,2px 4.5%,2px 4.5%,2px 4.5%;
+  background-position:0 7%,100% 7%,0 93%,100% 93%,7% 0,93% 0,7% 100%,93% 100%}
+.pf{position:absolute;inset:7%;overflow:hidden;background:var(--paper);color:var(--ink);box-shadow:0 0 0 3px var(--ink),7px 9px 0 rgba(0,0,0,.28)}
+.pf--art{background:var(--yellow)}
+.pf-mock{position:absolute;right:7%;top:0;transform:translateY(-15%) rotate(-2deg);padding:4px 7px 2px;background:var(--ink);color:var(--yellow);font-weight:800;font-size:14px;line-height:1.1}
+.g-ink .pf-mock{background:var(--yellow);color:var(--ink)}
+
+/* Layers, landscape and square (the default). Type in cqmin, so any aspect from 1:1 to 3:2 holds. */
+.pf-brief{position:absolute;left:9%;top:12%;width:56%;display:grid;gap:1.6cqmin;padding:3.6cqmin 3.8cqmin 4.2cqmin;background:var(--back);box-shadow:4px 5px 0 rgba(0,0,0,.18);transform:rotate(-2deg)}
+.pf-brief b{font:400 7.6cqmin/1 var(--display);color:var(--red)}
+.pf-brief span{padding-bottom:1.1cqmin;border-bottom:2px dashed rgba(26,24,20,.3);font:600 3.4cqmin/1.25 var(--text)}
+.pf-grid{position:absolute;inset:0;background-image:linear-gradient(to right,rgba(31,63,180,.4) 1px,transparent 1px),linear-gradient(to bottom,rgba(31,63,180,.4) 1px,transparent 1px);background-size:calc(100% / 6) 100%,100% 25%}
+.pf-zone{position:absolute;display:flex;align-items:flex-start;padding:1.5cqmin 1.7cqmin;border:max(2px,.4cqmin) dashed var(--blue);color:var(--blue);font:800 3.2cqmin/1 var(--text);background:rgba(242,243,239,.6)}
+.pf-zone--h{left:6%;top:7%;width:62%;height:31%}
+.pf-zone--d{right:6%;top:43%;width:36%;height:31%}
+.pf-zone--o{left:6%;top:53%;width:44%;height:22%}
+.pf-zone--a{left:-1px;right:-1px;bottom:-1px;height:15.5%;align-items:center;padding-left:6%}
+.pf-plan{position:absolute;right:4%;top:6%;width:28%;display:grid;gap:1.2cqmin;padding:2.4cqmin 2.4cqmin;background:var(--paper);box-shadow:inset 0 0 0 max(2px,.4cqmin) var(--blue),4px 5px 0 rgba(0,0,0,.16);transform:rotate(2deg)}
+.pf-plan b{font:400 6cqmin/1 var(--display);color:var(--blue)}
+.pf-plan span{font:600 2.8cqmin/1.25 var(--text)}
+.pf-art{position:absolute;inset:0}
+.pf-h{position:absolute;left:6%;top:7%;width:66%;font:400 12.6cqmin/.86 var(--display)}
+.pf-o{position:absolute;left:6%;top:54%;width:44%;padding:2.4cqmin 3cqmin 2cqmin;background:var(--red);color:var(--paper);font:600 3.7cqmin/1.28 var(--text);box-shadow:4px 5px 0 rgba(0,0,0,.2)}
+.pf-days{position:absolute;right:7%;top:46%;display:flex;gap:2cqmin;transform:rotate(-6deg)}
+.pf-days span{display:grid;place-items:center;width:17cqmin;aspect-ratio:1/1;padding-top:1.6cqmin;background:var(--red);color:var(--paper);font:400 8cqmin/1 var(--display);box-shadow:4px 5px 0 rgba(0,0,0,.22)}
+.pf-days span+span{background:var(--blue);transform:translateY(-16%)}
+.pf-stamp{position:absolute;right:9%;bottom:20%;padding:1.2cqmin 2.4cqmin .4cqmin;border:max(3px,.8cqmin) solid var(--red);color:var(--red);font:400 8cqmin/1 var(--display);transform:rotate(-13deg);mix-blend-mode:multiply}
+.pf-cta{position:absolute;left:0;right:0;bottom:0;height:15.5%;display:flex;align-items:center;padding:0 6%;background:var(--ink);color:var(--yellow);font:400 6.2cqmin/1 var(--display)}
+.pf-live{position:absolute;right:5%;top:7%;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:1cqmin;max-width:27%}
+.pf-live b,.pf-live span{padding:.9cqmin 1.4cqmin .5cqmin;font:800 2.8cqmin/1.1 var(--text)}
+.pf-live b{background:var(--red);color:var(--paper)}
+.pf-live span{background:var(--paper);box-shadow:inset 0 0 0 2px var(--ink)}
+.pf-snipe{position:absolute;right:-8%;top:35%;width:60%;padding:1.8cqmin 3cqmin 1.2cqmin;text-align:left;background:var(--paper);color:var(--red);border-block:max(3px,.7cqmin) solid var(--red);font:400 5cqmin/1.05 var(--display);transform:rotate(-7deg);transform-origin:0 50%;box-shadow:0 5px 0 rgba(0,0,0,.2)}
+
+/* Layers, portrait (phones) */
+@container (max-aspect-ratio:1/1){
+  .pf-brief{left:8%;top:9%;width:84%;gap:1.8cqw;padding:5cqw}
+  .pf-brief b{font-size:10cqw}
+  .pf-brief span{font-size:4.6cqw}
+  .pf-zone{font-size:4cqw;padding:2cqw}
+  .pf-zone--h{left:6%;top:5%;width:88%;height:27%}
+  .pf-zone--d{right:6%;top:36%;width:38%;height:22%}
+  .pf-zone--o{left:6%;top:62%;width:56%;height:18%}
+  .pf-zone--a{height:14%}
+  .pf-plan{left:6%;right:auto;top:36%;width:46%;padding:3cqw;gap:1.6cqw}
+  .pf-plan b{font-size:7.6cqw}
+  .pf-plan span{font-size:3.6cqw}
+  .pf-h{left:6%;top:5%;width:90%;font-size:12.6cqw}
+  .pf-days{right:6%;top:37%;gap:2.4cqw}
+  .pf-days span{width:22cqw;padding-top:2.4cqw;font-size:10cqw}
+  .pf-o{left:6%;top:60%;width:56%;padding:3cqw 3.4cqw 2.6cqw;font-size:4cqw}
+  .pf-stamp{right:8%;bottom:22%;font-size:9cqw;padding:1.4cqw 2.8cqw .4cqw;border-width:1cqw}
+  .pf-cta{height:14%;font-size:7cqw}
+  .pf-live{left:6%;right:6%;top:auto;bottom:16.5%;max-width:none;justify-content:flex-start;gap:1.4cqw}
+  .pf-live b,.pf-live span{font-size:3.6cqw;padding:1.2cqw 1.8cqw .8cqw}
+  .pf-snipe{right:-6%;top:31%;width:80%;font-size:6cqw;padding:2.4cqw 3cqw 1.6cqw;transform:rotate(-8deg)}
+}
+
+/* ---------- STACK: pasted one over another as you scroll ---------- */
+@media (min-height:600px){
+  .js.motion .pasteup:not(.no-stack){display:block;padding-bottom:42svh;
+    --stack-top:calc(var(--hdr) + 16px);--edge:12px;--sheet-h:calc(100svh - var(--hdr) - 32px - 4 * var(--edge))}
+  .js.motion .pasteup:not(.no-stack) .sheet{position:sticky;top:calc(var(--stack-top) + var(--i) * var(--edge));height:var(--sheet-h);margin-bottom:30svh;transform-origin:50% 0}
+  .js.motion .pasteup:not(.no-stack) .sheet:last-child{margin-bottom:0}
+  .js.motion .pasteup:not(.no-stack) .proof{aspect-ratio:auto;height:100%;align-self:stretch}
+}
+@supports (animation-timeline:view()){
+  @media (min-height:600px) and (prefers-reduced-motion:no-preference){
+    .js.motion .pasteup:not(.no-stack){timeline-scope:--pu1,--pu2,--pu3,--pu4,--pu5}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(1){view-timeline-name:--pu1}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(2){view-timeline-name:--pu2}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(3){view-timeline-name:--pu3}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(4){view-timeline-name:--pu4}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(5){view-timeline-name:--pu5}
+    /* the sheet underneath settles back and dims while the next one is pasted over it */
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(-n+4),
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(-n+4)::after{animation-timing-function:linear;animation-fill-mode:both;animation-range:entry 0% entry 100%}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(-n+4){animation-name:pu-under}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(-n+4)::after{animation-name:pu-dim}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(1),.js.motion .pasteup:not(.no-stack) .sheet:nth-child(1)::after{animation-timeline:--pu2}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(2),.js.motion .pasteup:not(.no-stack) .sheet:nth-child(2)::after{animation-timeline:--pu3}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(3),.js.motion .pasteup:not(.no-stack) .sheet:nth-child(3)::after{animation-timeline:--pu4}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(4),.js.motion .pasteup:not(.no-stack) .sheet:nth-child(4)::after{animation-timeline:--pu5}
+    /* each sheet's new layer is wiped on as the sheet lands */
+    .js.motion .pasteup:not(.no-stack) .new{animation:pu-layer linear both;animation-range:entry 52% entry 100%}
+    .js.motion .pasteup:not(.no-stack) .pf-stamp.new{animation-name:pu-stamp;animation-range:entry 86% entry 100%}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(1) .new{animation-timeline:--pu1}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(2) .new{animation-timeline:--pu2}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(3) .new{animation-timeline:--pu3}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(4) .new{animation-timeline:--pu4}
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(5) .new{animation-timeline:--pu5}
+  }
+}
+@keyframes pu-under{to{transform:scale(.955)}}
+@keyframes pu-dim{to{opacity:.4}}
+@keyframes pu-layer{from{clip-path:inset(-20% 100% -20% -20%)}to{clip-path:inset(-20% -20% -20% -20%)}}
+@keyframes pu-stamp{from{opacity:0;transform:scale(1.8) rotate(-22deg)}to{opacity:1;transform:rotate(-13deg)}}
+
+/* ---------- Transparency ---------- */
+#clear-h{max-width:13ch}
+.clear-list{display:grid;grid-template-columns:repeat(3,1fr);margin:clamp(40px,5vw,72px) calc(var(--pad-x) * -1) 0;border-top:6px solid var(--yellow)}
+.clear-list li{padding:28px var(--pad-x) 6px;font-size:var(--fs-lede);line-height:1.4}
+.clear-list li+li{box-shadow:inset 3px 0 0 rgba(242,243,239,.2)}
+.clear-list b{display:block;margin-bottom:12px;font:400 var(--fs-d2)/1 var(--display);color:var(--yellow)}
+
+/* ---------- Every service ---------- */
+#fit-h{max-width:12ch}
+.fit-tags{margin-top:28px}
+
+/* ---------- Tablet ---------- */
+@media (max-width:1099px){
+  .sheet{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+  .sheet h3{font-size:clamp(40px,6.4vw,64px)}
+  .sheet__n{font-size:clamp(80px,11vw,120px)}
+  .clear-list{grid-template-columns:1fr}
+  .clear-list li+li{box-shadow:none;border-top:3px solid rgba(242,243,239,.2)}
+}
+/* ---------- Phone ---------- */
+@media (max-width:699px){
+  .sheet{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);gap:18px;padding:20px 18px 22px}
+  .sheet__plate{display:grid;grid-template-columns:auto 1fr;align-items:end;gap:6px 14px}
+  .sheet__n{font-size:clamp(62px,21vw,84px)}
+  .sheet h3{font-size:clamp(31px,10.6vw,44px);margin:0}
+  .sheet__what,.sheet__get{grid-column:1 / -1}
+  .sheet__what{font-size:18px}
+  .sheet__get{margin-top:4px;padding-top:10px;border-top-width:3px;font-size:16px}
+  .sheet__get b{font-size:26px;margin-bottom:2px}
+  .proof{aspect-ratio:5/6}
+}
+@media (max-width:699px) and (min-height:600px){
+  .js.motion .pasteup:not(.no-stack){--edge:9px}
+  .js.motion .pasteup:not(.no-stack) .proof{width:100%;max-width:none}
+}
+@keyframes pu-under-phone{to{transform:scale(.98)}}
+@supports (animation-timeline:view()){
+  @media (max-width:699px) and (min-height:600px) and (prefers-reduced-motion:no-preference){
+    .js.motion .pasteup:not(.no-stack) .sheet:nth-child(-n+4){animation-name:pu-under-phone}
+  }
+}

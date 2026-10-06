@@ -1,6 +1,6 @@
 # Web Prompt Kit
 
-__COUNT__ standalone prompts for award-level websites, app screens and UI components. They're built from 57 real prompts people published with their results (2025 to October 2026), the design skills and system prompts behind the best of them, and what award-winning sites from 2025 and 2026 actually do. Every prompt works on its own, with or without brand guidelines, and defaults to one self-contained HTML file you can open anywhere.
+63 standalone prompts for award-level websites, app screens and UI components. They're built from 57 real prompts people published with their results (2025 to October 2026), the design skills and system prompts behind the best of them, and what award-winning sites from 2025 and 2026 actually do. Every prompt works on its own, with or without brand guidelines, and defaults to one self-contained HTML file you can open anywhere.
 
 ## How to use
 
@@ -49,7 +49,8 @@ note: A design read, a thesis, tokens and one signature interaction, decided bef
 Before any component code, write one line: "Reading this as <page kind> for <audience>, with a <vibe> language,
 leaning toward <aesthetic family>." Then a visual thesis (one sentence: mood, material, energy), a content plan
 (the sections in order) and an interaction thesis (2–3 motion ideas that change how the page feels).
-Then the design system, shown as a one-screen style tile: a type scale at 375 and 1440 wide, a grid with
+Then the design system, shown as a one-screen style tile (a separate scratch page or image, not part of the
+site): a type scale at 375 and 1440 wide, a grid with
 breakpoints, 4–6 named colour hex values with their contrast ratios, a spacing scale, corner radius, and motion
 tokens (2 easing curves, 2–3 springs, durations, stagger). Name the ONE signature interaction this site will be
 remembered for and where it lives. Review the plan against the generic default you would produce for any similar
@@ -67,8 +68,10 @@ Brand test: if the first screen could belong to another brand once the logo is r
 Craft rules: every interactive element has hover, focus-visible, pressed and disabled states; motion is triggered
 by scroll, hover or intent, with at most one ambient motion system per screen; entrances ease out, never in;
 springs with a tiny overshoot at most, no bounce or elastic; text is never hard to read while it animates; content
-enters after its container moves; mobile is designed, not shrunk; the headline is real text, visible
-immediately; 60fps on a mid-range phone; a reduced-motion version that still looks finished. Before you finish, take one thing
+enters after its container moves; mobile is designed, not shrunk; the headline is real text, readable on the
+first frame (it may move in the page load, but it never starts invisible); anything that runs every frame
+animates only transform, opacity, clip-path or shader uniforms (a short colour or height change on one element
+is fine); 60fps on a mid-range phone; a reduced-motion version that still looks finished. Before you finish, take one thing
 away.
 Banned, because they are the giveaways of AI-made sites as of October 2026 (if the result swaps in a different
 default, ban that too):
@@ -78,7 +81,7 @@ near-black with one acid-green or vermilion accent; tinted near-black (#0B0B0B, 
 eyebrow labels above headings; 01/02/03 numbering when the content isn't a sequence; meta strings joined with
 middle dots; monospace for small data labels; "→" added to links and buttons; em dashes in the copy.
 - Layout: a centred title on a gradient; three identical feature cards; cards in the hero; cards inside cards;
-the same radius and soft grey shadow on everything; default bento grids; hairline rules everywhere; a fake
+the same radius and soft grey shadow on everything; default bento grids; hairline rules between every section; a fake
 product UI built from styled divs; decorative status dots; scroll cues; gradient blobs; glassmorphism; pill
 buttons on everything.
 - Motion: fade-and-slide-up on every section; hover transitions on every card; several ambient animations at once.
@@ -91,7 +94,8 @@ id: slowmo
 note: A 10%-speed switch, named curves and interruptible motion, so the feel can be judged and tuned.
 
 ```text
-Add a small "slow motion" switch that runs all motion at 10% speed so I can review the curves. Name every easing
+Add a small "slow motion" switch that runs all motion at 10% speed so I can review the curves: a quiet control
+in the footer plus the S key, off by default and not remembered. Name every easing
 curve and spring in a code comment (for example "settle: cubic-bezier(.16, 1, .3, 1)") and keep them in one
 place. Everything is interruptible: grab, click or scroll mid-animation and it continues from where it is, never
 jumping to the start or end.
@@ -102,9 +106,12 @@ id: critique
 note: Real screenshots at three widths and three scroll depths, scored with Awwwards' weights, three weakest fixed, at least twice.
 
 ```text
-Before you finish, run it in a browser and look at it as an awards jury would. Screenshot it at 390, 768 and 1440
-wide at three scroll depths (top, middle, bottom), plus the signature interaction mid-motion and one hover/focus
-state, and click through every link and control. Score it like Awwwards: Design (40%), Usability (30%),
+Before you finish, run it in a browser and look at it as an awards jury would. Take viewport screenshots (not
+full-page ones, which break sticky and pinned sections) at 390, 768 and 1440 wide at three scroll depths (top,
+middle, bottom), reached by real scrolling so scroll-triggered states fire, plus the signature interaction
+mid-motion and one hover/focus state. At every width, actually use the signature interaction with a pointer or
+touch, and click through every link and control: a screenshot can score 8 while the interaction is dead. Fix
+every functional bug you find; those don't count towards the three below. Score it like Awwwards: Design (40%), Usability (30%),
 Creativity (20%) and Content (10%), each out of 10, and score every screenshot. Then answer honestly: typography
 (any overused AI fonts?), colour (restrained or all over the place?), hierarchy (does size guide the eye?),
 animation (intentional or random?), mobile (designed for phones or shrunk?), copy (specific or generic filler?).
@@ -118,8 +125,8 @@ note: Performance, accessibility and robustness gates before you call it done.
 
 ```text
 Ship-ready checks before finishing: Largest Contentful Paint is real text or an optimised image, under 2.5s on a
-throttled mobile profile; layout shift 0; interactions respond in under 200ms; animate only transform, opacity
-and shader uniforms; pause off-screen canvases and video; images sized and lazy-loaded below the fold; fonts
+throttled mobile profile (4× CPU slowdown, slow 4G); layout shift under 0.01; interactions respond in under 200ms; per-frame animation
+only on transform, opacity, clip-path and shader uniforms; pause off-screen canvases and video; images sized and lazy-loaded below the fold; fonts
 subset and preloaded with fallbacks that don't shift; no horizontal scroll at any width; no text overflowing its
 button or box; semantic landmarks and one h1; full keyboard navigation with a visible focus style; colour contrast
 AA; alt text; loading, empty and error states designed; no placeholder text left; a prefers-reduced-motion path;
@@ -146,7 +153,9 @@ BRAND: {{NAME}}, {{WHAT YOU DO, ONE LINE}}, {{SITE URL, if any: read it for fact
 Audience: {{WHO IT'S FOR}}. Mood: {{3 WORDS}}, not {{THE CLICHÉ TO AVOID}}.
 Colours: {{3–5 HEX CODES WITH ROLES}}. Fonts: {{DISPLAY}} + {{TEXT}}. Logo: {{ATTACHED / URL / "none"}}, use exactly as
 given, never redrawn. Real content to use: {{COPY, PRODUCTS, CASE STUDIES, NUMBERS, QUOTES, PHOTOS}}. Never invent
-clients, metrics, logos or quotes; leave a visible TODO where content is missing.
+clients, metrics, logos or quotes; leave a visible TODO where content is missing. If you read the brand's own
+site, check where things come from: drop logos or assets hot-linked from another company's site, and treat
+absolute claims ("100% of…") as unverified unless they're sourced.
 ```
 
 ### Stack switch
@@ -279,8 +288,8 @@ or proof section, ordering}}.
 Motion: one orchestrated page load, then scroll-linked scenes. No fade-up on every section. Respect
 prefers-reduced-motion. It must work on a phone.
 Quality bar: a site that wins Site of the Day. Real copy only; no lorem ipsum, invented logos or stats.
-Before you finish, screenshot it at 390 and 1440 wide at three scroll depths, list the three weakest things as an
-art director would, and fix them. Do that at least twice.
+Before you finish, screenshot it at 390, 768 and 1440 wide at three scroll depths, use the signature moment at
+each width, list the three weakest things as an art director would, and fix them. Do that at least twice.
 ```
 
 Based on: [the "Lenn" sea-salt brief from Muzli's Opus 5.5 tests](https://muz.li/blog/claude-opus-5-5-for-designers/) (about 200 words, four rounds of self-fixes, about 80 minutes)

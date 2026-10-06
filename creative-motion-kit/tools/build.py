@@ -209,6 +209,8 @@ def validate(lib):
         assert p["prompt"].startswith("BRAND:"), f"{src} #{p['id']}: must start with a BRAND: line"
         for ln in replace_lines:
             assert re.search(r"^" + re.escape(ln) + r":", p["prompt"], re.M), f"{src} #{p['id']}: needs a {ln}: line"
+    m = re.match(r"^(\d+) ", lib["intro"])
+    assert not m or int(m.group(1)) == len(ids), f"{src}: intro says {m.group(1)} prompts but there are {len(ids)}"
     for l in lib["roulette"]["lists"]:
         assert len(l["items"]) == 20, f"{src}: roulette list {l['name']!r} needs 20 items"
     assert lib["roulette"]["letClaudeRoll"], f"{src}: missing 'Let Claude roll'"

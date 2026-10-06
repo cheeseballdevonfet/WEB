@@ -53,6 +53,10 @@ Use Claude Opus 5.5 on high effort for the signature moment and medium for the r
 
 The ALL OUT ban list is dated October 2026, and the defaults keep moving: last year's fix (cream, italic serif, grain, mono labels) is this year's tell. When a result swaps in a new default, add it to the list in `WEB.md` and rebuild.
 
+## Proof
+
+`../sites/metis/index.html` in this repository is a full landing page built only by following the creative-web skill (W01 plus four component prompts and the power-ups). It went through three juror rounds, from 6.95 to 7.95 weighted, and passes the ship-ready checks. What that build found unclear in the kit has been folded back into `WEB.md` and the skill.
+
 ## Editing the kit
 
 Edit `PROMPTS.md` or `WEB.md`, then rebuild everything else:

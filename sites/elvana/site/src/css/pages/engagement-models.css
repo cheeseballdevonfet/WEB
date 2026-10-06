@@ -133,7 +133,8 @@
 @media (max-width:699px){
   .counter__mouth{grid-template-columns:1fr}
   .js .counter__pick{gap:8px}
-  .pick{padding:12px 10px 11px;gap:2px;box-shadow:4px 5px 0 rgba(0,0,0,.3)}
+  .pick{padding:14px 12px 13px;gap:2px;box-shadow:4px 5px 0 rgba(0,0,0,.3)}
+  .pick::after{inset:4px}
   .pick__name{font-size:21px}
   .pick__for{font-size:14px}
   .pick:has(input:checked),.pick:active{transform:translate(3px,4px)}

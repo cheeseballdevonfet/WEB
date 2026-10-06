@@ -216,7 +216,7 @@
   .js.motion .ch.is-past .ch-log__t b{color:var(--paper-dim)}
   .js.motion .story[data-active="6"] .ch-log__t b{color:var(--paper)}
   /* the squeegee that rides the wipe's wet edge (the site's paste language) */
-  .js.motion .squeegee{grid-column:2;grid-row:1 / -1;align-self:start;position:sticky;top:calc(var(--top) + var(--route-h));margin-top:var(--route-h);height:var(--fig-h);width:var(--col);overflow:hidden;pointer-events:none;z-index:6}
+  .js.motion .squeegee{display:block;grid-column:2;grid-row:1 / -1;align-self:start;position:sticky;top:calc(var(--top) + var(--route-h));margin-top:var(--route-h);height:var(--fig-h);width:var(--col);overflow:hidden;pointer-events:none;z-index:6}
   .js.motion .squeegee i{position:absolute;top:0;bottom:0;left:0;width:150px;opacity:0;transform:translateX(-150px);
     background:linear-gradient(90deg,transparent,rgba(255,255,255,.28) calc(100% - 9px),var(--ink) calc(100% - 9px),var(--ink) calc(100% - 3px),rgba(255,255,255,.55) calc(100% - 3px),transparent)}
   .js.motion .ch-text .ch-n{color:rgba(242,243,239,.28);transition:color calc(320ms * var(--slow)) linear}

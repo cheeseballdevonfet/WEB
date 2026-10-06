@@ -1,13 +1,12 @@
 /* =========================================================================
-   Elvana Media: tear.css
-   Mechanics of the home hero's tear, moved from variation A unchanged.
-   Composition (where the h1, sign-off and promise sit, seams and wrinkles)
-   lives in pages/home.css, so this file can be replaced by a drop-in with
-   the same DOM contract (see tear.js) without touching the layout.
-   Loaded only by pages whose front matter lists `tear` in css.
+   Elvana Media: tear.css (tear engine v2)
+   The CSS the engine needs: the hoarding's layering, the corner peel, and
+   the still, layered composition shown without JS or with reduced motion.
+   Composition (where the h1, sign-off and promise sit, seams, wrinkles)
+   stays in the page CSS. Pairs with tear.js; see lab/TEAR.md.
    ========================================================================= */
 
-/* The hoarding: two posters, one on top of the other, in a size container */
+/* ---------- Hero: two posters, one on top of the other ---------- */
 .hero{position:relative;z-index:3;height:var(--hero-h);container:hero / size;touch-action:pan-y;-webkit-user-select:none;user-select:none}
 .no-js .hero,.js:not(.motion) .hero{-webkit-user-select:auto;user-select:auto}
 .sheet{position:absolute;inset:0;overflow:hidden}
@@ -19,7 +18,9 @@
 .still-rim{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
 .still-rim .wide{display:none}
 .js.motion .still-rim{display:none}
+/* Paper, shadows and fibres. Reaches 140px below the hero so a falling roll can leave the frame. */
 .tear-canvas{position:absolute;left:0;top:0;width:100%;height:calc(100% + 140px);pointer-events:none;z-index:4}
+/* Edge zones where a touch tears instead of scrolling */
 .grip{position:absolute;z-index:5;touch-action:none}
 .grip-b{left:0;right:0;bottom:0;height:72px}
 .grip-l{left:0;top:0;bottom:0;width:30px}
@@ -30,3 +31,39 @@
   .sheet-under{clip-path:url(#still-wide)}
   .still-rim .wide{display:block}.still-rim .tall{display:none}
 }
+
+/* ---------- Corner peel (inner pages) ----------
+   <div class="peel" data-peel data-peel-corner="br|bl|tr|tl">
+     <div class="peel__under">...</div><div class="peel__over">...</div></div>
+   tear.js mounts every [data-peel], sets [data-peel-mounted], and adds
+   .peel__canvas, .peel__grip and the "Peel back" button .peel__btn.     */
+.peel{position:relative;display:grid;isolation:isolate;--peel:clamp(64px,8vw,120px)}
+.peel>.peel__under,.peel>.peel__over{grid-area:1 / 1;min-width:0;min-height:0}
+.peel__under{z-index:0}
+.peel__over{z-index:1}
+.peel__canvas{position:absolute;z-index:2;pointer-events:none}
+.peel__grip{position:absolute;z-index:3;width:clamp(56px,16%,96px);aspect-ratio:1;right:0;bottom:0;touch-action:none}
+.peel[data-peel-corner="bl"] .peel__grip{right:auto;left:0}
+.peel[data-peel-corner="tr"] .peel__grip{bottom:auto;top:0}
+.peel[data-peel-corner="tl"] .peel__grip{bottom:auto;top:0;right:auto;left:0}
+.peel.is-peeled .peel__grip{display:none}
+.peel.is-grabbing,.peel.is-grabbing *{cursor:grabbing!important}
+/* Keyboard: visually hidden until focused, then it sits on the corner it peels */
+.peel__btn{position:absolute;z-index:4;right:12px;bottom:12px;width:1px;height:1px;padding:0;margin:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0;
+  background:var(--ink,#1A1814);color:var(--yellow,#FFD000);font:800 16px/1 var(--text,sans-serif);cursor:pointer}
+.peel__btn:focus-visible{width:auto;height:auto;min-height:44px;padding:12px 18px 9px;clip-path:none;overflow:visible;outline:3px solid var(--yellow,#FFD000);outline-offset:2px}
+.peel[data-peel-corner="bl"] .peel__btn{right:auto;left:12px}
+.peel[data-peel-corner="tr"] .peel__btn{bottom:auto;top:12px}
+.peel[data-peel-corner="tl"] .peel__btn{bottom:auto;top:12px;right:auto;left:12px}
+
+/* Still composition: no JS, reduced motion, or the script missing.
+   The corner stays peeled and curled, showing a triangle of the poster underneath. */
+.peel:not([data-peel-mounted])>.peel__over{clip-path:polygon(0 0,100% 0,100% calc(100% - var(--peel)),calc(100% - var(--peel)) 100%,0 100%)}
+.peel:not([data-peel-mounted])::after{content:"";position:absolute;right:0;bottom:0;width:var(--peel);height:var(--peel);z-index:2;pointer-events:none;
+  background:linear-gradient(to top left,transparent 50%,#B9B7B0 50%,var(--back,#E2E1DB) 64%,#F7F7F3 100%);filter:drop-shadow(-3px -3px 3px rgba(0,0,0,.3))}
+.peel[data-peel-corner="bl"]:not([data-peel-mounted])>.peel__over{clip-path:polygon(0 0,100% 0,100% 100%,var(--peel) 100%,0 calc(100% - var(--peel)))}
+.peel[data-peel-corner="bl"]:not([data-peel-mounted])::after{right:auto;left:0;background:linear-gradient(to top right,transparent 50%,#B9B7B0 50%,var(--back,#E2E1DB) 64%,#F7F7F3 100%);filter:drop-shadow(3px -3px 3px rgba(0,0,0,.3))}
+.peel[data-peel-corner="tr"]:not([data-peel-mounted])>.peel__over{clip-path:polygon(0 0,calc(100% - var(--peel)) 0,100% var(--peel),100% 100%,0 100%)}
+.peel[data-peel-corner="tr"]:not([data-peel-mounted])::after{bottom:auto;top:0;background:linear-gradient(to bottom left,transparent 50%,#B9B7B0 50%,var(--back,#E2E1DB) 64%,#F7F7F3 100%);filter:drop-shadow(-3px 3px 3px rgba(0,0,0,.3))}
+.peel[data-peel-corner="tl"]:not([data-peel-mounted])>.peel__over{clip-path:polygon(var(--peel) 0,100% 0,100% 100%,0 100%,0 var(--peel))}
+.peel[data-peel-corner="tl"]:not([data-peel-mounted])::after{bottom:auto;top:0;right:auto;left:0;background:linear-gradient(to bottom right,transparent 50%,#B9B7B0 50%,var(--back,#E2E1DB) 64%,#F7F7F3 100%);filter:drop-shadow(3px 3px 3px rgba(0,0,0,.3))}

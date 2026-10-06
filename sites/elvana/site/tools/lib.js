@@ -5,6 +5,8 @@ const path = require('path');
 const http = require('http');
 
 const SITE = path.resolve(__dirname, '..');
+// ELVANA_OUT points the tools at a build made with `build.py --out DIR` (defaults to the site folder).
+const OUTROOT = process.env.ELVANA_OUT ? path.resolve(process.env.ELVANA_OUT) : SITE;
 const SIZES = {
   390: { width: 390, height: 844, dsf: 2, touch: true },
   768: { width: 768, height: 1024, dsf: 1, touch: true },
@@ -12,10 +14,10 @@ const SIZES = {
 };
 
 function pages() {
-  const r = JSON.parse(fs.readFileSync(path.join(SITE, 'build-report.json'), 'utf8'));
+  const r = JSON.parse(fs.readFileSync(path.join(OUTROOT, 'build-report.json'), 'utf8'));
   return r.pages;
 }
-function fileUrl(tree, out) { return 'file://' + path.join(SITE, tree, out); }
+function fileUrl(tree, out) { return 'file://' + path.join(OUTROOT, tree, out); }
 
 // Tiny static server (for dist/ over http: font preloads, throttled network)
 function serve(root, port = 0) {
@@ -149,4 +151,4 @@ async function sheet(browser, out, title, items, cols = 3, cellW = 460) {
   return out;
 }
 
-module.exports = { chromium, SITE, SIZES, pages, fileUrl, serve, open, wheelTo, wheelToEl, AUDIT, sheet };
+module.exports = { chromium, SITE, OUTROOT, SIZES, pages, fileUrl, serve, open, wheelTo, wheelToEl, AUDIT, sheet };

@@ -6,7 +6,7 @@
 // crawl could not reach from the home page. Exit code 1 on any broken link.
 const fs = require('fs');
 const path = require('path');
-const { chromium, SITE, pages } = require('./lib');
+const { chromium, SITE, OUTROOT, pages } = require('./lib');
 
 const arg = (k, d) => { const i = process.argv.indexOf('--' + k); return i > 0 ? process.argv[i + 1] : d; };
 const TREES = arg('trees', 'dist,preview').split(',');
@@ -18,7 +18,7 @@ const TREES = arg('trees', 'dist,preview').split(',');
   const page = await ctx.newPage();
   let broken = 0;
   for (const tree of TREES) {
-    const root = path.join(SITE, tree);
+    const root = path.join(OUTROOT, tree);
     const info = new Map();                  // file -> { ids, links }
     const load = async f => {
       if (info.has(f)) return info.get(f);

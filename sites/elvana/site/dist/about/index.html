@@ -27,11 +27,14 @@
 <meta name="twitter:image:alt" content="Elvana Media: a yellow hoarding poster reading &quot;Ideas that create impact.&quot;, torn at one corner to show a red poster underneath.">
 <!-- Motion gate: html.js always, html.motion unless the visitor prefers reduced motion. Everything animated keys off these. -->
 <script>document.documentElement.className='js'+(matchMedia('(prefers-reduced-motion: reduce)').matches?'':' motion');</script>
+<!-- Paste-over page transitions (CSS in components.css). Must run before first render, so it lives here:
+     Back peels the old page off; any other navigation pastes the new page on behind a squeegee. -->
+<script>addEventListener('pagereveal',function(e){var v=e.viewTransition;if(!v)return;var back=false;try{var a=navigation.activation;back=a.navigationType==='traverse'&&!!a.from&&a.entry.index<a.from.index}catch(_){}if(v.types)v.types.add(back?'peel':'paste');if(back)return;var s=document.createElement('i');s.className='vt-squeegee';s.setAttribute('aria-hidden','true');document.documentElement.appendChild(s);var done=function(){s.remove()};v.finished.then(done,done)});</script>
 <script>if(location.protocol!=='file:')['../assets/fonts/yatra-one-latin.woff2','../assets/fonts/mukta-400-latin.woff2','../assets/fonts/mukta-800-latin.woff2'].forEach(function(h){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href=h;document.head.appendChild(l)})</script>
 <link rel="stylesheet" href="../assets/css/base.css">
 <link rel="stylesheet" href="../assets/css/components.css">
 <script defer src="../assets/js/core.js"></script>
-<!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any <script type="application/ld+json"> found in the page body -->
+<!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.elvanamedia.com/#organization","name":"Elvana Media","legalName":"ELEVANA MEDIA PRIVATE LIMITED","url":"https://www.elvanamedia.com/","email":"info@elvanamedia.com","telephone":"+91 89283 39531","foundingDate":"2026-06-04","slogan":"Ideas that create impact.","description":"Digital marketing, media & AI-powered growth.","image":"https://www.elvanamedia.com/assets/og-default.png","parentOrganization":{"@type":"Organization","name":"BeyondSure Private Limited"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}],"address":{"@id":"https://www.elvanamedia.com/#registered-office"}},{"@type":"LocalBusiness","@id":"https://www.elvanamedia.com/#mumbai","name":"Elvana Media","url":"https://www.elvanamedia.com/","image":"https://www.elvanamedia.com/assets/og-default.png","email":"info@elvanamedia.com","telephone":"+91 89283 39531","parentOrganization":{"@id":"https://www.elvanamedia.com/#organization"},"address":{"@type":"PostalAddress","@id":"https://www.elvanamedia.com/#registered-office","streetAddress":"203, Shivam Square, Building No. 4, Sahar Road, Andheri East","addressLocality":"Mumbai","addressRegion":"Maharashtra","postalCode":"400069","addressCountry":"IN"}},{"@type":"WebSite","@id":"https://www.elvanamedia.com/#website","url":"https://www.elvanamedia.com/","name":"Elvana Media","publisher":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN"},{"@type":"WebPage","@id":"https://www.elvanamedia.com/about/#webpage","url":"https://www.elvanamedia.com/about/","name":"About Elvana Media | A new-age media & growth company","description":"Elvana Media helps brands get seen, get chosen and grow. Meet the founder and leadership, and the BeyondSure group behind us.","isPartOf":{"@id":"https://www.elvanamedia.com/#website"},"about":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.elvanamedia.com/"},{"@type":"ListItem","position":2,"name":"About","item":"https://www.elvanamedia.com/about/"}]}}]}</script>
 </head>
 <body class="page-about" id="top">
@@ -83,7 +86,7 @@
 <section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
   <div class="paste vacant vacant--todo">
     <div class="vacant__frame">
-      <span class="todo">TODO: page content</span>
+      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
       <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
     </div>
     <div class="plate g-ink">
@@ -163,6 +166,7 @@
       <a href="../privacy/index.html">Privacy</a>
       <a href="../terms/index.html">Terms</a>
       <button class="js-only motion-only" type="button" id="slowmo" aria-pressed="false">Slow motion (S)</button>
+      <button class="js-only" type="button" id="sound" aria-pressed="false" title="Paper sounds, and a haptic tick on Android. Off by default.">Paper sounds</button>
       <a href="#top">Back to the top</a>
     </div>
   </div>

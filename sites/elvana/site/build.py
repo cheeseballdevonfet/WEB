@@ -5,6 +5,8 @@
     python3 build.py --clean-urls    dist links as ../contact/ instead of ../contact/index.html
                                      (for a web server; default links work from file:// too)
     python3 build.py --base /sub/    dist/404.html links for a site deployed under /sub/
+    python3 build.py --out DIR       build into DIR/dist, DIR/preview, DIR/build-report.json (parallel work);
+                                     then run the tools with ELVANA_OUT=DIR
 
 Sources (see SYSTEM.md):
     src/partials/head.html header.html footer.html   the shell
@@ -34,6 +36,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, 'src')
 DIST = os.path.join(HERE, 'dist')
 PREVIEW = os.path.join(HERE, 'preview')
+REPORT_DIR = HERE
+sys.dont_write_bytecode = True
 sys.path.insert(0, os.path.join(HERE, 'tools'))
 from fonts import FACES, css_range, in_ranges, DEVA_RANGES, LATIN_RANGES  # noqa: E402
 
@@ -513,7 +517,14 @@ def main():
     ap.add_argument('--clean-urls', action='store_true')
     ap.add_argument('--base', default='/')
     ap.add_argument('--no-og', action='store_true', help='do not re-render the OG image')
+    ap.add_argument('--out', default=None, help='write dist/, preview/ and build-report.json under this folder '
+                    '(for parallel builders; QA tools read it from ELVANA_OUT)')
     opts = ap.parse_args()
+    global DIST, PREVIEW, REPORT_DIR
+    if opts.out:
+        out = os.path.abspath(opts.out)
+        DIST, PREVIEW, REPORT_DIR = os.path.join(out, 'dist'), os.path.join(out, 'preview'), out
+        os.makedirs(out, exist_ok=True)
     partials = {k: read(os.path.join(SRC, 'partials', k + '.html')) for k in ('head', 'header', 'footer')}
     pages, by_path = load_pages()
     if errors:
@@ -572,7 +583,7 @@ def main():
         if p.path not in foot_links:
             err(f'{p.path} is not linked from the footer (partials/footer.html)')
     report['errors'], report['warnings'] = errors, warnings
-    write(os.path.join(HERE, 'build-report.json'), json.dumps(report, indent=1, ensure_ascii=False))
+    write(os.path.join(REPORT_DIR, 'build-report.json'), json.dumps(report, indent=1, ensure_ascii=False))
 
     total = sum(os.path.getsize(os.path.join(d, f)) for d, _, fs in os.walk(DIST) for f in fs)
     print(f'built {len(pages)} pages -> dist/ ({total // 1024} KB) and preview/ '

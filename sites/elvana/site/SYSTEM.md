@@ -4,6 +4,11 @@ This is the shared system behind every page of www.elvanamedia.com. It was extra
 
 Read this before you build a page. When this file and the code disagree, the code is right; fix this file.
 
+The other sources, all one folder up:
+- `CONTENT.md`: the only source of facts.
+- `CONTENT-PAGES.md`: drafted inner-page copy, awaiting client review.
+- `INTERACTIONS.md`: the agreed interaction plan, with each page's one signature and the site-wide pieces (section 6a below).
+
 ```
 python3 build.py              # build dist/ + preview/ and validate (exit 1 on any error)
 node tools/qa.js --out /tmp/qa      # every page at 390/768/1440: errors, overflow, contrast, screenshots
@@ -35,10 +40,11 @@ site/
                       components.css (every reusable component)
                       tear.css (hero tear mechanics; owned by the tear module, do not edit)
                       pages/<page>.css (page-only layout)
-    js/               core.js (every page), tear.js (tear + peel; owned by the tear module, do not edit), pages/<page>.js
+    js/               core.js (every page), tear.js (tear engine v2 + peel; owned by the tear module, do not edit), pages/<page>.js
     fonts/            woff2 subsets (section 8)
     og/               og-default.html (the share poster) -> og-default.png
   tools/              fonts.py, render-og.js, lib.js, qa.js, crawl.js, ship.js, compare.js, fontcache/
+  lab/                tear-lab.html, the tear engine's test bench (owned by the tear module; not built)
   dist/               deploy output (generated)
   preview/            self-contained pages for review (generated)
 ```
@@ -48,7 +54,7 @@ site/
 ## 2. How to add or finish a page
 
 1. Copy `src/pages/_template.html` to the route's file, for example `src/pages/services/seo-sem.html`. Every route already has a stub, so usually you edit the stub. Set the front matter (section 3) and keep the hero, `<h1 id="page-h">`, and the closing CTA poster.
-2. Replace the TODO poster with sections built from the components in section 6. Write links root-absolute (`href="/contact/"`). Take facts from `CONTENT.md` only. Draft copy for review lives in `CONTENT-PAGES.md`; use only lines the client has approved. Anything still missing gets a `.todo` sticker.
+2. Replace the TODO poster with sections built from the components in section 6, and add the page's one signature from `INTERACTIONS.md` as `js/pages/<name>.js` plus `css/pages/<name>.css`. Write links root-absolute (`href="/contact/"`). Take facts from `CONTENT.md` only. Draft copy for review lives in `CONTENT-PAGES.md`; use only lines the client has approved. Anything still missing gets a `.todo` sticker.
 3. Put page-only CSS in `src/css/pages/<name>.css` and list it in front matter (`css: pages/<name>`). Run `python3 build.py`, then `node tools/qa.js --only /your/path/`, and look at the screenshots at all three widths.
 
 A new route also needs a link in `src/partials/footer.html` (the build fails otherwise), and in `header.html` if it belongs in the main nav.
@@ -148,15 +154,19 @@ Every duration multiplies by `--slow` (10 while slow motion is on). JS timers di
 ## 5. Rules
 
 **Motion.**
-- **One signature per page.** On the home page it is the hero tear. An inner page may use the **peel** once, in its hero, or nothing.
+- **One signature per page.** `INTERACTIONS.md` (one folder up) names each page's signature: the tear on Home, the fly-poster wall on Services, the ticket counter on Engagement models, and so on. Page builders build them; nothing else on a page competes. An inner page may use the **peel** in its hero only if the peel is that page's signature.
 - **One ambient system: paste-on-scroll.** Each `.poster` is squeegeed on as it scrolls in. Never add a second ambient animation: no marquees, no floating shapes, no parallax, no fade-up on sections.
-- **Allowed micro-motion.** The tag lift on hover, the flyer corner lift on hover or focus, and the demos (they play once in view and can be replayed).
+- **Allowed micro-motion.** These are the site-wide pieces in section 6a, plus the demos (they play once in view and can be replayed). Nothing else moves on its own.
 - **How motion moves.** Entrances ease out. Per-frame animation touches only transform, opacity and clip-path. Everything can be interrupted.
 - **Reduced motion and no JS.** Both give a finished, still page: the hero shows its torn corner still, demos show their final state, posters are simply there.
 
 **Content.**
 - Facts come from `CONTENT.md` only. Never invent clients, logos, results, numbers, prices, testimonials or photos.
-- Where content is missing, show a designed TODO: a `.todo` sticker inline, or the vacant TODO block for a whole section.
+- Where content is missing, show a designed TODO:
+  - a "Coming soon" strip (`.coming-soon`) for a missing picture, figure or block (photos, prices, case studies, a page);
+  - a `.todo` sticker for a missing word inside a line (a focus area);
+  - the vacant TODO block for a whole section.
+  Every strip carries `data-todo="what is missing"`, so `grep -rn 'data-todo\|class="todo"' src/pages` lists every gap.
 - The legal name (ELEVANA MEDIA PRIVATE LIMITED) appears only in the footer's legal line.
 - The wordmark is typographic ("Elvana" in Yatra One). Never redraw or trace the raster logo; the official SVG replaces the wordmark once supplied (there is a comment in `header.html`).
 - No people photos exist. Use initials on halftone (`.portrait`, `.team .ini`), never stock or AI faces.
@@ -183,6 +193,25 @@ Every duration multiplies by `--slow` (10 while slow motion is on). JS timers di
 
 ---
 
+## 6a. Site-wide pieces (from INTERACTIONS.md) and where they live
+
+These are on every page already. Page builders use them and never rebuild them. Every piece has a keyboard and touch path, a still version for reduced motion, and readable content without JS.
+
+| Piece | What it does | Where it lives | Builder's part |
+| --- | --- | --- | --- |
+| **Paste-on-scroll** (the ambient system) | Each poster section is squeegeed onto the wall as it scrolls in. It is scrubbed by the scroll timeline, so it reverses on scroll-back. | `components.css` (`.poster`, `.paste`, `@keyframes paste/squeegee`); the time-driven fallback is in `core.js` §5 | Wrap each section in `.poster > .paste.g-*` with the right `--under`. |
+| **Paste-over page transitions** | **Forward:** the next page is pasted over the current one, left to right, with a squeegee on the wet edge (520 ms, `--t-vt`). **Back:** the page you are leaving peels off (440 ms, `--t-vt-peel`, tug curve). Cross-document View Transitions with `@view-transition { navigation: auto }`. Unsupported browsers and reduced motion simply navigate. It never blocks a click. | `components.css` (`@view-transition`, `::view-transition-*`, `.vt-squeegee`, `@keyframes vt-*`); the `pagereveal` script in `partials/head.html` picks paste or peel and adds the squeegee | Nothing. Keep both pages same-origin. Don't add `view-transition-name` to page elements without checking the wipe still reads. Keep it under 600 ms. |
+| **Corner lift** | Service and link posters lift a corner on hover, keyboard focus or press. | `components.css` `.flyer` (CSS only, `@property --c/--k`) | Use `.flyer` with a stretched `h3 a` for any poster that is a link. |
+| **"Coming soon" strips** | Every honest TODO is a strip pasted across the poster, like a cinema's "Housefull" snipe. | `components.css` `.coming-soon` with the variants `--over` (across a box), `--inline` (in a line) and `--yellow` (on red grounds) | Use them for missing photos, prices, case studies and pages (see the component below). |
+| **Rubber-stamp buttons** | A primary tag squashes when pressed; on release an ink ring in the ground's highlight ink spreads and fades (`--t-stamp`). | `components.css` (`.tag:active`, `.tag::after`, `.is-stamped`); `core.js` §9 adds the class on click | Nothing. It applies to every `.tag` that is not `.tag-line`. |
+| **Paper sounds + haptics** | Off by default and never required. One footer toggle (`#sound`, "Paper sounds", next to Slow motion) turns on synthesised sounds: a rip, a paste slap and a stamp thud (Web Audio, no files). Android also gets a 12 ms vibration on the rip. The setting lasts for the tab session. Built-in hooks: stamp on primary tags, a slap as each poster lands, a rip when the hero tear starts a strip. | `partials/footer.html` (`#sound`); `core.js` §10 (`Elvana.feedback`, `Elvana.setSound`) | Call `Elvana.feedback('rip' \| 'paste' \| 'stamp')` from a page signature (a ticket tear, a form "RECEIVED" stamp). It is silent unless the visitor turned sounds on. |
+| **Slow-motion review** | The footer switch and the S key run all motion at 10%. | `partials/footer.html` (`#slowmo`); `core.js` §2 | Divide JS timers by `Elvana.timeScale`, and multiply CSS durations by `var(--slow)`. |
+| **Hindi echoes** | Short Devanagari lines set in the sign-painter face. | Section 5, Devanagari | Each line must be signed off by a native speaker. Leave an HTML comment with its English meaning. |
+
+**Per-page signatures** (the fly-poster wall, the tri-vision hoarding, the ticket counter, the paste-up and the rest) and the 14 service specimens are specified in `INTERACTIONS.md`. Build each one as `src/js/pages/<page>.js` plus `src/css/pages/<page>.css`, sitting below or inside the page hero, never on top of it.
+- **Specimens.** Label every specimen "Mock-up" and invent no numbers.
+- **404.** It currently shows the peel as the contract example. INTERACTIONS.md plans "Torn down" (drag the scraps aside); that replaces it.
+
 ## 6. Component catalogue
 
 Markup snippets are minimal. Copy them, then change the grounds and the content.
@@ -204,7 +233,7 @@ Every section after the hero is a poster pasted over the last one.
 `partials/header.html` holds the wordmark, the main nav (Services, Our edge, How we work, Industries, Work, About) and the "Let's talk" tag to `/contact/`. Below 980px a native popover menu replaces the nav and pastes down from the top. The build adds `aria-current="page"` to links to the current page and `aria-current="true"` to the nav item of its section, so don't hand-write either.
 
 ### Footer (partial, every page)
-`partials/footer.html` holds the promise ("Your Brand. Our Impact."), a site map that links **every** indexable page, the contact details, the legal line, Privacy, Terms, the **slow-motion switch** (`#slowmo`, also the S key), "Back to the top" and the shared live region `#sr-live`. The build fails if an indexable page is missing from it.
+`partials/footer.html` holds the promise ("Your Brand. Our Impact."), a site map that links **every** indexable page, the contact details, the legal line, Privacy, Terms, the **slow-motion switch** (`#slowmo`, also the S key), the **paper sounds toggle** (`#sound`, off by default), "Back to the top" and the shared live region `#sr-live`. The build fails if an indexable page is missing from it.
 
 ### Page hero (every inner page)
 ```html
@@ -233,7 +262,8 @@ Two posters side by side on the hoarding: the title sheet (8 of 12 columns, alwa
 ```
 Contract:
 - **`tear.js` owns the peel.** It auto-inits every `[data-peel]`, lets the visitor peel `.peel__over` back from `data-peel-corner` to show `.peel__under`, and sets `data-peel-mounted` on the element once it has taken over.
-- **CSS fallback.** Until `data-peel-mounted` is set (no JS, reduced motion, or tear.js missing), components.css shows a still, pre-curled corner: `.peel__over` is clipped at the corner (size `--peel`) and a folded paper triangle sits on top.
+- **CSS fallback.** Until `data-peel-mounted` is set (no JS, reduced motion, or tear.js failing), tear.css shows a still, pre-curled corner: `.peel__over` is clipped at the corner (size `--peel`) and a folded paper triangle sits on top. All peel CSS lives in tear.css with the engine. components.css only places the peel in the page hero.
+- **Keyboard.** The engine adds a visually hidden "Peel back" button (`.peel__btn`) that appears on focus. You can change its labels with `data-peel-label` and `data-peel-label-back`.
 - **Content placement.** Essential content and links go on `.peel__over`. `.peel__under` is a reward (short, `aria-hidden` when it repeats something).
 - **Wiring.** Add `tear` to `css` and `js` in the front matter. `404.html` is the live example.
 
@@ -245,7 +275,7 @@ The block between `<!-- TEAR:BEGIN -->` and `<!-- TEAR:END -->` in `pages/index.
 - the svg defs `#tear-clip`, `#still-wide` and `#still-tall`;
 - the snipe, with `#tear-btn`.
 
-`tear.js` exposes `window.ElvanaTear.mountHero(heroEl, {button, live, clip, motion})`, and core.js calls it. `tear.css` holds only the mechanics (stacking, clip paths, canvas, grips). The composition (where the h1, sign-off and promise sit) is in `pages/home.css`. **Do not edit `tear.js` or `tear.css`.** They are replaced as a pair by the tear module, against this DOM contract.
+`tear.js` (engine v2) exposes `window.ElvanaTear = { mountHero(root, opts), mountPeel(el, opts), autoInit(), setTimeScale(s) }`. core.js calls `mountHero(hero, {button, live, clip})`, and tear.js's own `autoInit` on DOMContentLoaded mounts anything still unmounted (both are idempotent). `tear.css` holds only the mechanics (stacking, clip paths, canvas, grips). The composition (where the h1, sign-off and promise sit) is in `pages/home.css`. **Do not edit `tear.js` or `tear.css`.** They are replaced as a pair by the tear module, against this DOM contract.
 
 ### Snipe
 ```html
@@ -260,7 +290,7 @@ The strip pasted under a hero poster. Use it on the home page only for now.
 <a class="tag tag-line" href="/industries/">…</a>           <!-- outlined in the poster's text colour -->
 <button class="replay" type="button">Replay</button>       <!-- small secondary control -->
 ```
-A square-cut paper tag that lifts at one corner on hover (`--ease-lift`) and presses down when clicked. Disable it with `[disabled]` or `aria-disabled="true"`. Use one primary (yellow or ink) tag per poster; wrap several tags in `.tags`. Use labels, never arrows. `.poster-foot` is the row for a poster's one onward link.
+A square-cut paper tag that lifts at one corner on hover (`--ease-lift`). A primary tag presses like a rubber stamp: it squashes, then leaves an ink ring. Disable it with `[disabled]` or `aria-disabled="true"`. Use one primary (yellow or ink) tag per poster; wrap several tags in `.tags`. Use labels, never arrows. `.poster-foot` is the row for a poster's one onward link.
 
 ### Head split
 ```html
@@ -329,7 +359,8 @@ Use these only for a real sequence (the five-step process). The numbers are pain
 ### Vacant (the empty state and the TODO block)
 ```html
 <div class="paste vacant">                      <!-- add vacant--todo for the stub version -->
-  <div class="vacant__frame"><span class="todo">TODO: …</span><h2 class="vacant__title">First case studies are being written.</h2></div>
+  <div class="vacant__frame"><p class="coming-soon" data-todo="first case studies"><b>Coming soon</b>Case studies</p>
+    <h2 class="vacant__title">First case studies are being written.</h2></div>
   <div class="plate g-red"><p>…</p><a class="tag" href="/contact/">…</a></div>
 </div>
 ```
@@ -337,21 +368,32 @@ A freshly pasted blank sheet with paste brush marks. A dashed frame marks where 
 - **Where it's used.** The Work empty state (home and `/work/`) and the "This page is being pasted up" TODO block on stub pages.
 - **Removal.** The block goes when the content arrives. The Work state stays until a real case study exists.
 
+### Coming soon strip (the TODO strip)
+```html
+<p class="coming-soon" data-todo="first case studies"><b>Coming soon</b>Case studies</p>               <!-- in flow: a band across a frame or poster -->
+<div class="portrait has-strip">…<p class="coming-soon coming-soon--over" data-todo="founder photo"><b>Coming soon</b>Founder photo</p></div>
+<span class="coming-soon coming-soon--inline" data-todo="price">Price coming soon</span>             <!-- inside a line -->
+```
+A red strip with paper rules, pasted across the poster at a slight angle, like "Housefull" over a film poster.
+- **Variants.** `--over` lies across a positioned box (give the box `.has-strip`, which clips the strip to the box edge). `--inline` sits in a line of text. `--yellow` is for red grounds.
+- **Angle.** Set `--strip-angle` to change it. The defaults are -2.4° in flow, -11° over a box and -3° inline.
+- **Text.** "Coming soon" plus what is missing. The strip is real text, so screen readers hear it.
+
 ### TODO sticker
 ```html
-<span class="todo">TODO: price</span>
+<span class="todo">TODO: focus area</span>
 ```
-A small askew sticker for a visible, honest gap. It turns ink on yellow grounds. Every TODO must name what is missing.
+A small askew sticker for a missing word inside a line. It turns ink on yellow grounds. Every TODO must name what is missing.
 
 ### Rate card
 ```html
 <div class="rate"><article><h3>Monthly Retainer</h3><dl><dt>Best for</dt><dd>…</dd></dl>…
-  <dl><dt>Price</dt><dd class="price"><span class="pl">From</span><span class="amt">₹<span class="gap" role="img" aria-label="amount to be confirmed"></span></span><span class="todo">TODO: price</span></dd></dl></article></div>
+  <dl><dt>Price</dt><dd class="price"><span class="pl">From</span><span class="amt">₹<span class="gap" role="img" aria-label="amount to be confirmed"></span></span><span class="coming-soon coming-soon--inline" data-todo="price">Price coming soon</span></dd></dl></article></div>
 ```
 A rate board whose numbers are still to be painted. Use it on blue or ink grounds. Prices stay TODO until Elvana supplies them.
 
 ### People: founder, team and backing
-`.founder` (with a `.portrait` initials block), `.team` (a ruled roll with `.ini` initials) and `.backing` (a blue poster inside a paper one). See `pages/index.html`. Missing focus areas and photos are `.todo`.
+`.founder` (with a `.portrait` initials block), `.team` (a ruled roll with `.ini` initials) and `.backing` (a blue poster inside a paper one). See `pages/index.html`. Missing photos get a `.coming-soon--over` strip across the portrait. Missing focus areas get a `.todo` sticker.
 
 ### Station boards
 ```html
@@ -389,7 +431,11 @@ Every page except Contact ends with it, always linking to `/contact/`.
 - **Paste fallback.** It runs the time-driven paste where scroll timelines are missing.
 - **Demos.** It plays each `[data-demo]` once in view.
 - **Forms.** It handles `form[data-mailto-form]`.
-- **API.** `window.Elvana = { MOTION, announce(text), setSlow(on), timeScale }`.
+- **Rubber stamp.** It adds `.is-stamped` to a primary tag on click.
+- **Paper sounds and haptics.** It runs the `#sound` toggle and synthesises the sounds. Its hooks: a slap as each poster lands, and a rip when a new path appears in `#tear-clip` while the visitor tears. That reads the tear's DOM contract, so tear.js needs no changes.
+- **API.** `window.Elvana = { MOTION, announce(text), setSlow(on), feedback(name), setSound(on), timeScale, sound }`.
+
+**partials/head.html** carries two inline scripts that must run before the first render: the motion gate (`html.js`, plus `html.motion` unless the visitor prefers reduced motion) and the `pagereveal` handler for page transitions.
 
 **Page scripts** go in `src/js/pages/<name>.js`, as an IIFE in strict mode. They load after core.js and use `window.Elvana`. Gate every animation on `document.documentElement.classList.contains('motion')`, divide timers by `Elvana.timeScale`, and leave the final state visible without JS.
 

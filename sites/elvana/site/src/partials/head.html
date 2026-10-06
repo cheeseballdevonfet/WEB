@@ -26,6 +26,9 @@
 <meta name="twitter:image:alt" content="{{og_image_alt}}">
 <!-- Motion gate: html.js always, html.motion unless the visitor prefers reduced motion. Everything animated keys off these. -->
 <script>document.documentElement.className='js'+(matchMedia('(prefers-reduced-motion: reduce)').matches?'':' motion');</script>
+<!-- Paste-over page transitions (CSS in components.css). Must run before first render, so it lives here:
+     Back peels the old page off; any other navigation pastes the new page on behind a squeegee. -->
+<script>addEventListener('pagereveal',function(e){var v=e.viewTransition;if(!v)return;var back=false;try{var a=navigation.activation;back=a.navigationType==='traverse'&&!!a.from&&a.entry.index<a.from.index}catch(_){}if(v.types)v.types.add(back?'peel':'paste');if(back)return;var s=document.createElement('i');s.className='vt-squeegee';s.setAttribute('aria-hidden','true');document.documentElement.appendChild(s);var done=function(){s.remove()};v.finished.then(done,done)});</script>
 {{styles}}
 {{head_scripts}}
 <!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->

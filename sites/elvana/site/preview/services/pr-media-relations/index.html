@@ -27,6 +27,9 @@
 <meta name="twitter:image:alt" content="Elvana Media: a yellow hoarding poster reading &quot;Ideas that create impact.&quot;, torn at one corner to show a red poster underneath.">
 <!-- Motion gate: html.js always, html.motion unless the visitor prefers reduced motion. Everything animated keys off these. -->
 <script>document.documentElement.className='js'+(matchMedia('(prefers-reduced-motion: reduce)').matches?'':' motion');</script>
+<!-- Paste-over page transitions (CSS in components.css). Must run before first render, so it lives here:
+     Back peels the old page off; any other navigation pastes the new page on behind a squeegee. -->
+<script>addEventListener('pagereveal',function(e){var v=e.viewTransition;if(!v)return;var back=false;try{var a=navigation.activation;back=a.navigationType==='traverse'&&!!a.from&&a.entry.index<a.from.index}catch(_){}if(v.types)v.types.add(back?'peel':'paste');if(back)return;var s=document.createElement('i');s.className='vt-squeegee';s.setAttribute('aria-hidden','true');document.documentElement.appendChild(s);var done=function(){s.remove()};v.finished.then(done,done)});</script>
 <style>
 /* base.css */
 /* =========================================================================
@@ -61,7 +64,6 @@
   --paper-dim:#D9DAD5; /* small print on ink: 12.61 */
   --ink-soft:#3D3A35;  /* secondary text on paper: 10.16 */
   --post:#6E6A62;      /* station-board posts (decorative only) */
-  --rim:#FBFBF6;       /* white paper fibre on torn edges (decorative only) */
 
   /* Motion: named curves. core.js mirrors them in MOTION; tear.js keeps its own copy. */
   --ease-paste:cubic-bezier(.2,.7,.1,1);   /* paste: squeegee settle; every entrance eases out */
@@ -72,6 +74,9 @@
   --t-lift:calc(220ms * var(--slow));
   --t-paste:calc(320ms * var(--slow));
   --t-paste-in:calc(900ms * var(--slow));   /* time-driven paste fallback (no scroll timelines) */
+  --t-stamp:calc(380ms * var(--slow));      /* stamp: the ink ring after a primary tag is pressed */
+  --t-vt:520ms;                             /* page transition: paste-over (never above 600ms) */
+  --t-vt-peel:440ms;                        /* page transition: peel-off on Back */
 
   /* Type. Display: Yatra One (Latin + Devanagari, one brush). Text: Mukta 400/600/800.
      Devanagari inside body text falls back to Yatra One (Mukta ships Latin only). */
@@ -88,7 +93,6 @@
      A "sheet" is one poster sheet; seams are drawn at every sheet. */
   --pad-x:clamp(20px,4.4vw,64px);
   --pad-y:clamp(56px,7.5vw,112px);
-  --gap:clamp(24px,3vw,48px);
   --hdr:64px;
   --sheet:calc(100vw / 6);
   --sheet-h:calc(var(--sheet) * 1.5);
@@ -139,9 +143,6 @@ img,svg{max-width:100%}
 .no-js .js-only,.js:not(.motion) .motion-only{display:none!important}
 .skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--yellow);color:var(--ink);padding:12px 18px;font-weight:800;text-decoration:none}
 .skip:focus{top:12px}
-.stack>*+*{margin-top:var(--stack,20px)}
-.mt{margin-top:clamp(36px,4.5vw,64px)}
-.measure{max-width:56ch}
 
 /* components.css */
 /* =========================================================================
@@ -163,6 +164,13 @@ img,svg{max-width:100%}
 .tag:hover{transform:rotate(-2.2deg)}
 .tag:active{transform:translateY(2px) scale(.98);transition-duration:var(--t-press)}
 .tag[disabled],.tag[aria-disabled="true"]{opacity:.45;cursor:not-allowed;transform:none}
+/* Rubber stamp: a primary tag (not .tag-line) squashes when pressed, then core.js
+   adds .is-stamped and an ink ring in the ground's highlight ink spreads and fades */
+.tag{position:relative}
+.tag:not(.tag-line):active{transform:translate(-1%,2px) scale(1.02,.92)}
+.tag::after{content:"";position:absolute;inset:-4px;border:3px solid var(--hi,var(--red));opacity:0;pointer-events:none}
+.tag.is-stamped::after{animation:stamp-ring var(--t-stamp) var(--ease-paste) both}
+@keyframes stamp-ring{0%{opacity:.9;transform:scale(.97)}100%{opacity:0;transform:scale(1.08,1.3)}}
 .tag-ink{background:var(--ink);color:var(--yellow)}
 .tag-line{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 2px currentColor}
 .tag-line:hover{background:var(--paper);color:var(--ink);box-shadow:none}
@@ -252,6 +260,20 @@ img,svg{max-width:100%}
 /* ---------- TODO sticker: a visible, honest gap in the content ---------- */
 .todo{display:inline-block;background:var(--yellow);color:var(--ink);font:800 14px/1.2 var(--text);padding:5px 8px 3px;transform:rotate(-2.5deg);box-shadow:2px 2px 0 rgba(0,0,0,.25);white-space:nowrap}
 .g-yellow .todo{background:var(--ink);color:var(--yellow)}
+
+/* ---------- Coming soon: the strip pasted across a poster where content is missing ----------
+   Like a cinema's "Housefull" snipe pasted over a film poster. For missing pictures and blocks
+   (photos, case studies, a whole page); the .todo sticker stays for a missing word or figure.
+   In flow:      <p class="coming-soon" data-todo="first case studies"><b>Coming soon</b>First case studies</p>
+   Across a box: <div class="portrait has-strip">…<p class="coming-soon coming-soon--over" data-todo="founder photo">…</p></div> */
+.coming-soon{position:relative;z-index:3;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;gap:.15em .7em;margin:6px calc(-1 * clamp(28px,3.6vw,64px)) 10px;
+  padding:.55em 1em .4em;background:var(--red);color:var(--paper);border-block:4px solid var(--paper);box-shadow:0 4px 0 rgba(0,0,0,.22);
+  font:800 clamp(15px,1.2vw,17px)/1.2 var(--text);text-align:center;transform:rotate(var(--strip-angle,-2.4deg))}
+.coming-soon>b{font:400 clamp(26px,2.8vw,42px)/1 var(--display);color:inherit;background:none;padding:0;margin:0;display:inline}
+.coming-soon--yellow{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
+.has-strip{position:relative;overflow:hidden}
+.coming-soon--inline{display:inline-flex;margin:0;padding:.35em .75em .25em;border-block-width:3px;font-size:15px;--strip-angle:-3deg;box-shadow:0 3px 0 rgba(0,0,0,.22)}
+.coming-soon--over{position:absolute;left:-14%;right:-14%;top:var(--strip-top,52%);margin:0;transform:translateY(-50%) rotate(var(--strip-angle,-11deg))}
 
 /* ---------- Facts: big painted numbers in a strip that bleeds to the poster edges ---------- */
 .facts{display:grid;grid-template-columns:repeat(4,1fr);margin:clamp(40px,6vw,88px) calc(var(--pad-x) * -1) 0;border-top:6px solid var(--hi,var(--yellow))}
@@ -406,7 +428,7 @@ img,svg{max-width:100%}
 .portrait{position:relative;aspect-ratio:4/5;display:grid;place-items:center;
   background:radial-gradient(circle,var(--blue) 30%,transparent 33%) 0 0/11px 11px,var(--paper);
   box-shadow:inset 0 0 0 3px var(--ink)}
-.portrait b{font-family:var(--display);font-weight:400;font-size:clamp(90px,12vw,180px);line-height:1;color:var(--ink);background:var(--paper);padding:.12em .22em 0}
+.portrait>b{font-family:var(--display);font-weight:400;font-size:clamp(90px,12vw,180px);line-height:1;color:var(--ink);background:var(--paper);padding:.12em .22em 0}
 .portrait .todo{position:absolute;right:14px;bottom:16px}
 .founder h3{font-size:var(--fs-d1);color:var(--red)}
 .founder .role{font-family:var(--display);font-size:var(--fs-d3);margin:14px 0 4px}
@@ -467,7 +489,7 @@ img,svg{max-width:100%}
    Two posters pasted side by side on the hoarding: the title sheet (8 of 12)
    and a side sheet (4 of 12) carrying the page's one line. Stacks on phones.
    The side sheet may become a .peel (the page's one signature, optional).  */
-.page-hero{position:relative;z-index:3;display:grid;grid-template-columns:repeat(12,1fr);min-height:var(--page-hero-h);background:var(--ink)}
+.page-hero{position:relative;z-index:3;display:grid;grid-template-columns:repeat(12,1fr);min-height:var(--page-hero-h);background:var(--ink);overflow-x:clip} /* clip: a live peel draws its curl past its sheet */
 .page-hero__main,.page-hero__side{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding:clamp(24px,3.4vw,52px) var(--pad-x) clamp(28px,3.6vw,56px);overflow:hidden}
 .page-hero__main{grid-column:span 8}
 .page-hero__side{grid-column:span 4;padding-left:clamp(22px,2.6vw,44px)}
@@ -491,30 +513,34 @@ img,svg{max-width:100%}
 .crumbs a{text-decoration-thickness:2px}
 .crumbs [aria-current]{font-weight:600}
 
-/* ---------- Peel: fallback hooks (live behaviour belongs to tear.js) ----------
-   <div class="peel" data-peel data-peel-corner="br|bl|tr|tl">
-     <div class="peel__under">…</div><div class="peel__over">…</div></div>
-   tear.js auto-inits [data-peel] and sets [data-peel-mounted] when it takes
-   over. Until then (no JS, reduced motion, script missing) the corner stays
-   still, pre-curled, showing a triangle of the poster underneath.          */
-.peel{position:relative;display:grid;isolation:isolate;--peel:clamp(64px,8vw,120px)}
-.peel>.peel__under,.peel>.peel__over{grid-area:1 / 1;min-width:0;min-height:0}
-.peel__under{z-index:0}
-.peel__over{z-index:1}
-.peel:not([data-peel-mounted])>.peel__over{clip-path:polygon(0 0,100% 0,100% calc(100% - var(--peel)),calc(100% - var(--peel)) 100%,0 100%)}
-.peel:not([data-peel-mounted])::after{content:"";position:absolute;right:0;bottom:0;width:var(--peel);height:var(--peel);z-index:2;pointer-events:none;
-  background:linear-gradient(to top left,transparent 50%,#B9B7B0 50%,var(--back) 64%,#F7F7F3 100%);filter:drop-shadow(-3px -3px 3px rgba(0,0,0,.3))}
-.peel[data-peel-corner="bl"]:not([data-peel-mounted])>.peel__over{clip-path:polygon(0 0,100% 0,100% 100%,var(--peel) 100%,0 calc(100% - var(--peel)))}
-.peel[data-peel-corner="bl"]:not([data-peel-mounted])::after{right:auto;left:0;background:linear-gradient(to top right,transparent 50%,#B9B7B0 50%,var(--back) 64%,#F7F7F3 100%);filter:drop-shadow(3px -3px 3px rgba(0,0,0,.3))}
-.peel[data-peel-corner="tr"]:not([data-peel-mounted])>.peel__over{clip-path:polygon(0 0,calc(100% - var(--peel)) 0,100% var(--peel),100% 100%,0 100%)}
-.peel[data-peel-corner="tr"]:not([data-peel-mounted])::after{bottom:auto;top:0;background:linear-gradient(to bottom left,transparent 50%,#B9B7B0 50%,var(--back) 64%,#F7F7F3 100%);filter:drop-shadow(-3px 3px 3px rgba(0,0,0,.3))}
-.peel[data-peel-corner="tl"]:not([data-peel-mounted])>.peel__over{clip-path:polygon(var(--peel) 0,100% 0,100% 100%,0 100%,0 var(--peel))}
-.peel[data-peel-corner="tl"]:not([data-peel-mounted])::after{bottom:auto;top:0;right:auto;left:0;background:linear-gradient(to bottom right,transparent 50%,#B9B7B0 50%,var(--back) 64%,#F7F7F3 100%);filter:drop-shadow(3px 3px 3px rgba(0,0,0,.3))}
+/* ---------- Peel: its CSS, including the still no-JS corner, lives in tear.css with the
+   engine (pages that use a peel list `tear` in css and js). Only its place in the page hero is here. */
 
 /* ---------- CTA poster: the closing poster of a page, always to /contact/ ---------- */
 .cta-poster{display:grid;grid-template-columns:7fr 5fr;gap:28px 48px;align-items:end}
 .cta-poster h2{max-width:12ch}
 .cta-poster .lede{margin-bottom:20px}
+
+/* ---------- Paste-over page transitions (cross-document View Transitions) ----------
+   Forward: the next page is pasted over this one left to right, a squeegee riding the
+   wet edge. Back: the page being left peels off. Under 600ms, never blocks a click,
+   off with reduced motion; browsers without support just navigate. The inline script
+   in partials/head.html picks the direction (pagereveal) and adds the squeegee. */
+@media (prefers-reduced-motion:no-preference){
+  @view-transition{navigation:auto}
+}
+::view-transition-old(root),::view-transition-new(root){mix-blend-mode:normal}
+::view-transition-old(root){animation:none}
+::view-transition-new(root){animation:vt-paste var(--t-vt) var(--ease-paste) both}
+::view-transition-group(squeegee){animation:vt-squeegee var(--t-vt) var(--ease-paste) both}
+::view-transition-old(squeegee),::view-transition-new(squeegee){animation:none}
+html:active-view-transition-type(peel)::view-transition-new(root){animation:none}
+html:active-view-transition-type(peel)::view-transition-old(root){z-index:1;animation:vt-peel var(--t-vt-peel) var(--ease-tug) both}
+.vt-squeegee{position:fixed;top:0;left:-170px;width:180px;height:100vh;z-index:300;pointer-events:none;view-transition-name:squeegee;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.26) calc(100% - 9px),var(--ink) calc(100% - 9px),var(--ink) calc(100% - 3px),rgba(255,255,255,.5) calc(100% - 3px))}
+@keyframes vt-paste{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes vt-squeegee{from{transform:translateX(-170px)}to{transform:translateX(calc(100vw - 160px))}}
+@keyframes vt-peel{from{clip-path:inset(0 0 0 0)}to{clip-path:inset(0 100% 0 0)}}
 
 /* ---------- Footer: the promise, the site map, contact, the legal line ---------- */
 .foot{position:relative;z-index:1;margin-top:-10px;padding:clamp(56px,7vw,104px) var(--pad-x) 28px}
@@ -609,13 +635,14 @@ img,svg{max-width:100%}
 }
 @media (prefers-reduced-motion:reduce){
   .tag,.flyer,.replay,.nav-links a{transition:none}
+  .tag::after{display:none}
   .tag:hover,.replay:hover{transform:none}
   .flyer:hover{transform:none}
 }
 
 </style>
 
-<!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any <script type="application/ld+json"> found in the page body -->
+<!-- JSON-LD hook: Organization + LocalBusiness (every page), WebPage and BreadcrumbList (per page), then any ld+json script block found in the page body -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.elvanamedia.com/#organization","name":"Elvana Media","legalName":"ELEVANA MEDIA PRIVATE LIMITED","url":"https://www.elvanamedia.com/","email":"info@elvanamedia.com","telephone":"+91 89283 39531","foundingDate":"2026-06-04","slogan":"Ideas that create impact.","description":"Digital marketing, media & AI-powered growth.","image":"https://www.elvanamedia.com/assets/og-default.png","parentOrganization":{"@type":"Organization","name":"BeyondSure Private Limited"},"areaServed":[{"@type":"City","name":"Mumbai"},{"@type":"City","name":"Delhi"},{"@type":"City","name":"Gurgaon"},{"@type":"City","name":"Noida"}],"address":{"@id":"https://www.elvanamedia.com/#registered-office"}},{"@type":"LocalBusiness","@id":"https://www.elvanamedia.com/#mumbai","name":"Elvana Media","url":"https://www.elvanamedia.com/","image":"https://www.elvanamedia.com/assets/og-default.png","email":"info@elvanamedia.com","telephone":"+91 89283 39531","parentOrganization":{"@id":"https://www.elvanamedia.com/#organization"},"address":{"@type":"PostalAddress","@id":"https://www.elvanamedia.com/#registered-office","streetAddress":"203, Shivam Square, Building No. 4, Sahar Road, Andheri East","addressLocality":"Mumbai","addressRegion":"Maharashtra","postalCode":"400069","addressCountry":"IN"}},{"@type":"WebSite","@id":"https://www.elvanamedia.com/#website","url":"https://www.elvanamedia.com/","name":"Elvana Media","publisher":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN"},{"@type":"WebPage","@id":"https://www.elvanamedia.com/services/pr-media-relations/#webpage","url":"https://www.elvanamedia.com/services/pr-media-relations/","name":"PR & Media Relations | Elvana Media","description":"Stories placed with the press and the people who matter. PR & Media Relations by Elvana Media in Mumbai, Delhi, Gurgaon and Noida.","isPartOf":{"@id":"https://www.elvanamedia.com/#website"},"about":{"@id":"https://www.elvanamedia.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.elvanamedia.com/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://www.elvanamedia.com/services/"},{"@type":"ListItem","position":3,"name":"PR & Media Relations","item":"https://www.elvanamedia.com/services/pr-media-relations/"}]}}]}</script>
 </head>
 <body class="page-service" id="top">
@@ -667,7 +694,7 @@ img,svg{max-width:100%}
 <section class="poster" aria-labelledby="todo-h" style="--under:var(--ink)">
   <div class="paste vacant vacant--todo">
     <div class="vacant__frame">
-      <span class="todo">TODO: page content</span>
+      <p class="coming-soon" data-todo="page content"><b>Coming soon</b>The full page</p>
       <h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2>
     </div>
     <div class="plate g-ink">
@@ -747,6 +774,7 @@ img,svg{max-width:100%}
       <a href="../../privacy/index.html">Privacy</a>
       <a href="../../terms/index.html">Terms</a>
       <button class="js-only motion-only" type="button" id="slowmo" aria-pressed="false">Slow motion (S)</button>
+      <button class="js-only" type="button" id="sound" aria-pressed="false" title="Paper sounds, and a haptic tick on Android. Off by default.">Paper sounds</button>
       <a href="#top">Back to the top</a>
     </div>
   </div>
@@ -765,7 +793,13 @@ img,svg{max-width:100%}
    7. Forms: [data-mailto-form] validates on blur and send, then hands the
       message to the visitor's email app (without JS it posts to mailto:)
    8. Live region: Elvana.announce(text) speaks through #sr-live
+   9. Rubber-stamp tags: primary .tag presses leave an ink ring (.is-stamped)
+  10. Paper sounds + haptics: footer toggle (#sound), off by default, kept for
+      the tab session. Rip, paste slap and stamp thud are synthesised with
+      Web Audio (no files); Android adds a short vibration on the rip.
+      Elvana.feedback('rip' | 'paste' | 'stamp') for page signatures.
    Corner-lift (.flyer) is pure CSS (hover, :active, :focus-within).
+   Paste-over page transitions are CSS plus the pagereveal script in head.html.
    No JS or reduced motion: every figure and poster shows its final state.
    ========================================================================= */
 (() => {
@@ -931,7 +965,86 @@ document.querySelectorAll('form[data-mailto-form]').forEach(form => {
   });
 });
 
-window.Elvana = { MOTION, announce, setSlow, get timeScale() { return timeScale; } };
+/* 10. Paper sounds + haptics ------------------------------------------------
+   Never on by default, never required. The toggle plays a stamp to confirm.   */
+const soundBtn = document.getElementById('sound');
+let soundOn = false, actx = null, noise = null;
+function audio() {
+  if (!actx) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null; actx = new AC(); }
+  if (actx.state === 'suspended') actx.resume();
+  if (!noise) { noise = actx.createBuffer(1, actx.sampleRate * .5, actx.sampleRate); const d = noise.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
+  return actx;
+}
+function burst(c, t, dur, type, f0, f1, q, peak) {          // filtered noise with a fast attack
+  const n = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+  n.buffer = noise; f.type = type; f.Q.value = q;
+  f.frequency.setValueAtTime(f0, t); f.frequency.exponentialRampToValueAtTime(f1, t + dur);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + .006); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  n.connect(f).connect(g).connect(c.destination); n.start(t, Math.random() * .2); n.stop(t + dur + .02);
+  return g;
+}
+function thump(c, t, dur, f0, f1, peak) {                   // a falling sine: the body of a hit
+  const o = c.createOscillator(), g = c.createGain();
+  o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + .005); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  o.connect(g).connect(c.destination); o.start(t); o.stop(t + dur + .02);
+}
+const SOUNDS = {
+  rip(c, t) {                                               // paper fibres giving way: crackling band-passed noise
+    const g = burst(c, t, .3, 'bandpass', 1600, 4200, .8, .5);
+    for (let i = 1; i < 14; i++) g.gain.setValueAtTime(.12 + Math.random() * .4, t + i * .019);
+    g.gain.exponentialRampToValueAtTime(.0001, t + .3);
+  },
+  paste(c, t) { burst(c, t, .16, 'lowpass', 1400, 300, .7, .45); thump(c, t, .12, 150, 60, .35); },   // wet slap
+  stamp(c, t) { thump(c, t, .16, 110, 45, .6); burst(c, t, .05, 'highpass', 2500, 1800, .7, .25); }    // ink stamp thud
+};
+function feedback(name) {
+  if (!soundOn) return;
+  const c = audio(); if (c && SOUNDS[name]) SOUNDS[name](c, c.currentTime + .01);
+  if (name === 'rip' && navigator.vibrate) { try { navigator.vibrate(12); } catch (_) {} }
+}
+function setSound(on, quiet) {
+  soundOn = on;
+  if (soundBtn) { soundBtn.setAttribute('aria-pressed', String(on)); soundBtn.textContent = on ? 'Paper sounds on' : 'Paper sounds'; }
+  try { on ? sessionStorage.setItem('elvana-sound', '1') : sessionStorage.removeItem('elvana-sound'); } catch (_) {}
+  if (on && !quiet) feedback('stamp');
+}
+if (soundBtn) {
+  soundBtn.addEventListener('click', () => setSound(!soundOn));
+  try { if (sessionStorage.getItem('elvana-sound') === '1') setSound(true, true); } catch (_) {}
+}
+
+/* 9. Rubber-stamp tags ----------------------------------------------------- */
+document.addEventListener('click', e => {
+  const tag = e.target.closest && e.target.closest('.tag:not(.tag-line)');
+  if (!tag || tag.disabled || tag.getAttribute('aria-disabled') === 'true') return;
+  feedback('stamp');
+  if (!motionOK) return;
+  tag.classList.remove('is-stamped'); void tag.offsetWidth; tag.classList.add('is-stamped');
+  tag.addEventListener('animationend', () => tag.classList.remove('is-stamped'), { once: true });
+});
+
+/* Sound hooks for the site-wide motion (only heard when the visitor turned sounds on):
+   a paste slap as each poster lands, and a rip whenever the hero tear starts a strip
+   (read from the tear's DOM contract: a new path in #tear-clip while the visitor tears). */
+if (motionOK && 'IntersectionObserver' in window) {
+  const slap = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { feedback('paste'); slap.unobserve(e.target); } }), { threshold: .3 });
+  document.querySelectorAll('.poster:not(.page-hero + .poster)').forEach(p => { if (p.getBoundingClientRect().top > innerHeight) slap.observe(p); });
+}
+const tearClip = document.getElementById('tear-clip');
+if (hero && tearClip && 'MutationObserver' in window) {
+  let tearing = 0, lastRip = 0;
+  hero.addEventListener('pointerdown', () => { tearing = Infinity; });
+  addEventListener('pointerup', () => { if (tearing === Infinity) tearing = performance.now() + 400; });
+  const tb = document.getElementById('tear-btn'); tb && tb.addEventListener('click', () => { tearing = performance.now() + 1500; });
+  new MutationObserver(ms => {
+    const now = performance.now();
+    if (now > tearing || now - lastRip < 260) return;
+    if (ms.some(m => [...m.addedNodes].some(n => n.nodeName.toLowerCase() === 'path'))) { lastRip = now; feedback('rip'); }
+  }).observe(tearClip, { childList: true });
+}
+
+window.Elvana = { MOTION, announce, setSlow, feedback, setSound, get timeScale() { return timeScale; }, get sound() { return soundOn; } };
 })();
 
 </script>

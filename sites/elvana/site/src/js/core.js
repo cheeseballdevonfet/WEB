@@ -10,7 +10,13 @@
    7. Forms: [data-mailto-form] validates on blur and send, then hands the
       message to the visitor's email app (without JS it posts to mailto:)
    8. Live region: Elvana.announce(text) speaks through #sr-live
+   9. Rubber-stamp tags: primary .tag presses leave an ink ring (.is-stamped)
+  10. Paper sounds + haptics: footer toggle (#sound), off by default, kept for
+      the tab session. Rip, paste slap and stamp thud are synthesised with
+      Web Audio (no files); Android adds a short vibration on the rip.
+      Elvana.feedback('rip' | 'paste' | 'stamp') for page signatures.
    Corner-lift (.flyer) is pure CSS (hover, :active, :focus-within).
+   Paste-over page transitions are CSS plus the pagereveal script in head.html.
    No JS or reduced motion: every figure and poster shows its final state.
    ========================================================================= */
 (() => {
@@ -176,5 +182,84 @@ document.querySelectorAll('form[data-mailto-form]').forEach(form => {
   });
 });
 
-window.Elvana = { MOTION, announce, setSlow, get timeScale() { return timeScale; } };
+/* 10. Paper sounds + haptics ------------------------------------------------
+   Never on by default, never required. The toggle plays a stamp to confirm.   */
+const soundBtn = document.getElementById('sound');
+let soundOn = false, actx = null, noise = null;
+function audio() {
+  if (!actx) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null; actx = new AC(); }
+  if (actx.state === 'suspended') actx.resume();
+  if (!noise) { noise = actx.createBuffer(1, actx.sampleRate * .5, actx.sampleRate); const d = noise.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
+  return actx;
+}
+function burst(c, t, dur, type, f0, f1, q, peak) {          // filtered noise with a fast attack
+  const n = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+  n.buffer = noise; f.type = type; f.Q.value = q;
+  f.frequency.setValueAtTime(f0, t); f.frequency.exponentialRampToValueAtTime(f1, t + dur);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + .006); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  n.connect(f).connect(g).connect(c.destination); n.start(t, Math.random() * .2); n.stop(t + dur + .02);
+  return g;
+}
+function thump(c, t, dur, f0, f1, peak) {                   // a falling sine: the body of a hit
+  const o = c.createOscillator(), g = c.createGain();
+  o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + .005); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  o.connect(g).connect(c.destination); o.start(t); o.stop(t + dur + .02);
+}
+const SOUNDS = {
+  rip(c, t) {                                               // paper fibres giving way: crackling band-passed noise
+    const g = burst(c, t, .3, 'bandpass', 1600, 4200, .8, .5);
+    for (let i = 1; i < 14; i++) g.gain.setValueAtTime(.12 + Math.random() * .4, t + i * .019);
+    g.gain.exponentialRampToValueAtTime(.0001, t + .3);
+  },
+  paste(c, t) { burst(c, t, .16, 'lowpass', 1400, 300, .7, .45); thump(c, t, .12, 150, 60, .35); },   // wet slap
+  stamp(c, t) { thump(c, t, .16, 110, 45, .6); burst(c, t, .05, 'highpass', 2500, 1800, .7, .25); }    // ink stamp thud
+};
+function feedback(name) {
+  if (!soundOn) return;
+  const c = audio(); if (c && SOUNDS[name]) SOUNDS[name](c, c.currentTime + .01);
+  if (name === 'rip' && navigator.vibrate) { try { navigator.vibrate(12); } catch (_) {} }
+}
+function setSound(on, quiet) {
+  soundOn = on;
+  if (soundBtn) { soundBtn.setAttribute('aria-pressed', String(on)); soundBtn.textContent = on ? 'Paper sounds on' : 'Paper sounds'; }
+  try { on ? sessionStorage.setItem('elvana-sound', '1') : sessionStorage.removeItem('elvana-sound'); } catch (_) {}
+  if (on && !quiet) feedback('stamp');
+}
+if (soundBtn) {
+  soundBtn.addEventListener('click', () => setSound(!soundOn));
+  try { if (sessionStorage.getItem('elvana-sound') === '1') setSound(true, true); } catch (_) {}
+}
+
+/* 9. Rubber-stamp tags ----------------------------------------------------- */
+document.addEventListener('click', e => {
+  const tag = e.target.closest && e.target.closest('.tag:not(.tag-line)');
+  if (!tag || tag.disabled || tag.getAttribute('aria-disabled') === 'true') return;
+  feedback('stamp');
+  if (!motionOK) return;
+  tag.classList.remove('is-stamped'); void tag.offsetWidth; tag.classList.add('is-stamped');
+  tag.addEventListener('animationend', () => tag.classList.remove('is-stamped'), { once: true });
+});
+
+/* Sound hooks for the site-wide motion (only heard when the visitor turned sounds on):
+   a paste slap as each poster lands, and a rip whenever the hero tear starts a strip
+   (read from the tear's DOM contract: a new path in #tear-clip while the visitor tears). */
+if (motionOK && 'IntersectionObserver' in window) {
+  const slap = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { feedback('paste'); slap.unobserve(e.target); } }), { threshold: .3 });
+  document.querySelectorAll('.poster:not(.page-hero + .poster)').forEach(p => { if (p.getBoundingClientRect().top > innerHeight) slap.observe(p); });
+}
+const tearClip = document.getElementById('tear-clip');
+if (hero && tearClip && 'MutationObserver' in window) {
+  let tearing = 0, lastRip = 0;
+  hero.addEventListener('pointerdown', () => { tearing = Infinity; });
+  addEventListener('pointerup', () => { if (tearing === Infinity) tearing = performance.now() + 400; });
+  const tb = document.getElementById('tear-btn'); tb && tb.addEventListener('click', () => { tearing = performance.now() + 1500; });
+  new MutationObserver(ms => {
+    const now = performance.now();
+    if (now > tearing || now - lastRip < 260) return;
+    if (ms.some(m => [...m.addedNodes].some(n => n.nodeName.toLowerCase() === 'path'))) { lastRip = now; feedback('rip'); }
+  }).observe(tearClip, { childList: true });
+}
+
+window.Elvana = { MOTION, announce, setSlow, feedback, setSound, get timeScale() { return timeScale; }, get sound() { return soundOn; } };
 })();

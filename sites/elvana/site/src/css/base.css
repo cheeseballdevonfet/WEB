@@ -37,6 +37,9 @@
   --t-lift:calc(220ms * var(--slow));
   --t-paste:calc(320ms * var(--slow));
   --t-paste-in:calc(900ms * var(--slow));   /* time-driven paste fallback (no scroll timelines) */
+  --t-stamp:calc(380ms * var(--slow));      /* stamp: the ink ring after a primary tag is pressed */
+  --t-vt:520ms;                             /* page transition: paste-over (never above 600ms) */
+  --t-vt-peel:440ms;                        /* page transition: peel-off on Back */
 
   /* Type. Display: Yatra One (Latin + Devanagari, one brush). Text: Mukta 400/600/800.
      Devanagari inside body text falls back to Yatra One (Mukta ships Latin only). */

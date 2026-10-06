@@ -10,7 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { chromium, SITE, SIZES, pages, fileUrl, serve, open, wheelTo, AUDIT } = require('./lib');
+const { chromium, SITE, OUTROOT, SIZES, pages, fileUrl, serve, open, wheelTo, AUDIT } = require('./lib');
 
 const arg = (k, d) => { const i = process.argv.indexOf('--' + k); return i > 0 ? process.argv[i + 1] : d; };
 const PAGE = arg('page', '/');
@@ -57,7 +57,7 @@ async function keyboard(page) {
   fs.mkdirSync(OUT, { recursive: true });
   const meta = pages().find(p => p.path === PAGE);
   if (!meta) throw new Error('no page ' + PAGE);
-  const { srv, origin } = await serve(path.join(SITE, 'dist'));
+  const { srv, origin } = await serve(path.join(OUTROOT, 'dist'));
   const browser = await chromium.launch();
   const report = { page: PAGE, runs: {} };
   const targets = [['preview', fileUrl('preview', meta.out), false], ['dist-http', origin + PAGE.replace(/index\.html$/, ''), true]];
@@ -151,6 +151,33 @@ async function keyboard(page) {
       console.log(`\n${label} @ ${w}`);
       for (const [name, [ok, detail]] of Object.entries(r.verdict)) console.log(`  ${ok ? 'PASS' : 'FAIL'}  ${name.padEnd(38)} ${detail}`);
     }
+  }
+  // ---- site-wide pieces over http (cross-document View Transitions need a real origin) ----
+  {
+    const { ctx, page, log } = await open(browser, origin + '/', 1440, {
+      init: () => { addEventListener('pagereveal', e => { const v = e.viewTransition; window.__vt = v ? { t0: performance.now(), types: v.types ? [...v.types] : [] } : null;
+        if (v) v.finished.then(() => { window.__vt.ms = Math.round(performance.now() - window.__vt.t0); window.__vt.types = v.types ? [...v.types] : []; }); }); },
+    });
+    const sw = {};
+    // rubber stamp: a primary tag gets the ink ring
+    sw.stamp = await page.evaluate(() => { const t = document.querySelector('.snipe .tag:not(.tag-line)'); t.addEventListener('click', e => e.preventDefault(), { once: true }); t.click(); return t.classList.contains('is-stamped'); });
+    // sound toggle: off by default, toggles, synthesises without errors
+    sw.soundDefault = await page.getAttribute('#sound', 'aria-pressed');
+    await page.click('#sound'); await page.waitForTimeout(200);
+    sw.soundOn = await page.getAttribute('#sound', 'aria-pressed');
+    await page.evaluate(() => { Elvana.feedback('rip'); Elvana.feedback('paste'); Elvana.feedback('stamp'); }); await page.waitForTimeout(400);
+    await page.click('#sound');
+    // paste-over forward, then peel-off on Back
+    await page.click('.nav-main a[href*="services"]'); await page.waitForURL('**/services/**'); await page.waitForTimeout(900);
+    sw.forward = await page.evaluate(() => window.__vt);
+    await page.goBack(); await page.waitForTimeout(900);
+    sw.back = await page.evaluate(() => window.__vt);
+    sw.errors = log.errors;
+    await ctx.close();
+    report.siteWide = sw;
+    const ok = sw.stamp && sw.soundDefault === 'false' && sw.soundOn === 'true' && sw.forward && sw.forward.ms < 600 && sw.forward.types.includes('paste') && sw.back && sw.back.ms < 600 && sw.back.types.includes('peel') && !sw.errors.length;
+    console.log(`\nsite-wide pieces (dist over http)\n  ${ok ? 'PASS' : 'FAIL'}  stamp ring ${sw.stamp}, sound default ${sw.soundDefault} -> ${sw.soundOn}, paste-over ${JSON.stringify(sw.forward)}, back ${JSON.stringify(sw.back)}, errors ${sw.errors.length}`);
+    report.runs['site-wide'] = { verdict: { 'stamp, sound toggle, page transitions < 600 ms': [ok, ''] } };
   }
   fs.writeFileSync(path.join(OUT, 'ship.json'), JSON.stringify(report, null, 1));
   const fails = Object.values(report.runs).flatMap(r => Object.values(r.verdict)).filter(v => !v[0]).length;

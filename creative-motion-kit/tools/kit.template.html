@@ -102,6 +102,8 @@ main { min-width: 0; }
 .meta { margin: 4px 0 0; color: var(--muted); font-size: 13.5px; }
 .meta .cat { color: var(--ink); }
 .body { margin-left: 78px; }
+#list.wide .prompt header { grid-template-columns: 96px 1fr; }
+#list.wide .body { margin-left: 110px; }
 pre.text {
   margin: 14px 0 0; padding: 16px 18px; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px;
   font: 13.5px/1.6 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere;
@@ -132,6 +134,8 @@ footer { max-width: 1240px; margin: 0 auto; padding: 24px 24px 56px; color: var(
   .masthead { padding: 28px 16px 0; }
   aside { position: static; max-height: none; overflow: visible; padding-right: 0; }
   .body { margin-left: 0; }
+  #list.wide .prompt header { grid-template-columns: 72px 1fr; }
+  #list.wide .body { margin-left: 0; }
   .prompt header { grid-template-columns: 48px 1fr; }
   .num { font-size: 32px; }
   footer { padding: 16px 16px 48px; }
@@ -309,7 +313,7 @@ footer { max-width: 1240px; margin: 0 auto; padding: 24px 24px 56px; color: var(
       return '<article class="prompt" id="p-' + p.id + '">' +
         '<header><span class="num">' + esc(lib.prefix) + pad(p.id) + "</span><div>" +
         "<h3>" + esc(p.title) + "</h3>" +
-        '<p class="meta"><span class="cat">' + esc(p.category) + "</span> · " + linkCredit(p.credit, p.sources) + "</p>" +
+        '<p class="meta"><span class="cat">' + esc(p.category) + "</span>" + (p.credit ? " · " + linkCredit(p.credit, p.sources) : "") + "</p>" +
         "</div></header>" +
         '<div class="body"><pre class="text">' + highlight(c.base) + addons + "</pre>" +
         (p.twists.length ? '<p class="twists"><strong>Twists</strong>' + p.twists.map(esc).join(" · ") + "</p>" : "") +
@@ -361,6 +365,7 @@ footer { max-width: 1240px; margin: 0 auto; padding: 24px 24px 56px; color: var(
   }
   function renderAll() {
     $("tagline").textContent = lib.intro;
+    $("list").classList.toggle("wide", !!lib.prefix);
     $("q").value = st.q;
     renderTabs(); renderPowerups(); renderRoll(); renderCats(); renderExtras(); renderList();
   }
@@ -426,7 +431,7 @@ footer { max-width: 1240px; margin: 0 auto; padding: 24px 24px 56px; color: var(
   });
   window.addEventListener("hashchange", function () { var id = location.hash.slice(1); if (id && id !== lib.id) setLib(id); });
 
-  $("footer").innerHTML = "Prompts marked “Based on” are adapted from the creators linked in each entry; the rest were written for this kit. None are guaranteed as written, so expect to iterate. Version " + esc(KIT.version) + " · updated " + esc(KIT.updated) + ".";
+  $("footer").innerHTML = "Prompts marked “Based on” are adapted from the creators, sites and guides linked in each entry; the rest were written for this kit. None are guaranteed as written, so expect to iterate. Version " + esc(KIT.version) + " · updated " + esc(KIT.updated) + ".";
   if (window.matchMedia("(max-width: 900px)").matches) document.querySelectorAll("aside details").forEach(function (d, i) { if (i > 0) d.open = false; });
   setLib(lib.id);
 })();

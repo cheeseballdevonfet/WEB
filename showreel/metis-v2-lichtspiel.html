@@ -33,7 +33,7 @@ body { font-family: "Jost", "Futura", sans-serif; color: #EDEDEA; }
 </head>
 <body>
 <h1 class="sr">Metis: intelligence in motion</h1>
-<p class="sr">A 15-second showreel in the manner of a 1930s light play. A blue beam turns on and a rotating perforated disc throws moving points of light that spell METIS. A sculpture of rods and spheres swings into the light; its shadow tumbles, then locks into the Metis mark, and a white light comes on. The five sphere-shadows turn into five spotlights that light the five capabilities: Enterprise AI, Agentic Systems, Workflow Automations, AI Strategy and Validation, and Product Engineering. The spotlights converge into one light; five ghost shadows align into the mark beside the words METIS, Intelligence in motion, metisai.in.</p>
+<p class="sr">A 15-second showreel in the manner of a 1930s light play, in black, white and grey with one blue light. A blue projector warms up and a spinning perforated disc throws points of light that spell METIS; the disc swings away and the word stands in light, then an iris opens the beam. A sculpture of rods and spheres swings into the light and its shadow tumbles, then locks into the Metis mark; a white light comes on and the mark turns Metis blue. The five sphere-shadows become five spotlights that open into a larger version of the mark, lighting the five capabilities: Enterprise AI, Agentic Systems, Workflow Automations, AI Strategy and Validation, and Product Engineering. The spotlights gather and bloom into one light; five ghost shadows align into the mark beside the words METIS, Intelligence in motion., metisai.in.</p>
 
 <div class="frame" id="frame" aria-hidden="true">
   <div id="stage"><canvas id="cv"></canvas></div>
@@ -194,7 +194,7 @@ function shadowPath(c, f) {
 function paintShadow(c, style, alpha) {
   let pm = 0; for (let i = 0; i < 5; i++) pm = Math.max(pm, SP[i]);
   c.fillStyle = style;
-  const N = Math.min(22, Math.ceil(pm / 2.2));
+  const N = Math.min(14, Math.ceil(pm / 3));
   if (N <= 1) { c.globalAlpha = alpha; shadowPath(c, 0); c.fill(); c.globalAlpha = 1; return; }
   for (let k = 1; k <= N; k++) {
     // coverage target here = alpha * k / N, so per-pass alpha follows from the previous coverage

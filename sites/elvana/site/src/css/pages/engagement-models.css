@@ -58,6 +58,9 @@
 .counter__mouth{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,36px);align-items:start}
 .counter__sign,.counter__slot,.counter__ledge{display:none}
 .counter__plain{margin-top:clamp(28px,3vw,44px);font-weight:600;font-size:var(--fs-body)}
+/* JS, desktop: the plain way in sits at the foot of the left column, level with the counter ledge */
+.js .counter__plain{grid-column:1;grid-row:2;align-self:end;margin:0;padding:18px 0 0;border-top:3px solid rgba(242,243,239,.4);max-width:30ch}
+.js .counter__window{grid-column:2;grid-row:1 / span 2}
 
 /* ---------- JS: the booking window ---------- */
 .js .counter{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,4vw,72px);align-items:start}
@@ -118,6 +121,8 @@
 @media (max-width:1099px){
   .counter__mouth{grid-template-columns:repeat(2,minmax(0,1fr))}
   .js .counter{grid-template-columns:1fr}
+  .js .counter__window{grid-column:1;grid-row:auto}
+  .js .counter__plain{grid-column:1;grid-row:auto;max-width:none}
   .js .counter__pick{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
   .js .counter__pick legend,.js .counter__how{grid-column:1 / -1}
   .pick{padding:16px 16px 14px}
@@ -133,9 +138,9 @@
 @media (max-width:699px){
   .counter__mouth{grid-template-columns:1fr}
   .js .counter__pick{gap:8px}
-  .pick{padding:14px 12px 13px;gap:2px;box-shadow:4px 5px 0 rgba(0,0,0,.3)}
+  .pick{padding:14px 10px 13px;gap:2px;box-shadow:4px 5px 0 rgba(0,0,0,.3)}
   .pick::after{inset:4px}
-  .pick__name{font-size:21px}
+  .pick__name{font-size:min(21px,4.9vw)}
   .pick__for{font-size:14px}
   .pick:has(input:checked),.pick:active{transform:translate(3px,4px)}
   .js .counter__window{padding:0 14px}

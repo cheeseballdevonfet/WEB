@@ -1,0 +1,114 @@
+/* =========================================================================
+   Elvana Media: base.css
+   Tokens, reset, type, grounds and utilities. Every colour, curve, size and
+   spacing value on the site is defined here and only here; components and
+   pages use the custom properties. See SYSTEM.md for the catalogue.
+
+   Art direction ("Hoarding"): Mumbai street and outdoor media made
+   physical. Flat poster inks on paper sheets pasted edge to edge on a
+   billboard grid; loud, confident type; all the energy in one physical act.
+   ========================================================================= */
+
+@font-face{font-family:'Yatra One';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/yatra-one-latin.woff2) format('woff2');unicode-range:U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-200B, U+200E-206F, U+20AC, U+20B9, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Yatra One';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/yatra-one-devanagari.woff2) format('woff2');unicode-range:U+0900-097F, U+200C-200D, U+25CC}
+@font-face{font-family:'Mukta';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/mukta-400-latin.woff2) format('woff2');unicode-range:U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-200B, U+200E-206F, U+20AC, U+20B9, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Mukta';font-style:normal;font-weight:600;font-display:swap;src:url(../fonts/mukta-600-latin.woff2) format('woff2');unicode-range:U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-200B, U+200E-206F, U+20AC, U+20B9, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Mukta';font-style:normal;font-weight:800;font-display:swap;src:url(../fonts/mukta-800-latin.woff2) format('woff2');unicode-range:U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-200B, U+200E-206F, U+20AC, U+20B9, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* ^ build.py replaces that marker with the @font-face rules:
+     dist/     url(../fonts/*.woff2) with unicode-range, so the Devanagari
+               file only downloads on pages that use Devanagari
+     preview/  base64, and only the subsets the page's characters need */
+
+:root{
+  /* Inks. Contrast is WCAG 2.x, measured (SYSTEM.md has the full table). */
+  --yellow:#FFD000; /* hoarding yellow: ink on it 12.05 */
+  --red:#C8201A;    /* cinema red: paper on it 5.12; yellow on it 3.88 (24px+ only) */
+  --ink:#1A1814;    /* key plate: paper on it 15.90, yellow 12.05 */
+  --blue:#1F3FB4;   /* process blue: paper on it 7.76, yellow 5.88 */
+  --paper:#F2F3EF;  /* cool white poster stock (not cream): ink 15.90, blue 7.76, red 5.12 */
+  --back:#E2E1DB;   /* the back of the paper, seen only on torn or lifted flaps */
+  --wall:#A39F96;   /* the concrete wall, seen only in gaps */
+  --paper-dim:#D9DAD5; /* small print on ink: 12.61 */
+  --ink-soft:#3D3A35;  /* secondary text on paper: 10.16 */
+  --post:#6E6A62;      /* station-board posts (decorative only) */
+  --rim:#FBFBF6;       /* white paper fibre on torn edges (decorative only) */
+
+  /* Motion: named curves. core.js mirrors them in MOTION; tear.js keeps its own copy. */
+  --ease-paste:cubic-bezier(.2,.7,.1,1);   /* paste: squeegee settle; every entrance eases out */
+  --ease-tug:cubic-bezier(.55,0,.75,.2);   /* tug: gravity, a sheet letting go */
+  --ease-lift:cubic-bezier(.3,1.3,.5,1);   /* lift: a corner lifting, one tiny overshoot */
+  --slow:1;                                 /* 10 while the slow-motion review switch is on */
+  --t-press:calc(120ms * var(--slow));
+  --t-lift:calc(220ms * var(--slow));
+  --t-paste:calc(320ms * var(--slow));
+  --t-paste-in:calc(900ms * var(--slow));   /* time-driven paste fallback (no scroll timelines) */
+
+  /* Type. Display: Yatra One (Latin + Devanagari, one brush). Text: Mukta 400/600/800.
+     Devanagari inside body text falls back to Yatra One (Mukta ships Latin only). */
+  --display:'Yatra One','Mukta',sans-serif;
+  --text:'Mukta','Yatra One',sans-serif;
+  --fs-d1:clamp(48px,8.2vw,124px);
+  --fs-d2:clamp(34px,4.2vw,64px);
+  --fs-d3:clamp(26px,2.6vw,38px);
+  --fs-lede:clamp(19px,1.65vw,24px);
+  --fs-body:clamp(17px,1.3vw,19px);
+  --fs-small:clamp(14px,1.05vw,15px);
+
+  /* Grid and space. The billboard grid has no gutters: posters sit edge to edge.
+     A "sheet" is one poster sheet; seams are drawn at every sheet. */
+  --pad-x:clamp(20px,4.4vw,64px);
+  --pad-y:clamp(56px,7.5vw,112px);
+  --gap:clamp(24px,3vw,48px);
+  --hdr:64px;
+  --sheet:calc(100vw / 6);
+  --sheet-h:calc(var(--sheet) * 1.5);
+  --snipe-h:118px;
+  --hero-h:max(440px, min(50vw, calc(100svh - var(--hdr) - var(--snipe-h))));
+  --page-hero-h:max(420px, min(42vw, calc(100svh - var(--hdr) - 96px)));
+}
+@media (max-width:1099px){:root{--sheet:25vw;--snipe-h:132px;--hero-h:max(480px, min(100vw, calc(100svh - var(--hdr) - var(--snipe-h))));--page-hero-h:max(420px, min(70vw, 620px))}}
+@media (max-width:699px){html.no-js,html.js:not(.motion){--snipe-h:150px}
+:root{--sheet:50vw;--hdr:56px;--snipe-h:200px;--hero-h:max(470px, min(165vw, calc(100svh - var(--hdr) - var(--snipe-h))));--page-hero-h:max(400px, min(118vw, 520px))}}
+
+/* ---------- Reset and type ---------- */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--wall);color:var(--ink);font-family:var(--text);font-size:var(--fs-body);line-height:1.5;word-spacing:.04em;overflow-x:clip}
+h1,h2,h3,.d,.d1,.d2,.d3{font-family:var(--display);font-weight:400;line-height:.95;margin:0;word-spacing:0;text-wrap:balance}
+h4{margin:0}
+p{margin:0;text-wrap:pretty}
+ul,ol{margin:0;padding:0;list-style:none}
+dl,dd{margin:0}
+a{color:inherit;text-decoration-thickness:2px;text-underline-offset:.18em}
+a:hover{text-decoration-thickness:4px}
+:focus-visible{outline:3px solid var(--focus,var(--ink));outline-offset:3px}
+img,svg{max-width:100%}
+
+/* Type scale: d1 > d2 > d3 display sizes, then lede, body, small (never below 14px) */
+.d1{font-size:var(--fs-d1)}
+.d2{font-size:var(--fs-d2)}
+.d3{font-size:var(--fs-d3)}
+.lede{font-size:var(--fs-lede);line-height:1.42;max-width:38ch}
+.small{font-size:var(--fs-small)}
+.hi-ink{color:var(--hi)}          /* the ground's highlight ink (see grounds) */
+.deva{font-family:var(--display);font-weight:400} /* Devanagari words: always the display face */
+
+/* ---------- Grounds: each poster is printed in one ink ----------
+   --ground background, --fg text, --focus ring, --hi highlight ink        */
+.g-yellow{--ground:var(--yellow);--fg:var(--ink);--focus:var(--ink);--hi:var(--red)}
+.g-red{--ground:var(--red);--fg:var(--paper);--focus:var(--paper);--hi:var(--yellow)}
+.g-ink{--ground:var(--ink);--fg:var(--paper);--focus:var(--yellow);--hi:var(--yellow)}
+.g-blue{--ground:var(--blue);--fg:var(--paper);--focus:var(--yellow);--hi:var(--yellow)}
+.g-paper{--ground:var(--paper);--fg:var(--ink);--focus:var(--blue);--hi:var(--red)}
+.g-yellow,.g-red,.g-ink,.g-blue,.g-paper{background:var(--ground);color:var(--fg)}
+
+/* ---------- Utilities ---------- */
+.nw{white-space:nowrap}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.no-js .js-only,.js:not(.motion) .motion-only{display:none!important}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--yellow);color:var(--ink);padding:12px 18px;font-weight:800;text-decoration:none}
+.skip:focus{top:12px}
+.stack>*+*{margin-top:var(--stack,20px)}
+.mt{margin-top:clamp(36px,4.5vw,64px)}
+.measure{max-width:56ch}

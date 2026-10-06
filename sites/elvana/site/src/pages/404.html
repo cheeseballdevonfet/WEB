@@ -1,0 +1,42 @@
+---
+title: Page not found | Elvana Media
+name: Page not found
+description: This page is not on the wall. Go back to the Elvana Media home page, see all services or get in touch with the team.
+path: /404.html
+noindex: true
+body_class: page-404
+css: tear
+js: tear
+---
+<!-- 404. Served by the host for any missing URL, so in dist/ it is self-contained and its links are
+     root-absolute (build.py --base sets the prefix). The side sheet is a .peel: the site's example of
+     the peel contract (tear.js brings it to life; without it the corner stays still and curled). -->
+<section class="page-hero" aria-labelledby="page-h">
+  <div class="page-hero__main g-yellow">
+    <p class="page-hero__sign"><span class="d">404</span>Elvana Media</p>
+    <h1 id="page-h">Page not found</h1>
+  </div>
+  <div class="peel" data-peel data-peel-corner="br">
+    <div class="peel__under page-hero__side g-yellow" aria-hidden="true">
+      <p class="page-hero__line">Ideas that create impact.</p>
+    </div>
+    <div class="peel__over page-hero__side g-red">
+      <p class="page-hero__line">Nothing is pasted on this part of the wall.</p>
+      <p class="page-hero__sign"><span class="d">Try the home page</span>or one of the links below</p>
+    </div>
+  </div>
+</section>
+
+<section class="poster" aria-labelledby="lost-h" style="--under:var(--ink)">
+  <div class="paste g-ink">
+    <div class="head-split">
+      <h2 class="d2" id="lost-h">Where to go from here</h2>
+      <p class="lede">The link may be old or mistyped. Everything Elvana Media does starts from these pages.</p>
+    </div>
+    <p class="poster-foot tags">
+      <a class="tag" href="/">Home</a>
+      <a class="tag tag-line" href="/services/">All services</a>
+      <a class="tag tag-line" href="/contact/">Contact</a>
+    </p>
+  </div>
+</section>

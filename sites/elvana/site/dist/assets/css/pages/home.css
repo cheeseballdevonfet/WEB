@@ -1,0 +1,60 @@
+/* =========================================================================
+   Elvana Media: pages/home.css
+   Home only. The hero's COMPOSITION (where the type sits on each poster,
+   seams, wrinkles); its tear mechanics are in tear.css. Then the few
+   section tweaks that are not reusable components.
+   ========================================================================= */
+
+/* ---------- Hero: the top poster (yellow) and the one underneath (red) ---------- */
+.hero .seams{position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(to right,rgba(0,0,0,.09) 1px,rgba(255,255,255,.16) 1px 2px,transparent 2px),linear-gradient(to bottom,rgba(0,0,0,.08) 1px,rgba(255,255,255,.14) 1px 2px,transparent 2px);
+  background-size:50% 100%,100% 33.34%;background-position:-1px 0,0 -1px}
+.hero .sheet-under .seams{background-size:50% 100%,100% 25%;background-position:25cqw 0,0 -1px}
+.hero .wrinkles{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero h1{position:absolute;left:5cqw;top:4.5cqh;font-size:min(15.2cqh,24cqw);line-height:.9;letter-spacing:-.005em}
+.hero h1 .l{display:block}
+.hero .signoff{position:absolute;left:5cqw;bottom:5cqh;display:grid;gap:4px;font-weight:800;font-size:15px;line-height:1.3}
+.hero .signoff .d{font-size:max(26px,min(4.6cqh,7.4cqw));line-height:1;font-weight:400}
+.hero .promise{position:absolute;left:5cqw;right:5cqw;bottom:4cqh}
+.hero .promise .hi{display:block;font-family:var(--display);font-size:max(24px,min(3.6cqh,6.2cqw));line-height:1.25;color:var(--yellow);margin-bottom:.3em}
+.hero .promise .en{display:block;font-family:var(--display);font-size:min(8cqh,12.6cqw);line-height:.92}
+.hero .promise .en span{display:block}
+.hero .under-mark{position:absolute;left:5cqw;top:4.5cqh;font-family:var(--display);font-size:max(26px,min(4.4cqh,7cqw));line-height:1;color:var(--yellow)}
+
+@container hero (min-aspect-ratio:5/4){
+  .hero .seams{background-size:16.667% 100%,100% 50%}
+  .hero .sheet-under .seams{background-size:25% 100%,100% 50%;background-position:12cqw 0,0 -1px}
+  .hero h1{left:4cqw;top:5.5cqh;font-size:min(23cqh,12.4cqw)}
+  .hero h1 .tall{display:none}
+  /* Live poster at rest: the headline steps down across the whole hoarding,
+     so the right of the first screen carries type instead of bare yellow
+     (A left the right ~40% empty at 1440). Same face, size and lines as A;
+     only lines 2 and 3 move. The still poster (no JS, reduced motion) keeps
+     A's left-set headline: its torn corner already fills the right. */
+  .js.motion .hero h1{right:4cqw}
+  .js.motion .hero h1 .l:nth-child(2){padding-left:31cqw}
+  .js.motion .hero h1 .l:nth-child(3){text-align:right}
+  .hero .signoff{left:4cqw;bottom:6cqh}
+  .hero .signoff .d{font-size:max(26px,min(5.4cqh,2.8cqw))}
+  .hero .promise{left:auto;right:4cqw;bottom:6cqh;text-align:right}
+  .hero .promise .hi{font-size:max(24px,min(4.6cqh,2.6cqw))}
+  .hero .promise .en{font-size:min(15cqh,8.3cqw)}
+  .hero .under-mark{left:4cqw;top:5.5cqh;font-size:max(26px,min(6cqh,3.2cqw))}
+}
+
+/* ---------- Section tweaks ---------- */
+#about .head-split h2{max-width:12ch}
+#edge .head-split h2{color:var(--yellow);max-width:13ch;font-size:clamp(40px,5.6vw,84px)}
+#process-h{max-width:20ch}
+#cities-h{max-width:18ch}
+.founder .org{font-size:var(--fs-small);font-weight:800}
+.founder .lede{margin-top:20px;max-width:40ch}
+.team-note{margin-top:14px}
+
+/* Work: the vacant hoarding, now the loudest quiet section on the page.
+   A big painted title inside the dashed frame where the first case study
+   will be pasted, and the red plate pasted over the frame's corner. */
+#work .vacant__frame{grid-column:1 / span 10}
+#work .plate{grid-column:7 / span 6}
+@media (max-width:1099px){#work .vacant__frame{grid-column:1 / -1}#work .plate{grid-column:4 / -1}}
+@media (max-width:699px){#work .plate{grid-column:2 / -1}}

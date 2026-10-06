@@ -1,0 +1,82 @@
+---
+# ===========================================================================
+# PAGE TEMPLATE. Files starting with "_" are never built. Copy this file to
+# src/pages/<route>.html (or src/pages/<section>/<slug>.html), edit, run
+# python3 build.py. SYSTEM.md explains every component used below.
+#
+# Front matter (one `key: value` per line; lines starting with # are ignored)
+#   title        the full <title>. Unique. 65 characters or fewer. Pattern: "<Page> | Elvana Media"
+#   name         short name for breadcrumbs and JSON-LD (defaults to the part of title before " | ")
+#   description  meta + OG description. Unique. 70 to 170 characters. Facts from CONTENT.md only.
+#   path         the route, root-absolute, ending in "/": /services/seo-sem/
+#   body_class   optional class on <body>, e.g. page-service
+#   css          optional, comma separated, from src/css/ without .css: pages/service, tear
+#   js           optional, comma separated, from src/js/ without .js: tear, pages/service
+#                (tear and other libraries load before core.js; pages/* after it)
+#   noindex      true to keep the page out of search and sitemap.xml
+#   og_title, og_image, og_image_alt   optional overrides (og_image must be an absolute URL)
+# ===========================================================================
+title: Page name | Elvana Media
+name: Page name
+description: One or two sentences from CONTENT.md that say what this page offers and who it is for, 70 to 170 characters.
+path: /page-name/
+body_class: page-name
+css:
+js:
+---
+<!-- Links: always write them root-absolute (href="/contact/", href="/#contact"); the build makes
+     them relative. Placeholders the build fills: {{crumbs}} {{name}} {{title}} {{path}} {{description}}.
+     The shell (head, header, <main id="main">, footer) is added by the build: write only the sections. -->
+
+<!-- 1. PAGE HERO (required, exactly one <h1>, id="page-h")
+     Two posters pasted side by side: the title sheet (always g-yellow) and a side sheet in another ink
+     (g-red, g-blue, g-ink or g-paper) carrying the page's one line from CONTENT.md.
+     Add class="is-long" to the h1 when the title is longer than about 17 characters. -->
+<section class="page-hero" aria-labelledby="page-h">
+  <div class="page-hero__main g-yellow">
+    {{crumbs}}
+    <h1 id="page-h">Page name</h1>
+  </div>
+  <div class="page-hero__side g-red">
+    <p class="page-hero__line">One line from CONTENT.md.</p>
+    <p class="page-hero__sign"><span class="d">Elvana Media</span>Mumbai, Delhi, Gurgaon and Noida</p>
+  </div>
+  <!-- OPTIONAL SIGNATURE: the peel (at most once per page, only here). Replace the side sheet above with:
+  <div class="peel" data-peel data-peel-corner="br">
+    <div class="peel__under page-hero__side g-yellow" aria-hidden="true"><p class="page-hero__line">A short reward line.</p></div>
+    <div class="peel__over page-hero__side g-red"><p class="page-hero__line">One line from CONTENT.md.</p></div>
+  </div>
+  and add `tear` to both css and js in the front matter. Essential content goes on peel__over. -->
+</section>
+
+<!-- 2. BODY SECTIONS: each is a poster pasted over the last.
+     --under = the ink of the poster ABOVE (shows while this one is pasted on by the squeegee).
+     Alternate grounds; never put two posters of the same ink next to each other. -->
+<section class="poster" id="first-section" aria-labelledby="s1-h" style="--under:var(--ink)">
+  <div class="paste g-paper">
+    <div class="head-split">
+      <h2 class="d1" id="s1-h">Section heading</h2>
+      <p class="lede">A short lede from CONTENT.md or CONTENT-PAGES.md (client-approved lines only).</p>
+    </div>
+    <!-- components: .bill-list, .flyer-wall, .steps, .facts, .cast, .demo-grid, .rate, .boards ... (SYSTEM.md) -->
+  </div>
+</section>
+
+<!-- 3. MISSING CONTENT: never invent. Use a .todo sticker inline, or the vacant TODO block for a whole section:
+<section class="poster" aria-labelledby="todo-h" style="--under:var(--paper)">
+  <div class="paste vacant vacant--todo">
+    <div class="vacant__frame"><span class="todo">TODO: what is missing</span><h2 class="vacant__title" id="todo-h">This page is being pasted up.</h2></div>
+    <div class="plate g-ink"><h3>What goes up here</h3><ul><li>…</li></ul></div>
+  </div>
+</section> -->
+
+<!-- 4. CLOSING CTA POSTER (required on every page except /contact/), always to /contact/. -->
+<section class="poster" aria-labelledby="cta-h" style="--under:var(--paper)">
+  <div class="paste g-yellow cta-poster">
+    <h2 class="d1" id="cta-h">Let's create impact together</h2>
+    <div>
+      <p class="lede">Write to info@elvanamedia.com or call +91 89283 39531. Offices in Mumbai, Delhi, Gurgaon and Noida.</p>
+      <div class="tags"><a class="tag tag-ink" href="/contact/">Let's talk</a><a class="tag tag-line" href="tel:+918928339531">Call +91 89283 39531</a></div>
+    </div>
+  </div>
+</section>
